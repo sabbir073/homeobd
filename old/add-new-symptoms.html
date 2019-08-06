@@ -1,0 +1,552 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Twitter -->
+    <meta name="twitter:site" content="@themepixels">
+    <meta name="twitter:creator" content="@themepixels">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Azia">
+    <meta name="twitter:description" content="Responsive Bootstrap 4 Dashboard Template">
+    <meta name="twitter:image" content="http://themepixels.me/azia/img/azia-social.png">
+
+    <!-- Facebook -->
+    <meta property="og:url" content="http://themepixels.me/azia">
+    <meta property="og:title" content="Azia">
+    <meta property="og:description" content="Responsive Bootstrap 4 Dashboard Template">
+
+    <meta property="og:image" content="http://themepixels.me/azia/img/azia-social.png">
+    <meta property="og:image:secure_url" content="http://themepixels.me/azia/img/azia-social.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="600">
+
+    <!-- Meta -->
+    <meta name="description" content="Responsive Bootstrap 4 Dashboard Template">
+    <meta name="author" content="ThemePixels">
+
+    <title>Amicritas - Software Demo</title>
+
+    <!-- vendor css -->
+    <link href="../lib/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="../lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="../lib/typicons.font/typicons.css" rel="stylesheet">
+    <link href="../lib/jqvmap/jqvmap.min.css" rel="stylesheet">
+    <link href="../lib/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="../lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet">
+    <link href="../lib/select2/css/select2.min.css" rel="stylesheet">
+    <!-- azia CSS -->
+    <link rel="stylesheet" href="../css/azia.css">
+
+  </head>
+  <body class="az-body az-body-sidebar az-body-dashboard-nine">
+
+    <div class="az-sidebar az-sidebar-sticky az-sidebar-indigo-dark">
+      <div class="az-sidebar-header">
+        <a href="index.html" class="az-logo">h<span>o</span>me<span>o</span>bd</a>
+      </div><!-- az-sidebar-header -->
+      <div class="az-sidebar-loggedin">
+        <div class="az-img-user online"><img src="https://via.placeholder.com/500x500" alt=""></div>
+        <div class="media-body">
+          <h6>Md Sabbir Ahmed</h6>
+          <span>Doctor</span>
+        </div><!-- media-body -->
+      </div><!-- az-sidebar-loggedin -->
+      <div class="az-sidebar-body">
+        <ul class="nav">
+          <li class="nav-label">Main Menu</li>
+          <li class="nav-item">
+            <a href="/" style="position: relative;" class="nav-link"><i class="typcn typcn-clipboard"></i>Dashboard</a>
+            
+          </li><!-- nav-item -->
+          <li class="nav-item">
+            <a href="" class="nav-link with-sub"><i class="typcn typcn-user"></i>Users</a>
+            <nav class="nav-sub">
+              <a href="all-users.html" class="nav-sub-link">All Users</a>
+              <a href="pending-users.html" class="nav-sub-link">Pending Users</a>
+              <a href="add-users.html" class="nav-sub-link">Add New</a>
+              
+            </nav>
+          </li><!-- nav-item -->
+          <li class="nav-item active show">
+            <a href="" class="nav-link with-sub"><i class="fa fa-stethoscope" aria-hidden="true"></i>Symptoms</a>
+            <nav class="nav-sub">
+              <a href="all-symptoms.html" class="nav-sub-link">All Symptoms</a>
+              <a href="pending-symptoms.html" class="nav-sub-link">Pending Symptoms</a>
+              <a href="add-new-symptoms.html" class="nav-sub-link active">Add New</a>
+              
+            </nav>
+          </li><!-- nav-item -->
+          <li class="nav-item">
+            <a href="" class="nav-link with-sub"><i class="fa fa-medkit" aria-hidden="true"></i>Medicines</a>
+            <nav class="nav-sub">
+              <a href="all-medicines.html" class="nav-sub-link">All Medicine</a>
+              <a href="pending-medicines.html" class="nav-sub-link">Pending Medicines</a>
+              <a href="add-new-medicines.html" class="nav-sub-link">Add New</a>
+            </nav>
+          </li><!-- nav-item -->
+          <li class="nav-item">
+            <a href="" class="nav-link with-sub"><i class="fa fa-users" aria-hidden="true"></i>Patients</a>
+            <nav class="nav-sub">
+              <a href="chart-morris.html" class="nav-sub-link">All Patients</a>
+              <a href="add-users.html" class="nav-sub-link">Pending Patients</a>
+              <a href="chart-flot.html" class="nav-sub-link">Add New</a>
+            </nav>
+          </li><!-- nav-item -->
+          <li class="nav-item">
+            <a href="" style="position: relative;" class="nav-link"><i class="fa fa-cog" aria-hidden="true"></i>Settings</a>
+    
+          </li><!-- nav-item -->
+        </ul><!-- nav -->
+      </div><!-- az-sidebar-body -->
+    </div><!-- az-sidebar -->
+    <div class="az-content az-content-dashboard-nine">
+      <div class="az-header az-header-dashboard-nine">
+        <div class="container-fluid">
+          <div class="az-header-left">
+            <a href="" id="azSidebarToggle" class="az-header-menu-icon"><span></span></a>
+          </div><!-- az-header-left -->
+          <div class="az-header-center">
+            <input type="search" class="form-control" placeholder="Search for anything...">
+            <button class="btn"><i class="fas fa-search"></i></button>
+          </div><!-- az-header-center -->
+          <div class="az-header-right">
+            <div class="az-header-message">
+              <a href="app-chat.html"><i class="typcn typcn-messages"></i></a>
+            </div><!-- az-header-message -->
+            <div class="dropdown az-header-notification">
+              <a href="" class="new"><i class="typcn typcn-bell"></i></a>
+              <div class="dropdown-menu">
+                <div class="az-dropdown-header mg-b-20 d-sm-none">
+                  <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
+                </div>
+                <h6 class="az-notification-title">Notifications</h6>
+                <p class="az-notification-text">You have 2 unread notification</p>
+                <div class="az-notification-list">
+                  <div class="media new">
+                    <div class="az-img-user"><img src="https://via.placeholder.com/500x500" alt=""></div>
+                    <div class="media-body">
+                      <p>Congratulate <strong>Socrates Itumay</strong> for work anniversaries</p>
+                      <span>Mar 15 12:32pm</span>
+                    </div><!-- media-body -->
+                  </div><!-- media -->
+                  <div class="media new">
+                    <div class="az-img-user online"><img src="https://via.placeholder.com/500x500" alt=""></div>
+                    <div class="media-body">
+                      <p><strong>Joyce Chua</strong> just created a new blog post</p>
+                      <span>Mar 13 04:16am</span>
+                    </div><!-- media-body -->
+                  </div><!-- media -->
+                  <div class="media">
+                    <div class="az-img-user"><img src="https://via.placeholder.com/500x500" alt=""></div>
+                    <div class="media-body">
+                      <p><strong>Althea Cabardo</strong> just created a new blog post</p>
+                      <span>Mar 13 02:56am</span>
+                    </div><!-- media-body -->
+                  </div><!-- media -->
+                  <div class="media">
+                    <div class="az-img-user"><img src="https://via.placeholder.com/500x500" alt=""></div>
+                    <div class="media-body">
+                      <p><strong>Adrian Monino</strong> added new comment on your photo</p>
+                      <span>Mar 12 10:40pm</span>
+                    </div><!-- media-body -->
+                  </div><!-- media -->
+                </div><!-- az-notification-list -->
+                <div class="dropdown-footer"><a href="">View All Notifications</a></div>
+              </div><!-- dropdown-menu -->
+            </div><!-- az-header-notification -->
+            <div class="dropdown az-profile-menu">
+              <a href="" class="az-img-user"><img src="https://via.placeholder.com/500x500" alt=""></a>
+              <div class="dropdown-menu">
+                <div class="az-dropdown-header d-sm-none">
+                  <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
+                </div>
+                <div class="az-header-profile">
+                  <div class="az-img-user">
+                    <img src="https://via.placeholder.com/500x500" alt="">
+                  </div><!-- az-img-user -->
+                  <h6>Aziana Pechon</h6>
+                  <span>Premium Member</span>
+                </div><!-- az-header-profile -->
+
+                <a href="" class="dropdown-item"><i class="typcn typcn-user-outline"></i> My Profile</a>
+                <a href="" class="dropdown-item"><i class="typcn typcn-edit"></i> Edit Profile</a>
+                <a href="" class="dropdown-item"><i class="typcn typcn-time"></i> Activity Logs</a>
+                <a href="" class="dropdown-item"><i class="typcn typcn-cog-outline"></i> Account Settings</a>
+                <a href="page-signin.html" class="dropdown-item"><i class="typcn typcn-power-outline"></i> Sign Out</a>
+              </div><!-- dropdown-menu -->
+            </div>
+          </div><!-- az-header-right -->
+        </div><!-- container -->
+      </div><!-- az-header -->
+      <div class="az-content-header">
+        <div class="az-content-header-top">
+          <div>
+            <h2 class="az-content-title mg-b-5 mg-b-lg-8">Hi, welcome back!</h2>
+            
+          </div>     <div class="az-dashboard-date">
+            <div class="date">
+              <div>400</div>
+              <div>
+                <span>$</span>
+                <span>Credit</span>
+              </div>
+  
+            </div><!-- az-dashboard-date -->
+          </div><!-- az-dashboard-date --> 
+          <div class="az-dashboard-date">
+            <div class="date">
+              <div>12</div>
+              <div>
+                <span>MAY 2019</span>
+                <span>Sunday</span>
+              </div>
+  
+            </div><!-- az-dashboard-date -->
+          </div><!-- az-dashboard-date -->
+        </div><!-- az-content-body-title -->
+       
+      </div><!-- az-content-header -->
+  <div class="az-content">
+      <div class="container">
+        <div class="az-content-body">
+          <div class="az-content-breadcrumb">
+            <span>SYMPTOMS</span>
+            <span>ADD SYMPTOMS</span>
+          </div>
+         <br/>
+
+          <div class="az-content-label mg-b-5">ADD SYMPTOMS</div>
+            <br/>
+          <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Symptom Short Name">
+            </div><!-- form-group -->  <div class="form-group">
+              <input type="text" class="form-control" placeholder="Chapter">
+            </div><!-- form-group -->  <div class="form-group">
+              <input type="text" class="form-control" placeholder="Sub Chapter">
+            </div><!-- form-group -->
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Short Form">
+            </div><!-- form-group -->
+            
+             
+            <div class="form-group" id="add1">
+             <input type="text" class="medi form-control" placeholder="Related Medicine"><input type="text" class="grade form-control" placeholder="Grade"><div style="clear:both"></div>
+            </div><!-- form-group --><button id="btn1" class="btn btn-success btn-icon"><i class="typcn typcn-document-add"></i></button><br/>
+            <button class="btn btn-az-primary pd-x-20">Add New</button>
+          </div>
+
+      
+          <div class="mg-lg-b-30"></div>
+
+        </div><!-- az-content-body -->
+      </div>
+    </div><!-- az-content -->
+
+    <div class="az-footer">
+      <div class="container">
+        <span>&copy; 2018 Azia Responsive Bootstrap 4 Dashboard Template</span>
+        <span>Designed by: ThemePixels</span>
+      </div><!-- container -->
+    </div><!-- az-footer -->
+
+    <script src="../lib/jquery/jquery.min.js"></script>
+    <script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../lib/ionicons/ionicons.js"></script>
+    <script src="../lib/select2/js/select2.min.js"></script>
+
+
+<script>
+var i = 1;
+$("#btn1").click(function() {
+  $("<div />", { "class":"add13", id:"input"+i })
+     .append($("<input />", { type: "text", placeholder: "Related Medicine", class:"medi form-control", id:"name"+i }))
+     .append($("<input />", { type: "text", placeholder: "Grade", class:"grade form-control", id:"property"+i }))
+     .appendTo("#add1");
+  i++;
+});
+
+</script>
+    <script src="../js/azia.js"></script>
+    <script>
+      $(function(){
+        'use strict'
+
+
+        $('.az-form-group .form-control').on('focusin focusout', function(){
+          $(this).parent().toggleClass('focus');
+        });
+
+        $(document).ready(function(){
+          $('.select2').select2({
+            placeholder: 'Choose one'
+          });
+
+          $('.select2-no-search').select2({
+            minimumResultsForSearch: Infinity,
+            placeholder: 'Choose one'
+          });
+        });
+
+      });
+    </script>
+ <script>
+      $(function(){
+        'use strict'
+
+        $('.az-sidebar .with-sub').on('click', function(e){
+          e.preventDefault();
+          $(this).parent().toggleClass('show');
+          $(this).parent().siblings().removeClass('show');
+        })
+
+        $(document).on('click touchstart', function(e){
+          e.stopPropagation();
+
+          // closing of sidebar menu when clicking outside of it
+          if(!$(e.target).closest('.az-header-menu-icon').length) {
+            var sidebarTarg = $(e.target).closest('.az-sidebar').length;
+            if(!sidebarTarg) {
+              $('body').removeClass('az-sidebar-show');
+            }
+          }
+        });
+
+
+        $('#azSidebarToggle').on('click', function(e){
+          e.preventDefault();
+
+          if(window.matchMedia('(min-width: 992px)').matches) {
+            $('body').toggleClass('az-sidebar-hide');
+          } else {
+            $('body').toggleClass('az-sidebar-show');
+          }
+        });
+
+        new PerfectScrollbar('.az-sidebar-body', {
+          suppressScrollX: true
+        });
+
+        /* ----------------------------------- */
+        /* Dashboard content */
+
+
+        $.plot('#flotChart1', [{
+            data: dashData1,
+            color: '#6f42c1'
+          }], {
+          series: {
+            shadowSize: 0,
+            lines: {
+              show: true,
+              lineWidth: 2,
+              fill: true,
+              fillColor: { colors: [ { opacity: 0 }, { opacity: 1 } ] }
+            }
+          },
+          grid: {
+            borderWidth: 0,
+            labelMargin: 0
+          },
+          yaxis: {
+            show: false,
+            min: 0,
+            max: 100
+          },
+          xaxis: { show: false }
+        });
+
+        $.plot('#flotChart2', [{
+            data: dashData2,
+            color: '#007bff'
+          }], {
+          series: {
+            shadowSize: 0,
+            lines: {
+              show: true,
+              lineWidth: 2,
+              fill: true,
+              fillColor: { colors: [ { opacity: 0 }, { opacity: 1 } ] }
+            }
+          },
+          grid: {
+            borderWidth: 0,
+            labelMargin: 0
+          },
+          yaxis: {
+            show: false,
+            min: 0,
+            max: 100
+          },
+          xaxis: { show: false }
+        });
+
+        $.plot('#flotChart3', [{
+            data: dashData3,
+            color: '#f10075'
+          }], {
+          series: {
+            shadowSize: 0,
+            lines: {
+              show: true,
+              lineWidth: 2,
+              fill: true,
+              fillColor: { colors: [ { opacity: 0 }, { opacity: 1 } ] }
+            }
+          },
+          grid: {
+            borderWidth: 0,
+            labelMargin: 0
+          },
+          yaxis: {
+            show: false,
+            min: 0,
+            max: 100
+          },
+          xaxis: { show: false }
+        });
+
+        $.plot('#flotChart4', [{
+            data: dashData4,
+            color: '#00cccc'
+          }], {
+          series: {
+            shadowSize: 0,
+            lines: {
+              show: true,
+              lineWidth: 2,
+              fill: true,
+              fillColor: { colors: [ { opacity: 0 }, { opacity: 1 } ] }
+            }
+          },
+          grid: {
+            borderWidth: 0,
+            labelMargin: 0
+          },
+          yaxis: {
+            show: false,
+            min: 0,
+            max: 100
+          },
+          xaxis: { show: false }
+        });
+
+        $.plot('#flotChart5', [{
+            data: dashData2,
+            color: '#00cccc'
+          },{
+            data: dashData3,
+            color: '#007bff'
+          },{
+            data: dashData4,
+            color: '#f10075'
+          }], {
+          series: {
+            shadowSize: 0,
+            lines: {
+              show: true,
+              lineWidth: 2,
+              fill: false,
+              fillColor: { colors: [ { opacity: 0 }, { opacity: 1 } ] }
+            }
+          },
+          grid: {
+            borderWidth: 0,
+            labelMargin: 20
+          },
+          yaxis: {
+            show: false,
+            min: 0,
+            max: 100
+          },
+          xaxis: {
+            show: true,
+            color: 'rgba(0,0,0,.16)',
+            ticks: [
+              [0, ''],
+              [10, '<span>Nov</span><span>05</span>'],
+              [20, '<span>Nov</span><span>10</span>'],
+              [30, '<span>Nov</span><span>15</span>'],
+              [40, '<span>Nov</span><span>18</span>'],
+              [50, '<span>Nov</span><span>22</span>'],
+              [60, '<span>Nov</span><span>26</span>'],
+              [70, '<span>Nov</span><span>30</span>'],
+            ]
+          }
+        });
+
+        $.plot('#flotChart6', [{
+            data: dashData2,
+            color: '#6f42c1'
+          },{
+            data: dashData3,
+            color: '#007bff'
+          },{
+            data: dashData4,
+            color: '#00cccc'
+          }], {
+          series: {
+            shadowSize: 0,
+            stack: true,
+            bars: {
+              show: true,
+              lineWidth: 0,
+              fill: 0.85
+              //fillColor: { colors: [ { opacity: 0 }, { opacity: 1 } ] }
+            }
+          },
+          grid: {
+            borderWidth: 0,
+            labelMargin: 20
+          },
+          yaxis: {
+            show: false,
+            min: 0,
+            max: 100
+          },
+          xaxis: {
+            show: true,
+            color: 'rgba(0,0,0,.16)',
+            ticks: [
+              [0, ''],
+              [10, '<span>Nov</span><span>05</span>'],
+              [20, '<span>Nov</span><span>10</span>'],
+              [30, '<span>Nov</span><span>15</span>'],
+              [40, '<span>Nov</span><span>18</span>'],
+              [50, '<span>Nov</span><span>22</span>'],
+              [60, '<span>Nov</span><span>26</span>'],
+              [70, '<span>Nov</span><span>30</span>'],
+            ]
+          }
+        });
+
+        $('#vmap').vectorMap({
+          map: 'world_en',
+          showTooltip: true,
+          backgroundColor: '#f8f9fa',
+          color: '#ced4da',
+          colors: {
+            us: '#6610f2',
+            gb: '#8b4bf3',
+            ru: '#aa7df3',
+            cn: '#c8aef4',
+            au: '#dfd3f2'
+          },
+          hoverColor: '#222',
+          enableZoom: false,
+          borderOpacity: .3,
+          borderWidth: 3,
+          borderColor: '#fff',
+          hoverOpacity: .85
+        });
+
+      });
+    </script>
+  </body>
+</html>
+
