@@ -12,3 +12,5 @@ at first making login page and redirecting to dashboard
 i have edited login page
 
 working on login page
+
+login page is done, now working on registration and forget password page
