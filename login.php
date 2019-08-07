@@ -5,7 +5,7 @@ session_start();
 if(isset($_SESSION["username"])){
   header("Location: dashboard/index.php");
   }
-$error = "Please sign in to continue";
+$error = "";
 if (isset($_POST['login_user'])) {
   require('db.php');
   if (isset($_POST['username'])){
@@ -34,8 +34,8 @@ and password='".md5($password)."'";
         <h1 class="az-logo">Homeo<span>B</span>D</h1>
         <div class="az-signin-header">
           <h2>Welcome back!</h2>
-          <h4><?php echo $error;?></h4>
-
+          <h4>Please sign in to continue</h4>
+          <h4 style="color:red;"><?php echo $error;?></h4>
           <form method="post" action="">
             <div class="form-group">
               <label>Email</label>
@@ -50,7 +50,7 @@ and password='".md5($password)."'";
         </div><!-- az-signin-header -->
         <div class="az-signin-footer">
           <p><a href="">Forgot password?</a></p>
-          <p>Don't have an account? <a href="page-signup.html">Create an Account</a></p>
+          <p>Don't have an account? <a href="signup.php">Create an Account</a></p>
         </div><!-- az-signin-footer -->
       </div><!-- az-card-signin -->
     </div><!-- az-signin-wrapper -->
