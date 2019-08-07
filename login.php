@@ -1,10 +1,13 @@
 <?php include("header.php");?>
 
-<?php 
+<?php
+session_start();
+if(isset($_SESSION["username"])){
+  header("Location: dashboard/index.php");
+  }
 $error = "Please sign in to continue";
 if (isset($_POST['login_user'])) {
   require('db.php');
-  session_start();
   if (isset($_POST['username'])){
     $username = stripslashes($_REQUEST['username']);
 	  $username = mysqli_real_escape_string($con,$username);
