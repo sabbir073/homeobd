@@ -1,1 +1,3 @@
-<?php header("Location: login.php"); ?>
+<?php
+include("auth.php");
+?>
