@@ -28,7 +28,7 @@ if (isset($_POST['register'])){
             $return = mysqli_query($con,$emailquery);
             $return = mysqli_fetch_assoc($return);
             if($return){
-              $error = "Email already Exist! <a href=''>Forgot password?</a>";
+              $error = "Email already Exist! <a href='forgetpass.php'>Forgot password?</a>";
               mysqli_close($con);
             }
             else{

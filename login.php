@@ -13,7 +13,7 @@ if (isset($_POST['login_user'])) {
 	  $username = mysqli_real_escape_string($con,$username);
 	  $password = stripslashes($_REQUEST['password']);
 	  $password = mysqli_real_escape_string($con,$password);
-    $query = "SELECT * FROM `users` WHERE username='$username'
+    $query = "SELECT * FROM `users` WHERE email='$username'
 and password='".md5($password)."'";
     $result = mysqli_query($con,$query) or die(mysql_error());
     $rows = mysqli_num_rows($result);
@@ -49,7 +49,7 @@ and password='".md5($password)."'";
           </form>
         </div><!-- az-signin-header -->
         <div class="az-signin-footer">
-          <p><a href="">Forgot password?</a></p>
+          <p><a href="forgetpass.php">Forgot password?</a></p>
           <p>Don't have an account? <a href="signup.php">Create an Account</a></p>
         </div><!-- az-signin-footer -->
       </div><!-- az-card-signin -->
