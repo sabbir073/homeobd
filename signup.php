@@ -3,24 +3,52 @@
 require('db.php');
 $error = "";
 if (isset($_POST['register'])){
-    
-    if (isset($_POST['username'])){
+        $userval = "";
+        $emailval = "";
         $username = stripslashes($_REQUEST['username']);
-	    $username = mysqli_real_escape_string($con,$username); 
-	    $email = stripslashes($_REQUEST['email']);
-	    $email = mysqli_real_escape_string($con,$email);
-	    $password = stripslashes($_REQUEST['password']);
+	      $username = mysqli_real_escape_string($con,$username); 
+	      $email = stripslashes($_REQUEST['email']);
+	      $email = mysqli_real_escape_string($con,$email);
+	      $password = stripslashes($_REQUEST['password']);
         $password = mysqli_real_escape_string($con,$password);
-        $query = "INSERT into `users` (username, email, password)
-VALUES ('$username', '$email', '".md5($password)."')";
-        $result = mysqli_query($con,$query);
-        if($result){
-            $error = "Registered successfully! please <a href='login.php'>Login from here</a>";
+        $passconfirm = stripslashes($_REQUEST['confirmpassword']);
+        $passconfirm = mysqli_real_escape_string($con,$passconfirm);
+
+        if(empty($username) || empty($email) || empty($password)){
+          $error = "Please fill all field";
         }
         else{
-            $error = "something is wrong!";
+          if($password !== $passconfirm){
+            $error = "password did not match! Type again";
+            $userval = $_POST['username'];
+            $emailval = $_POST['email'];
+          }
+          else{
+            $emailquery = "SELECT * FROM users WHERE email='$email' LIMIT 1 ";
+            $return = mysqli_query($con,$emailquery);
+            $return = mysqli_fetch_assoc($return);
+            if($return){
+              $error = "Email already Exist! <a href=''>Forgot password?</a>";
+              mysqli_close($con);
+            }
+            else{
+              $query = "INSERT into `users` (username, email, password)
+            VALUES ('$username', '$email', '".md5($password)."')";
+                    $result = mysqli_query($con,$query);
+                    if($result){
+                        $error = "Registered successfully! please <a href='login.php'>Login from here</a>";
+                    }
+                    else{
+                        $error = "something is wrong!";
+                    }
+            }
+            
+
+          }
+         
         }
-    }
+        
+    
 }
 
 ?>
@@ -48,15 +76,19 @@ VALUES ('$username', '$email', '".md5($password)."')";
           <form method="post" action="signup.php">
             <div class="form-group">
               <label>Your Name</label>
-              <input name="username" type="text" class="form-control" placeholder="Enter your firstname and lastname">
+              <input name="username" type="text" value="<?php echo $userval; ?>" class="form-control" placeholder="Enter your firstname and lastname">
             </div><!-- form-group -->
             <div class="form-group">
               <label>Email</label>
-              <input name="email" type="text" class="form-control" placeholder="Enter your email">
+              <input name="email" type="email" value="<?php echo $emailval; ?>" class="form-control" placeholder="Enter your email">
             </div><!-- form-group -->
             <div class="form-group">
               <label>Password</label>
               <input name="password" type="password" class="form-control" placeholder="Enter your password">
+            </div><!-- form-group -->
+            <div class="form-group">
+              <label>Confirm Password</label>
+              <input name="confirmpassword" type="password" class="form-control" placeholder="Enter your password again">
             </div><!-- form-group -->
             <button name="register" class="btn btn-az-primary btn-block">Create Account</button>
             <div class="row row-xs">
