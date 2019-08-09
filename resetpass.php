@@ -1,7 +1,7 @@
 <?php include("header.php");?>
 <?php
 session_start();
-$token = $_SESSION['token'];
+$token = $_GET['token'];
 if($token == ""){
     header("Location: login.php");
     exit;
@@ -33,12 +33,11 @@ if (isset($_POST['resetpass'])) {
             $error = "Password did not match! Try again.";
         }
         else{
-            $query = "SELECT * FROM `users` WHERE token='$token'";
+            $query = "SELECT * from 'users' WHERE token = '$token'";
             $result = mysqli_query($con,$query);
-            $result = mysqli_fetch_assoc($return);
+            $result = mysqli_num_rows($return);
             if($result){
-                $query2 = "INSERT into `users` (password, token)
-                VALUES ('$password', '')";
+                $query2 = "UPDATE 'users' SET 'password' = '$password', token = ''";
                 $result2 = mysqli_query($con,$query2);
                 if($result2){
                     $error = "Paword Reset Successful!";
@@ -48,7 +47,7 @@ if (isset($_POST['resetpass'])) {
                 }
             }
             else{
-                $error = "Token is invalid!";
+                $error = $result;//mysqli_error($con);//"Token is invalid!";
             }
         }
     }
@@ -66,11 +65,11 @@ if (isset($_POST['resetpass'])) {
           <form method="post" action="">
             <div class="form-group">
               <label>New password</label>
-              <input name="password" type="password" class="form-control" placeholder="Enter your email">
+              <input name="password" type="password" class="form-control" placeholder="Enter news password">
             </div><!-- form-group -->
             <div class="form-group">
               <label>Confirm password</label>
-              <input name="conpassword" type="password" class="form-control" placeholder="Enter your email">
+              <input name="conpassword" type="password" class="form-control" placeholder="Confirm new password">
             </div><!-- form-group -->
             <button type="submit" name="resetpass" class="btn btn-az-primary btn-block">Create</button>
           </form>

@@ -18,14 +18,25 @@ if (isset($_POST['forgetpass'])) {
       else{
         $emailquery = "SELECT * FROM users WHERE email='$email' LIMIT 1 ";
         $return = mysqli_query($con,$emailquery);
-        $return = mysqli_fetch_assoc($return);
-        if($return){
-            $token = bin2hex(openssl_random_pseudo_bytes(50));
-            $sqlquery = "INSERT into 'users'(token) VALUES ($token)";
+        $return = mysqli_num_rows($return);
+        echo $return;
+        if($return == 1){
+            $token = strval(bin2hex(openssl_random_pseudo_bytes(30)));
+            $sqlquery = "UPDATE users SET token = '$token'";
             $results = mysqli_query($con, $sqlquery);
-
-            
-            $sucess = "Emailed! Please check your email to reset password!";
+            if ($results){
+              $to = $email;
+              $subject = "Homeobd pasword reset request!";
+              $msg = "Hi there, click on this <a href=\"resetpass.php?token=" . $token . "\">link</a> to reset your password";
+              $msg = wordwrap($msg,70);
+              $headers = "From: info@homeobd.com";
+              mail($to, $subject, $msg, $headers);
+              $sucess = "Emailed! Please check your email to reset password!";
+            }
+            else{
+              echo "ERROR: Could not able to execute $sqlquery. " . mysqli_error($con);
+            }
+          
         }
         else{
             $error = "Email does not exist!";
