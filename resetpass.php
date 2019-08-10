@@ -14,6 +14,7 @@ else{
 ?>
 <?php
 $error = "";
+$sucess = "";
 if (isset($_POST['resetpass'])) {
     require('db.php');
 
@@ -33,21 +34,22 @@ if (isset($_POST['resetpass'])) {
             $error = "Password did not match! Try again.";
         }
         else{
-            $query = "SELECT * from 'users' WHERE token = '$token'";
+            $query = "SELECT * FROM users WHERE token = '$token' LIMIT 1";
             $result = mysqli_query($con,$query);
-            $result = mysqli_num_rows($return);
+            $result = mysqli_num_rows($result);
             if($result){
-                $query2 = "UPDATE 'users' SET 'password' = '$password', token = ''";
+                $query2 = "UPDATE users SET password = '".md5($password)."', token = '' LIMIT 1";
                 $result2 = mysqli_query($con,$query2);
+                
                 if($result2){
-                    $error = "Paword Reset Successful!";
+                    $sucess = "Password Reset Successfully! <a href='login.php'>Please Login</a>";
                 }
                 else{
                     $error = "Something went wrong!";
                 }
             }
             else{
-                $error = $result;//mysqli_error($con);//"Token is invalid!";
+                $error = "Token is invalid!";
             }
         }
     }
@@ -62,6 +64,7 @@ if (isset($_POST['resetpass'])) {
           <h2>Create New password!</h2>
           
           <h4 style="color:red;"><?php echo $error;?></h4>
+          <h4 style="color:green;"><?php echo $sucess;?></h4>
           <form method="post" action="">
             <div class="form-group">
               <label>New password</label>
