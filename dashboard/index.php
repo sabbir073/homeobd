@@ -3,17 +3,37 @@ include("auth.php");
 include("header.php");
 ?>
 
+
 <body class="az-body az-body-sidebar az-body-dashboard-nine">
 
     <div class="az-sidebar az-sidebar-sticky az-sidebar-indigo-dark">
+    <?php 
+    //dashboard functions
+    include("db.php");
+    $name = $_SESSION['name'];
+    $query = "SELECT * FROM users WHERE 'name' = '$name' LIMIT 1";
+    $result = mysqli_query($con,$query);
+    $data = mysqli_fetch_assoc($result);
+    $rows = mysqli_num_rows($result);
+    if ($rows == 1){
+        $credit = $data['credit'];
+        $email = $data['email'];
+        $role = $data['role'];
+        $pending = $data['pending'];
+        mysqli_close($con);
+    }
+    else {
+        echo mysqli_error($con);
+    }
+?>
       <div class="az-sidebar-header">
-        <a href="index.html" class="az-logo">h<span>o</span>me<span>o</span>bd</a>
+        <a href="index.php" class="az-logo">h<span>o</span>me<span>o</span>bd</a>
       </div><!-- az-sidebar-header -->
       <div class="az-sidebar-loggedin">
-        <div class="az-img-user online"><img src="https://via.placeholder.com/500x500" alt=""></div>
+        <div class="az-img-user online"><img src="./images/user.png" alt="User"></div>
         <div class="media-body">
-          <h6>Md Sabbir Ahmed</h6>
-          <span>Doctor</span>
+          <h6><?php echo $name;?></h6>
+          <span><?php echo $role;?></span>
         </div><!-- media-body -->
       </div><!-- az-sidebar-loggedin -->
       <div class="az-sidebar-body">
@@ -146,12 +166,12 @@ include("header.php");
       <div class="az-content-header">
         <div class="az-content-header-top">
           <div>
-            <h2 class="az-content-title mg-b-5 mg-b-lg-8">Hi <?php echo $_SESSION['username']; ?>, welcome back!</h2>
+            <h2 class="az-content-title mg-b-5 mg-b-lg-8">Hi <?php echo $_SESSION['name'];?>, welcome back!</h2>
           </div>     <div class="az-dashboard-date">
             <div class="date">
-              <div>400</div>
+              <div><?php echo $credit;?></div>
               <div>
-                <span>$</span>
+                
                 <span>Credit</span>
               </div>
   
@@ -159,10 +179,10 @@ include("header.php");
           </div><!-- az-dashboard-date --> 
           <div class="az-dashboard-date">
             <div class="date">
-              <div>12</div>
+              <div><?php echo date('d');?></div>
               <div>
-                <span>MAY 2019</span>
-                <span>Sunday</span>
+                <span><?php echo date('M Y');?></span>
+                <span><?php echo date('l');?></span>
               </div>
             </div><!-- az-dashboard-date -->
            

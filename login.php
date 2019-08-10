@@ -16,9 +16,11 @@ if (isset($_POST['login_user'])) {
     $query = "SELECT * FROM `users` WHERE email='$username'
 and password='".md5($password)."'";
     $result = mysqli_query($con,$query) or die(mysql_error());
+    $session = mysqli_fetch_assoc($result);
     $rows = mysqli_num_rows($result);
       if($rows==1){
     $_SESSION['username'] = $username;
+    $_SESSION['name'] = $session['username'];
     header("Location: dashboard/index.php");
       }
      else{

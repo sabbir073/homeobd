@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 10, 2019 at 09:44 AM
+-- Generation Time: Aug 10, 2019 at 04:05 PM
 -- Server version: 5.6.25
--- PHP Version: 5.6.11
+-- PHP Version: 5.3.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -31,15 +31,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `token` varchar(255) DEFAULT NULL
+  `token` varchar(255) DEFAULT NULL,
+  `role` varchar(255) NOT NULL DEFAULT 'doctor',
+  `credit` int(255) NOT NULL DEFAULT '20',
+  `pending` varchar(255) NOT NULL DEFAULT 'false'
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `token`) VALUES
-(1, 'Md Sabbir Ahmed', 'md.sabbir073@gmail.com', 'a1083f1528d8b91288ace29d4a250649', '');
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `token`, `role`, `credit`, `pending`) VALUES
+(1, 'Md Sabbir Ahmed', 'md.sabbir073@gmail.com', '67e4a0b2338a76fbb5bf7b85fced2e72', '', 'admin', 20, 'true');
 
 --
 -- Indexes for dumped tables
