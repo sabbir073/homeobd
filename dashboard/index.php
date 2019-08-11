@@ -1,31 +1,12 @@
 <?php
 include("auth.php");
 include("header.php");
+include("functions.php");
 ?>
 
 
 <body class="az-body az-body-sidebar az-body-dashboard-nine">
-
     <div class="az-sidebar az-sidebar-sticky az-sidebar-indigo-dark">
-    <?php 
-    //dashboard functions
-    include("db.php");
-    $name = $_SESSION['name'];
-    $query = "SELECT * FROM users WHERE 'name' = '$name' LIMIT 1";
-    $result = mysqli_query($con,$query);
-    $data = mysqli_fetch_assoc($result);
-    $rows = mysqli_num_rows($result);
-    if ($rows == 1){
-        $credit = $data['credit'];
-        $email = $data['email'];
-        $role = $data['role'];
-        $pending = $data['pending'];
-        mysqli_close($con);
-    }
-    else {
-        echo mysqli_error($con);
-    }
-?>
       <div class="az-sidebar-header">
         <a href="index.php" class="az-logo">h<span>o</span>me<span>o</span>bd</a>
       </div><!-- az-sidebar-header -->
@@ -140,17 +121,17 @@ include("header.php");
               </div><!-- dropdown-menu -->
             </div><!-- az-header-notification -->
             <div class="dropdown az-profile-menu">
-              <a href="" class="az-img-user"><img src="https://via.placeholder.com/500x500" alt=""></a>
+              <a href="" class="az-img-user"><img src="./images/user.png" alt=""></a>
               <div class="dropdown-menu">
                 <div class="az-dropdown-header d-sm-none">
                   <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
                 </div>
                 <div class="az-header-profile">
                   <div class="az-img-user">
-                    <img src="https://via.placeholder.com/500x500" alt="">
+                    <img src="./images/user.png" alt="">
                   </div><!-- az-img-user -->
-                  <h6>Aziana Pechon</h6>
-                  <span>Premium Member</span>
+                  <h6><?php echo $name;?></h6>
+                  <span><?php echo $role;?></span>
                 </div><!-- az-header-profile -->
 
                 <a href="" class="dropdown-item"><i class="typcn typcn-user-outline"></i> My Profile</a>
