@@ -46,8 +46,9 @@ $medrow = mysqli_fetch_assoc($result5);
 function showmedicine($con){
     $query6 = "SELECT * FROM medicines ORDER BY id ASC limit 10";
     $result6 = mysqli_query($con,$query6);
+    $i = 1;
     while($medrow = mysqli_fetch_assoc($result6)){
-    
+
         echo '<tr> 
                   <td>'.$medrow["id"].'</td> 
                   <td>'.$medrow["name"].'</td> 
@@ -57,17 +58,67 @@ function showmedicine($con){
                   <td>'.$medrow["source"].'</td>
                   <td>'.$medrow["prover"].'</td>
                   <td>'.$medrow["type"].'</td>
+                  <td>'.$medrow["addedby"].'</td>
                   <td>
                     <center>
                         <div class="btn-icon-list">
-                            <button class="btn btn-info btn-icon"><i class="la la-edit"></i></button>
+                        <a href="" data-toggle="modal" data-target="#modaldemo1'.$i.'"><button class="btn btn-info btn-icon"><i class="la la-edit"></i></button></a>
+                            
                             <button class="btn btn-danger btn-icon"><i
                                     class="la la-times-circle"></i></button>
                         </div>
 
                     </center>
+                    <center>
+                    <div id="modaldemo1'.$i.'" class="modal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content modal-content-demo">
+                            <div class="modal-header">
+                                <h6 class="modal-title">Edit Medicine</h6>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                            <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+                            
+                                <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Name" value="'.$medrow["name"].'">
+                                </div><!-- form-group -->
+
+                                <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Medicine Short Form" value="'.$medrow["shortform"].'">
+                                </div><!-- form-group -->
+
+                                <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Chapter" value="'.$medrow["chapter"].'">
+                                </div><!-- form-group -->
+
+                                <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Sub Chapter" value="'.$medrow["subchapter"].'">
+                                </div><!-- form-group -->
+
+                                <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Source" value="'.$medrow["source"].'">
+                                </div><!-- form-group -->
+
+                                <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Prover" value="'.$medrow["prover"].'">
+                                </div><!-- form-group --> 
+
+                                <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Type" value="'.$medrow["type"].'">
+                                </div><!-- form-group -->
+                            
+                                <button class="btn btn-az-primary pd-x-20">Update</button>
+                            </div>
+                            </div>
+                            </div>
+                        </div><!-- modal-dialog -->
+                        </div><!-- modal -->
+                    </center>
                 </td>
               </tr>';
-
+        $i++;
     }
 }

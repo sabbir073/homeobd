@@ -24,7 +24,7 @@
     <meta name="description" content="Homeopathic Software Solutions">
     <meta name="author" content="Amicritas">
 
-    <title>Amicritas - Software Demo</title>
+    <title>Homeobd-dashboard</title>
 
     <!-- vendor css -->
     <link href="../old/lib/line-awesome/css/line-awesome.min.css" rel="stylesheet">

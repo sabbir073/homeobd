@@ -98,6 +98,7 @@
         </div><!-- az-dashboard-date -->
         <div class="az-dashboard-date">
             <div class="date">
+            <?php date_default_timezone_set('Asia/Dhaka');?>
                 <div><?php echo date('d');?></div>
                 <div>
                     <span><?php echo date('M Y');?></span>

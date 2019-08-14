@@ -34,6 +34,7 @@ include("functions.php");
                                 <th class="wd-10p">Source</th>
                                 <th class="wd-10p">Prover</th>
                                 <th class="wd-10p">Type</th>
+                                <th class="wd-10p">Added by</th>
                                 <th class="wd-10p">Actions</th>
 
                             </tr>
@@ -43,8 +44,6 @@ include("functions.php");
 
                         </tbody>
                     </table>
-
-
                     <div class="mg-lg-b-30"></div>
 
                 </div><!-- az-content-body -->

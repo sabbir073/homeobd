@@ -13,7 +13,7 @@
         <ul class="nav">
             <li class="nav-label">Main Menu</li>
             <li class="nav-item active show">
-                <a href="dashboard.html" style="position: relative;" class="nav-link"><i
+                <a href="index.php" style="position: relative;" class="nav-link"><i
                         class="typcn typcn-clipboard"></i>Dashboard</a>
 
             </li><!-- nav-item -->
