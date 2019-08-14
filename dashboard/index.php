@@ -179,13 +179,13 @@ include("functions.php");
               <div class="media">
                 <div class="media-icon bg-purple"><i class="typcn typcn-chart-line-outline"></i></div>
                 <div class="media-body">
-                  <h6>320 <small class="up">-0.5%</small></h6>
-                  <span>Users</span>
+                  <h6><?php echo $total_users;?></h6>
+                  <span>Doctor</span>
                 </div>
               </div>
-              <div class="chart-wrapper">
+              <!--<div class="chart-wrapper">
                 <div id="flotChart1" class="flot-chart"></div>
-              </div><!-- chart-wrapper -->
+              </div> chart-wrapper -->
             </div><!-- card -->
           </div><!-- col -->
           <div class="col-sm-6 col-xl-3 mg-t-20 mg-sm-t-0">
@@ -193,13 +193,13 @@ include("functions.php");
               <div class="media">
                 <div class="media-icon bg-primary"><i class="typcn typcn-chart-line-outline"></i></div>
                 <div class="media-body">
-                  <h6>700 <small class="up">+0.1%</small></h6>
-                  <span>Patient</span>
+                  <h6><?php echo $total_patients;?></h6>
+                  <span>Patients</span>
                 </div>
               </div>
-              <div class="chart-wrapper">
+              <!--<div class="chart-wrapper">
                 <div id="flotChart2" class="flot-chart"></div>
-              </div><!-- chart-wrapper -->
+              </div> chart-wrapper -->
             </div><!-- card -->
           </div><!-- col-3 -->
           <div class="col-sm-6 col-xl-3 mg-t-20 mg-xl-t-0">
@@ -207,13 +207,13 @@ include("functions.php");
               <div class="media">
                 <div class="media-icon bg-pink"><i class="typcn typcn-chart-line-outline"></i></div>
                 <div class="media-body">
-                  <h6>680 </h6>
-                  <span>New Symtoms</span>
+                  <h6><?php echo $total_symptoms;?> </h6>
+                  <span>Symtoms added</span>
                 </div>
               </div>
-              <div class="chart-wrapper">
+              <!--<div class="chart-wrapper">
                 <div id="flotChart3" class="flot-chart"></div>
-              </div><!-- chart-wrapper -->
+              </div> chart-wrapper -->
             </div><!-- card -->
           </div><!-- col -->
           <div class="col-sm-6 col-xl-3 mg-t-20 mg-xl-t-0">
@@ -221,13 +221,13 @@ include("functions.php");
               <div class="media">
                 <div class="media-icon bg-teal"><i class="typcn typcn-chart-line-outline"></i></div>
                 <div class="media-body">
-                  <h6>50769 <small class="up">+0.8%</small></h6>
-                  <span>Medicines</span>
+                  <h6><?php echo $total_medicines;?> <!--<small class="up">+0.8%</small>--></h6>
+                  <span>Verified Medicines</span>
                 </div>
               </div>
-              <div class="chart-wrapper">
+              <!--<div class="chart-wrapper">
                 <div id="flotChart4" class="flot-chart"></div>
-              </div><!-- chart-wrapper -->
+              </div> chart-wrapper -->
             </div><!-- card -->
           </div><!-- col -->
           <div class="col-xl-9 mg-t-20">
