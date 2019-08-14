@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 14, 2019 at 02:13 PM
+-- Generation Time: Aug 14, 2019 at 07:09 PM
 -- Server version: 5.6.25
--- PHP Version: 5.3.29
+-- PHP Version: 5.6.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -34,17 +34,18 @@ CREATE TABLE IF NOT EXISTS `medicines` (
   `subchapter` varchar(255) NOT NULL,
   `source` varchar(255) NOT NULL,
   `prover` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL
+  `type` varchar(255) NOT NULL,
+  `addedby` varchar(255) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `medicines`
 --
 
-INSERT INTO `medicines` (`id`, `name`, `shortform`, `chapter`, `subchapter`, `source`, `prover`, `type`) VALUES
-(1, 'paracitamal', 'pcl', 'head', 'fever', 'Homeobd', 'Homeobd', 'Antibiotic'),
-(2, 'Napa', 'NP', 'head', 'fever', 'Homeobd', 'Homeobd', 'Antibiotic'),
-(3, 'Ace+', 'ace', 'head', 'fever', 'Homeobd', 'Homeobd', 'Antibiotic');
+INSERT INTO `medicines` (`id`, `name`, `shortform`, `chapter`, `subchapter`, `source`, `prover`, `type`, `addedby`) VALUES
+(1, 'paracitamal', 'pcl', 'head', 'fever', 'Homeobd', 'Homeobd', 'Antibiotic', 'Md Sabbir Ahmed'),
+(2, 'Napa', 'NP', 'head', 'fever', 'Homeobd', 'Homeobd', 'Antibiotic', 'Raisa Islam Noushin'),
+(3, 'Ace+', 'ace', 'head', 'fever', 'Homeobd', 'Homeobd', 'Antibiotic', 'Shabekunnaher Masuma');
 
 -- --------------------------------------------------------
 
