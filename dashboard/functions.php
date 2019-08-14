@@ -44,10 +44,9 @@ $medrow = mysqli_fetch_assoc($result5);
 
 //showing all medicine to table
 function showmedicine($con){
-    $query6 = "SELECT * FROM medicines ORDER BY id ASC limit 1";
+    $query6 = "SELECT * FROM medicines ORDER BY id ASC limit 10";
     $result6 = mysqli_query($con,$query6);
-    $medrow = mysqli_fetch_assoc($result6);
-    while($medrow){
+    while($medrow = mysqli_fetch_assoc($result6)){
     
         echo '<tr> 
                   <td>'.$medrow["id"].'</td> 
