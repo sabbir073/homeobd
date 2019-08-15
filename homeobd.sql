@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 14, 2019 at 07:09 PM
+-- Generation Time: Aug 15, 2019 at 03:01 PM
 -- Server version: 5.6.25
--- PHP Version: 5.6.11
+-- PHP Version: 5.3.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -36,16 +36,16 @@ CREATE TABLE IF NOT EXISTS `medicines` (
   `prover` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
   `addedby` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `medicines`
 --
 
 INSERT INTO `medicines` (`id`, `name`, `shortform`, `chapter`, `subchapter`, `source`, `prover`, `type`, `addedby`) VALUES
-(1, 'paracitamal', 'pcl', 'head', 'fever', 'Homeobd', 'Homeobd', 'Antibiotic', 'Md Sabbir Ahmed'),
-(2, 'Napa', 'NP', 'head', 'fever', 'Homeobd', 'Homeobd', 'Antibiotic', 'Raisa Islam Noushin'),
-(3, 'Ace+', 'ace', 'head', 'fever', 'Homeobd', 'Homeobd', 'Antibiotic', 'Shabekunnaher Masuma');
+(4, 'Paracitamol', 'prc', 'head', 'fever', 'hmeobd', 'homeobd', 'antibiotic', 'Md Sabbir Ahmed'),
+(5, 'Napa', 'np', 'Head', 'fever', 'homeobd', 'homeobd', 'antibiotic', 'Md Sabbir Ahmed'),
+(7, 'Ace+', 'ace', 'head', 'fever', 'homeobd', 'homeobd', 'antibiotic', 'Md Sabbir Ahmed');
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `token`, `role`, `credit`, `pending`) VALUES
-(1, 'Md Sabbir Ahmed', 'md.sabbir073@gmail.com', '67e4a0b2338a76fbb5bf7b85fced2e72', '', 'admin', 20, 'true'),
+(1, 'Md Sabbir Ahmed', 'md.sabbir073@gmail.com', '67e4a0b2338a76fbb5bf7b85fced2e72', '', 'Admin', 20, 'true'),
 (2, 'Raisa Islam Noushin', 'md.sabbir073@outlook.com', 'a1083f1528d8b91288ace29d4a250649', NULL, 'doctor', 20, 'false'),
 (3, 'Shabekunnaher Masuma', 'md.sabbir073@hotmail.com', '5114b8021ea68f2df4e057cf57c052ac', NULL, 'doctor', 20, 'false');
 
@@ -157,7 +157,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `medicines`
 --
 ALTER TABLE `medicines`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `patient`
 --
