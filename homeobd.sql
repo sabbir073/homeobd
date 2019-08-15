@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 15, 2019 at 03:01 PM
+-- Generation Time: Aug 15, 2019 at 08:08 PM
 -- Server version: 5.6.25
--- PHP Version: 5.3.29
+-- PHP Version: 5.6.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -35,17 +35,19 @@ CREATE TABLE IF NOT EXISTS `medicines` (
   `source` varchar(255) NOT NULL,
   `prover` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
-  `addedby` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+  `addedby` varchar(255) NOT NULL,
+  `pending` varchar(255) NOT NULL DEFAULT 'Pending'
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `medicines`
 --
 
-INSERT INTO `medicines` (`id`, `name`, `shortform`, `chapter`, `subchapter`, `source`, `prover`, `type`, `addedby`) VALUES
-(4, 'Paracitamol', 'prc', 'head', 'fever', 'hmeobd', 'homeobd', 'antibiotic', 'Md Sabbir Ahmed'),
-(5, 'Napa', 'np', 'Head', 'fever', 'homeobd', 'homeobd', 'antibiotic', 'Md Sabbir Ahmed'),
-(7, 'Ace+', 'ace', 'head', 'fever', 'homeobd', 'homeobd', 'antibiotic', 'Md Sabbir Ahmed');
+INSERT INTO `medicines` (`id`, `name`, `shortform`, `chapter`, `subchapter`, `source`, `prover`, `type`, `addedby`, `pending`) VALUES
+(32, 'Napa', 'Np', 'Head', 'Fever', 'Homeobd', 'Homeobd', 'Antibiotic', 'Raisa Islam Noushin', 'Approved'),
+(34, 'Paracitamol', 'Prm', 'Head', 'Fever', 'Homeobd', 'Homeobd', 'Antibiotic', 'Raisa Islam Noushin', 'Approved'),
+(35, 'Ace+', 'Ace', 'Head', 'Fever', 'Homeobd', 'Homeobd', 'antibiotic', 'Raisa Islam Noushin', 'Approved'),
+(36, 'Test medicine', 'Test medicine', 'Test medicine', 'Test medicine', 'Test medicine', 'Test medicine', 'Test medicine', 'Md Sabbir Ahmed', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -157,7 +159,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `medicines`
 --
 ALTER TABLE `medicines`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `patient`
 --
