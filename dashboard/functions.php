@@ -38,7 +38,7 @@ $data4 = mysqli_fetch_assoc($result4);
 $total_symptoms = mysqli_num_rows($result4);
 
 //geting all medicines
-$query5 = "SELECT * FROM medicines";
+$query5 = "SELECT * FROM medicines WHERE pending = 'Approved'";
 $result5 = mysqli_query($con,$query5);
 $total_medicines = mysqli_num_rows($result5);
 $medrow = mysqli_fetch_assoc($result5);
@@ -870,7 +870,7 @@ if(isset($_POST["myaddmed"])){
         $medtype = mysqli_real_escape_string($con,$medtype);
 
 
-        $medquery = "UPDATE medicines SET name = '$medname', shortform = '$medshort', chapter = '$medchap', subchapter = '$medsubchap', source = '$medsource', prover = '$medprov', type = '$medtype' WHERE id = $id LIMIT 1";
+        $medquery = "UPDATE medicines SET name = '$medname', shortform = '$medshort', chapter = '$medchap', subchapter = '$medsubchap', source = '$medsource', prover = '$medprov', type = '$medtype', pending = 'Pending' WHERE id = $id LIMIT 1";
         $mdresult = mysqli_query($con,$medquery);
 
         if($mdresult){
