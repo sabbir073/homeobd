@@ -796,6 +796,7 @@ function mymedicines($con,$myname){
     </div><!-- modal -->
 </center>';
 
+//my medicine add
 if(isset($_POST["myaddmed"])){
     
     $medname = stripslashes($_REQUEST['medname']);
