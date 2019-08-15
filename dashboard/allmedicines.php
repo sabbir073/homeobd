@@ -18,8 +18,11 @@ include("functions.php");
                         <span>ALL Medicines</span>
                     </div>
                     <br />
-
+                    <div style="float:right;"><a href="" data-toggle="modal" data-target="#modaldemo13"><button
+                                class="btn btn-success btn-with-icon"><i class="typcn typcn-document-add"></i> Add
+                                new</button></a></div>
                     <div class="az-content-label mg-b-5">ALL Medicines</div>
+
                     <br />
                     <table id="datatable1" class="display responsive nowrap">
                         <thead>
@@ -35,12 +38,13 @@ include("functions.php");
                                 <th class="wd-10p">Prover</th>
                                 <th class="wd-10p">Type</th>
                                 <th class="wd-10p">Added by</th>
+                                <?php if($role == "Admin"){ ?>
                                 <th class="wd-10p">Actions</th>
-
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php showmedicine($con);?>
+                            <?php showmedicine($con,$role);?>
 
                         </tbody>
                     </table>

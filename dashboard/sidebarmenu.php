@@ -40,7 +40,6 @@
                 <nav class="nav-sub">
                     <a href="allmedicines.php" class="nav-sub-link">All Medicines</a>
                     <a href="pending-medicines.html" class="nav-sub-link">Pending Medicines</a>
-                    <a href="add-new-medicines.html" class="nav-sub-link">Add New</a>
                 </nav>
             </li><!-- nav-item -->
             <li class="nav-item">
