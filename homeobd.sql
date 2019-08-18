@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 15, 2019 at 08:08 PM
+-- Generation Time: Aug 18, 2019 at 02:41 PM
 -- Server version: 5.6.25
--- PHP Version: 5.6.11
+-- PHP Version: 5.3.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -111,17 +111,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `token` varchar(255) DEFAULT NULL,
   `role` varchar(255) NOT NULL DEFAULT 'doctor',
   `credit` int(255) NOT NULL DEFAULT '20',
-  `pending` varchar(255) NOT NULL DEFAULT 'false'
+  `pending` varchar(255) NOT NULL DEFAULT 'Pending',
+  `refferid` varchar(255) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `token`, `role`, `credit`, `pending`) VALUES
-(1, 'Md Sabbir Ahmed', 'md.sabbir073@gmail.com', '67e4a0b2338a76fbb5bf7b85fced2e72', '', 'Admin', 20, 'true'),
-(2, 'Raisa Islam Noushin', 'md.sabbir073@outlook.com', 'a1083f1528d8b91288ace29d4a250649', NULL, 'doctor', 20, 'false'),
-(3, 'Shabekunnaher Masuma', 'md.sabbir073@hotmail.com', '5114b8021ea68f2df4e057cf57c052ac', NULL, 'doctor', 20, 'false');
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `token`, `role`, `credit`, `pending`, `refferid`) VALUES
+(1, 'Md Sabbir Ahmed', 'md.sabbir073@gmail.com', '67e4a0b2338a76fbb5bf7b85fced2e72', '', 'Admin', 20, 'Approved', ''),
+(2, 'Raisa Islam Noushin', 'md.sabbir073@outlook.com', 'a1083f1528d8b91288ace29d4a250649', '', 'doctor', 20, 'Pending', 'Md Sabbir Ahmed'),
+(3, 'Shabekunnaher Masuma', 'md.sabbir073@hotmail.com', '5114b8021ea68f2df4e057cf57c052ac', '', 'doctor', 20, 'Banned', '');
 
 --
 -- Indexes for dumped tables
@@ -149,7 +150,7 @@ ALTER TABLE `symptoms`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`) COMMENT 'id', ADD UNIQUE KEY `token` (`token`) COMMENT 'token';
+  ADD PRIMARY KEY (`id`) COMMENT 'id';
 
 --
 -- AUTO_INCREMENT for dumped tables

@@ -18,7 +18,7 @@ include("functions.php");
                         <span>ALL Medicines</span>
                     </div>
                     <br />
-                    <div style="float:right;"><a href="" data-toggle="modal" data-target="#modaldemo13"><button
+                    <div style="float:right;"><a href="" data-toggle="modal" data-target="#modaldemoadd"><button
                                 class="btn btn-success btn-with-icon"><i class="typcn typcn-document-add"></i> Add
                                 new</button></a></div>
                     <div class="az-content-label mg-b-5">ALL Medicines</div>

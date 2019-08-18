@@ -3,7 +3,7 @@ include("auth.php");
 include("header.php");
 include("functions.php");
 if($role !== "Admin"){
-    header("Location: allmedicines.php");
+    header("Location: index.php");
     exit;
 }
 ?>
@@ -18,31 +18,31 @@ if($role !== "Admin"){
             <div class="container">
                 <div class="az-content-body">
                     <div class="az-content-breadcrumb">
-                        <span>Medicines</span>
-                        <span>Pending Medicines</span>
+                        <span>Users</span>
+                        <span>All Users</span>
                     </div>
                     <br />
-
-                    <div class="az-content-label mg-b-5">Pending Medicines</div>
+                    <div style="float:right;"><a href="" data-toggle="modal" data-target="#modaldemoadd"><button
+                                class="btn btn-success btn-with-icon"><i class="typcn typcn-document-add"></i> Add
+                                new</button></a></div>
+                    <div class="az-content-label mg-b-5">All Users</div>
 
                     <br />
                     <table id="datatable3" class="display responsive nowrap">
                         <thead>
                             <tr>
-                                <th class="wd-10p">ID</th>
+                                <th class="wd-5p">ID</th>
                                 <th class="wd-10p">Name</th>
-                                <th class="wd-10p">Short Form</th>
-                                <th class="wd-10p">Chapter</th>
-                                <th class="wd-10p">Sub Chapter</th>
-                                <th class="wd-10p">Source</th>
-                                <th class="wd-10p">Prover</th>
-                                <th class="wd-10p">Type</th>
-                                <th class="wd-10p">Added by</th>
-                                <th class="wd-30p">Actions</th>
+                                <th class="wd-10p">Email</th>
+                                <th class="wd-10p">Role</th>
+                                <th class="wd-10p">Credit</th>
+                                <th class="wd-10p">Status</th>
+                                <th class="wd-10p">Reffered by</th>
+                                <th class="wd-10p">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php pendingmedicine($con);?>
+                            <?php allusersshow($con);?>
 
                         </tbody>
                     </table>
@@ -92,6 +92,8 @@ if($role !== "Admin"){
             $('.dataTables_length select').select2({
                 minimumResultsForSearch: Infinity
             });
+
+            //dropdown
 
         });
         </script>

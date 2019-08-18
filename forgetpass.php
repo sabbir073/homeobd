@@ -22,7 +22,7 @@ if (isset($_POST['forgetpass'])) {
         echo $return;
         if($return == 1){
             $token = strval(bin2hex(openssl_random_pseudo_bytes(30)));
-            $sqlquery = "UPDATE users SET token = '$token'";
+            $sqlquery = "UPDATE users SET token = '$token' WHERE email='$email' LIMIT 1";
             $results = mysqli_query($con, $sqlquery);
             if ($results){
               $to = $email;
@@ -45,27 +45,28 @@ if (isset($_POST['forgetpass'])) {
 }
 
 ?>
-  <body class="az-body">
+
+<body class="az-body">
     <div class="az-signin-wrapper">
-      <div class="az-card-signin">
-        <h1 class="az-logo">Homeo<span>B</span>D</h1>
-        <div class="az-signin-header">
-          <h2>Forget your password?</h2>
-          <h4><?php echo $sucess;?></h4>
-          <h4 style="color:red;"><?php echo $error;?></h4>
-          <form method="post" action="">
-            <div class="form-group">
-              <label>Email</label>
-              <input name="email" type="email" class="form-control" placeholder="Enter your email">
-            </div><!-- form-group -->
-            <button type="submit" name="forgetpass" class="btn btn-az-primary btn-block">Send</button>
-          </form>
-        </div><!-- az-signin-header -->
-        <div class="az-signin-footer">
-          <p><a href="login.php">Have account? login</a></p>
-          <p>Don't have an account? <a href="signup.php">Create an Account</a></p>
-        </div><!-- az-signin-footer -->
-      </div><!-- az-card-signin -->
+        <div class="az-card-signin">
+            <h1 class="az-logo">Homeo<span>B</span>D</h1>
+            <div class="az-signin-header">
+                <h2>Forget your password?</h2>
+                <h4><?php echo $sucess;?></h4>
+                <h4 style="color:red;"><?php echo $error;?></h4>
+                <form method="post" action="">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input name="email" type="email" class="form-control" placeholder="Enter your email">
+                    </div><!-- form-group -->
+                    <button type="submit" name="forgetpass" class="btn btn-az-primary btn-block">Send</button>
+                </form>
+            </div><!-- az-signin-header -->
+            <div class="az-signin-footer">
+                <p><a href="login.php">Have account? login</a></p>
+                <p>Don't have an account? <a href="signup.php">Create an Account</a></p>
+            </div><!-- az-signin-footer -->
+        </div><!-- az-card-signin -->
     </div><!-- az-signin-wrapper -->
 
     <script src="./old/lib/jquery/jquery.min.js"></script>
@@ -74,10 +75,11 @@ if (isset($_POST['forgetpass'])) {
 
     <script src="./old/js/azia.js"></script>
     <script>
-      $(function(){
+    $(function() {
         'use strict'
 
-      });
+    });
     </script>
-  </body>
+</body>
+
 </html>

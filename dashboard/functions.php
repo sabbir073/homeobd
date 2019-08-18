@@ -234,7 +234,7 @@ function showmedicine($con,$role){
     //add new medicine
 
     echo '<center>
-    <div id="modaldemo13" class="modal">
+    <div id="modaldemoadd" class="modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
@@ -248,17 +248,17 @@ function showmedicine($con,$role){
                         <form method="post" action="">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Name"
-                                    name="medname">
+                                    name="medname" required>
                             </div><!-- form-group -->
 
                             <div class="form-group">
                                 <input type="text" class="form-control" name="medshort"
-                                    placeholder="Medicine Short Form">
+                                    placeholder="Medicine Short Form" required>
                             </div><!-- form-group -->
 
                             <div class="form-group">
                                 <input type="text" class="form-control" name="medchap"
-                                    placeholder="Chapter">
+                                    placeholder="Chapter" required>
                             </div><!-- form-group -->
 
                             <div class="form-group">
@@ -268,7 +268,7 @@ function showmedicine($con,$role){
 
                             <div class="form-group">
                                 <input type="text" class="form-control" name="medsource"
-                                    placeholder="Source">
+                                    placeholder="Source" required>
                             </div><!-- form-group -->
 
                             <div class="form-group">
@@ -278,7 +278,7 @@ function showmedicine($con,$role){
 
                             <div class="form-group">
                                 <input type="text" class="form-control" name="medtype"
-                                    placeholder="Type">
+                                    placeholder="Type" required>
                             </div><!-- form-group -->
 
                             <button name="addmed" class="btn btn-az-primary pd-x-20">Add</button>
@@ -529,6 +529,7 @@ function pendingmedicine($con){
 
 
 
+
 //function to show menu admin and user basis
 
 function adminmenu($role){
@@ -544,7 +545,7 @@ function adminmenu($role){
             <li class="nav-item">
                 <a href="" class="nav-link with-sub"><i class="typcn typcn-user"></i>Users</a>
                 <nav class="nav-sub">
-                    <a href="all-users.html" class="nav-sub-link">All Users</a>
+                    <a href="allusers.php" class="nav-sub-link">All Users</a>
                     <a href="pending-users.html" class="nav-sub-link">Pending Users</a>
                 </nav>
             </li><!-- nav-item -->
@@ -911,3 +912,342 @@ if(isset($_POST["myaddmed"])){
     }
 }
 
+
+// All user functionality Protected to admin
+
+//showing all User to table
+
+function allusersshow($con){
+    $query6 = "SELECT * FROM users ORDER BY id DESC";
+    $result6 = mysqli_query($con,$query6);
+    $i = 1;
+    while($userrow = mysqli_fetch_assoc($result6)){
+        
+        $userid = $userrow["id"];
+
+        echo '<tr> 
+                  <td>'.$userid.'</td> 
+                  <td>'.$userrow["username"].'</td> 
+                  <td>'.$userrow["email"].'</td> 
+                  <td>'.$userrow["role"].'</td> 
+                  <td>'.$userrow["credit"].'</td> 
+                  <td>'.$userrow["pending"].'</td>
+                  <td>'.$userrow["refferid"].'</td>
+                  
+                  <td>
+                      <center>
+                          <div class="btn-icon-list">
+                          <a href="" data-toggle="modal" data-target="#modaldemoview'.$i.'"><button class="btn btn-indigo btn-icon"><i class="la la-eye"></i></button></a>
+                          <a href="" data-toggle="modal" data-target="#modaldemoedit'.$i.'"><button class="btn btn-info btn-icon"><i class="la la-edit"></i></button></a>
+                          <a href="" data-toggle="modal" data-target="#modaldemodel'.$i.'"><button class="btn btn-danger btn-icon"><i class="la la-times-circle"></i></button></a>
+                              
+                          </div>
+  
+                      </center>
+
+                      <center>
+                      <div id="modaldemoview'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Details - '.$userrow["username"].'</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+                              <div class="table-responsive">
+                                <table class="table table-bordered mg-b-0">
+                                <tbody>
+                                    <tr>
+                                    <th scope="row"><b>Name</b></th>
+                                    <td>'.$userrow["username"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Email</b></th>
+                                    <td>'.$userrow["email"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Role</b></th>
+                                    <td>'.$userrow["role"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Total Credit</b></th>
+                                    <td>'.$userrow["credit"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Status</b></th>
+                                    <td>'.$userrow["pending"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Rffered by</b></th>
+                                    <td>'.$userrow["refferid"].'</td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div></br>
+                            <button value="'.$userid.'" name="useractivity" class="btn btn-az-primary pd-x-20">View Activity</button>
+                              
+                                  </div>
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+
+
+                      <center>
+                      <div id="modaldemoedit'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Edit User</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+                              <form method="post" action="">
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" placeholder="User Name" name="username'.$userid.'" value="'.$userrow["username"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="useremail'.$userid.'" placeholder="User Email" value="'.$userrow["email"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="role'.$userid.'" placeholder="User Role" value="'.$userrow["role"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="credit'.$userid.'" placeholder="Total Credit" value="'.$userrow["credit"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <select class="form-control" name="userstatus'.$userid.'" id="sel1">';
+                                    if($userrow["pending"] == "Approved"){
+                                        echo '<option value="Approved" selected>Approved</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Banned">Banned</option>';
+                                    }
+                                    elseif($userrow["pending"] == "Pending"){
+                                        echo '<option value="Approved">Approved</option>
+                                        <option value="Pending" selected>Pending</option>
+                                        <option value="Banned">Banned</option>';
+                                    }
+                                    elseif($userrow["pending"] == "Banned"){
+                                        echo '<option value="Approved">Approved</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Banned" selected>Banned</option>';
+                                    }
+                                    else{
+                                        echo '<option value="">Choose One</option><option value="Approved">Approved</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Banned">Banned</option>';
+                                    }
+                                  echo  '</select>
+                                  </div><!-- form-group -->
+                              
+                                  <button value="'.$userid.'" name="userupdate" class="btn btn-az-primary pd-x-20">Update</button>
+                              </form>
+                              
+                                  </div>
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+  
+                      <center>
+                      <div id="modaldemodel'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Delete User</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="alert alert-danger mg-b-0" role="alert">
+                                  Are you sure want to delete '.$userrow["username"].'?
+                              </div>
+                              <div class="mg-lg-b-30"></div>
+                              <form method="post" action="">
+                                  
+                                  <button value="'.$userid.'" name="userdelete" class="btn btn-az-primary pd-x-20">Delete</button>
+                              </form>
+                              
+                                
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+  
+  
+  
+                  </td>
+                  </tr>';
+              
+        $i++;
+        
+    }
+
+    //user edit
+    
+    if(isset($_POST["userupdate"])){
+        
+        $id = $_POST["userupdate"];
+        
+        $usernam = stripslashes($_REQUEST['username'.$id.'']);
+        $usernam = mysqli_real_escape_string($con,$usernam);
+
+        $usermail = stripslashes($_REQUEST['useremail'.$id.'']);
+        $usermail = mysqli_real_escape_string($con,$usermail);
+
+        $userrole = stripslashes($_REQUEST['role'.$id.'']);
+        $userrole = mysqli_real_escape_string($con,$userrole);
+
+        $usercredit = stripslashes($_REQUEST['credit'.$id.'']);
+        $usercredit = mysqli_real_escape_string($con,$usercredit);
+
+        $userstatus = stripslashes($_REQUEST['userstatus'.$id.'']);
+        $userstatus = mysqli_real_escape_string($con,$userstatus);
+
+
+        $medquery = "UPDATE users SET username = '$usernam', email = '$usermail', role = '$userrole', credit = '$usercredit', pending = '$userstatus' WHERE id = $id LIMIT 1";
+        $mdresult = mysqli_query($con,$medquery);
+
+        if($mdresult){
+            echo '<div class="alert alert-success" role="alert">
+                     <strong>Well done!</strong> You successfully edited a User. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+               
+        }
+        else{
+            echo '<div class="alert alert-danger" role="alert">
+                     <strong>Something Wrong!</strong> User is not edited. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+        }
+        
+    }
+
+    //User Delete
+    
+    if(isset($_POST["userdelete"])){
+        
+        $delid = $_POST["userdelete"];
+
+        $userdelq = "DELETE FROM users WHERE id = $delid LIMIT 1";
+        $userdelq = mysqli_query($con,$userdelq);
+
+        if($userdelq){
+            echo '<div class="alert alert-success" role="alert">
+                     <strong>Well done!</strong> You successfully Deleted User. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+                
+        }
+        else{
+            echo '<div class="alert alert-danger" role="alert">
+                    <strong>Something Wrong!</strong> User is not Deleted. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+        }
+        
+    }
+
+    //add new User
+
+    echo '<center>
+    <div id="modaldemoadd" class="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h6 class="modal-title">Add New User</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+                        <form method="post" action="">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Name"
+                                    name="useraddname" required>
+                            </div><!-- form-group -->
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="useraddemail"
+                                    placeholder="Email" required>
+                            </div><!-- form-group -->
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="useraddpass"
+                                    placeholder="Password" required>
+                            </div><!-- form-group -->
+
+                            <div class="form-group">
+                                <select class="form-control" name="useraddrole">
+                                    <option selected>Choose One</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Doctor">Doctor</option>
+                                </select>
+                            </div><!-- form-group -->
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="useraddcredit"
+                                    placeholder="Credit Amount" required>
+                            </div><!-- form-group -->
+                            <button name="addusernew" class="btn btn-az-primary pd-x-20">Add</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div><!-- modal-dialog -->
+    </div><!-- modal -->
+</center>';
+
+//User add to database
+
+if(isset($_POST["addusernew"])){
+    
+    $adduname = stripslashes($_REQUEST['useraddname']);
+    $adduname = mysqli_real_escape_string($con,$adduname);
+
+    $adduemail = stripslashes($_REQUEST['useraddemail']);
+    $adduemail = mysqli_real_escape_string($con,$adduemail);
+
+    $addupass = stripslashes($_REQUEST['useraddpass']);
+    $addupass = mysqli_real_escape_string($con,$addupass);
+
+    $addurole = stripslashes($_REQUEST['useraddrole']);
+    $addurole = mysqli_real_escape_string($con,$addurole);
+
+    $adducredit = stripslashes($_REQUEST['useraddcredit']);
+    $adducredit = mysqli_real_escape_string($con,$adducredit);
+
+    $ferrefid = $_SESSION['name'];
+
+
+    $adduserq = "INSERT into `users` (username, email, password, role, credit, refferid)
+            VALUES ('$adduname', '$adduemail', '".md5($addupass)."', '$addurole', '$adducredit', '$ferrefid') LIMIT 1";
+    $adduserr = mysqli_query($con,$adduserq);
+
+    if($adduserr){
+        echo '<div class="alert alert-success" role="alert">
+                 <strong>Well done!</strong> You successfully added a User. <a href="" onClick="window.location.reload();">Refresh the page</a>
+            </div>';
+           
+    }
+    else{
+        echo '<div class="alert alert-danger" role="alert">
+                 <strong>Something Wrong!</strong> User is not added. <a href="" onClick="window.location.reload();">Refresh the page</a>
+            </div>';
+    }
+    
+}
+}
