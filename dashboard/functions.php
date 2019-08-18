@@ -546,7 +546,8 @@ function adminmenu($role){
                 <a href="" class="nav-link with-sub"><i class="typcn typcn-user"></i>Users</a>
                 <nav class="nav-sub">
                     <a href="allusers.php" class="nav-sub-link">All Users</a>
-                    <a href="pending-users.html" class="nav-sub-link">Pending Users</a>
+                    <a href="pendinguser.php" class="nav-sub-link">Pending Users</a>
+                    <a href="bannedusers.php" class="nav-sub-link">Banned Users</a>
                 </nav>
             </li><!-- nav-item -->
 
@@ -928,7 +929,8 @@ function allusersshow($con){
         echo '<tr> 
                   <td>'.$userid.'</td> 
                   <td>'.$userrow["username"].'</td> 
-                  <td>'.$userrow["email"].'</td> 
+                  <td>'.$userrow["email"].'</td>
+                  <td>'.$userrow["phone"].'</td>
                   <td>'.$userrow["role"].'</td> 
                   <td>'.$userrow["credit"].'</td> 
                   <td>'.$userrow["pending"].'</td>
@@ -967,6 +969,10 @@ function allusersshow($con){
                                     <tr>
                                     <th scope="row"><b>Email</b></th>
                                     <td>'.$userrow["email"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Phone No</b></th>
+                                    <td>'.$userrow["phone"].'</td>
                                     </tr>
                                     <tr>
                                     <th scope="row"><b>Role</b></th>
@@ -1017,9 +1023,27 @@ function allusersshow($con){
                                   <div class="form-group">
                                   <input type="text" class="form-control" name="useremail'.$userid.'" placeholder="User Email" value="'.$userrow["email"].'">
                                   </div><!-- form-group -->
+
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="userphone'.$userid.'" placeholder="Phone Number" value="'.$userrow["phone"].'">
+                                  </div><!-- form-group -->
   
                                   <div class="form-group">
-                                  <input type="text" class="form-control" name="role'.$userid.'" placeholder="User Role" value="'.$userrow["role"].'">
+                                  <select class="form-control" name="role'.$userid.'" id="sel11">';
+                                    if($userrow["role"] == "Admin"){
+                                        echo '<option value="Admin" selected>Admin</option>
+                                        <option value="Doctor">Doctor</option>';
+                                    }
+                                    elseif($userrow["role"] == "Doctor"){
+                                        echo '<option value="Admin">Admin</option>
+                                        <option value="Doctor" selected>Doctor</option>';
+                                    }
+                                    else{
+                                        echo '<option value="">Choose One</option>
+                                        <option value="Admin">Admin</option>
+                                        <option value="Doctor">Doctor</option>';
+                                    }
+                                  echo  '</select>
                                   </div><!-- form-group -->
   
                                   <div class="form-group">
@@ -1109,6 +1133,9 @@ function allusersshow($con){
         $usermail = stripslashes($_REQUEST['useremail'.$id.'']);
         $usermail = mysqli_real_escape_string($con,$usermail);
 
+        $userphone = stripslashes($_REQUEST['userphone'.$id.'']);
+        $userphone = mysqli_real_escape_string($con,$userphone);
+
         $userrole = stripslashes($_REQUEST['role'.$id.'']);
         $userrole = mysqli_real_escape_string($con,$userrole);
 
@@ -1119,7 +1146,7 @@ function allusersshow($con){
         $userstatus = mysqli_real_escape_string($con,$userstatus);
 
 
-        $medquery = "UPDATE users SET username = '$usernam', email = '$usermail', role = '$userrole', credit = '$usercredit', pending = '$userstatus' WHERE id = $id LIMIT 1";
+        $medquery = "UPDATE users SET username = '$usernam', email = '$usermail', phone= '$userphone', role = '$userrole', credit = '$usercredit', pending = '$userstatus' WHERE id = $id LIMIT 1";
         $mdresult = mysqli_query($con,$medquery);
 
         if($mdresult){
@@ -1132,6 +1159,7 @@ function allusersshow($con){
             echo '<div class="alert alert-danger" role="alert">
                      <strong>Something Wrong!</strong> User is not edited. <a href="" onClick="window.location.reload();">Refresh the page</a>
                 </div>';
+              echo  mysqli_error($con);
         }
         
     }
@@ -1185,6 +1213,11 @@ function allusersshow($con){
                             </div><!-- form-group -->
 
                             <div class="form-group">
+                                <input type="text" class="form-control" name="useraddphone"
+                                    placeholder="Phone No" required>
+                            </div><!-- form-group -->
+
+                            <div class="form-group">
                                 <input type="text" class="form-control" name="useraddpass"
                                     placeholder="Password" required>
                             </div><!-- form-group -->
@@ -1221,6 +1254,9 @@ if(isset($_POST["addusernew"])){
     $adduemail = stripslashes($_REQUEST['useraddemail']);
     $adduemail = mysqli_real_escape_string($con,$adduemail);
 
+    $adduphone = stripslashes($_REQUEST['useraddphone']);
+    $adduphone = mysqli_real_escape_string($con,$adduphone);
+
     $addupass = stripslashes($_REQUEST['useraddpass']);
     $addupass = mysqli_real_escape_string($con,$addupass);
 
@@ -1233,8 +1269,8 @@ if(isset($_POST["addusernew"])){
     $ferrefid = $_SESSION['name'];
 
 
-    $adduserq = "INSERT into `users` (username, email, password, role, credit, refferid)
-            VALUES ('$adduname', '$adduemail', '".md5($addupass)."', '$addurole', '$adducredit', '$ferrefid') LIMIT 1";
+    $adduserq = "INSERT into `users` (username, email, phone, password, role, credit, refferid)
+            VALUES ('$adduname', '$adduemail', '$adduphone', '".md5($addupass)."', '$addurole', '$adducredit', '$ferrefid') LIMIT 1";
     $adduserr = mysqli_query($con,$adduserq);
 
     if($adduserr){
@@ -1250,4 +1286,379 @@ if(isset($_POST["addusernew"])){
     }
     
 }
+}
+
+
+//pending users
+
+function pendingusers($con){
+    $query7 = "SELECT * FROM users WHERE pending <> 'Approved' ORDER BY id DESC";
+    $result7 = mysqli_query($con,$query7);
+    $i = 1;
+    while($medrow = mysqli_fetch_assoc($result7)){
+        
+        $medid = $medrow["id"];
+
+        echo '<tr> 
+                  <td>'.$medid.'</td> 
+                  <td>'.$medrow["username"].'</td> 
+                  <td>'.$medrow["email"].'</td> 
+                  <td>'.$medrow["phone"].'</td> 
+                  <td>'.$medrow["role"].'</td> 
+                  <td>'.$medrow["credit"].'</td>
+                  <td>'.$medrow["pending"].'</td>
+                  <td>'.$medrow["refferid"].'</td>
+                    
+                   <td>
+                      <center>
+                          <div class="btn-icon-list">
+                          <a href="" data-toggle="modal" data-target="#modaldemopuser'.$i.'"><button class="btn btn-info btn-icon"><i class="la la-check-circle"></i></button></a>
+                          <a href="" data-toggle="modal" data-target="#modaldemoduser'.$i.'"><button class="btn btn-danger btn-icon"><i class="la la-times-circle"></i></button></a>
+                              
+                          </div>
+  
+                      </center>
+                      <center>
+                      <div id="modaldemopuser'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Edit User Before Approve</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+                              <form method="post" action="">
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" placeholder="Name" name="pusername'.$medid.'" value="'.$medrow["username"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="puseremail'.$medid.'" placeholder="Email address" value="'.$medrow["email"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="puserphone'.$medid.'" placeholder="Phone" value="'.$medrow["phone"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <select class="form-control" name="puserrole'.$medid.'" id="sel111">';
+                                    if($medrow["role"] == "Admin"){
+                                        echo '<option value="Admin" selected>Admin</option>
+                                        <option value="Doctor">Doctor</option>';
+                                    }
+                                    elseif($medrow["role"] == "Doctor"){
+                                        echo '<option value="Admin">Admin</option>
+                                        <option value="Doctor" selected>Doctor</option>';
+                                    }
+                                    else{
+                                        echo '<option value="">Choose One</option>
+                                        <option value="Admin">Admin</option>
+                                        <option value="Doctor">Doctor</option>';
+                                    }
+                                  echo  '</select>
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="pusercredit'.$medid.'" placeholder="Total Credit" value="'.$medrow["credit"].'">
+                                  </div><!-- form-group -->
+                              
+                                  <button value="'.$medid.'" name="approveuser" class="btn btn-az-primary pd-x-20">Approve</button>
+                              </form>
+                              
+                                  </div>
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+  
+                      <center>
+                      <div id="modaldemoduser'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Delete User</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="alert alert-danger mg-b-0" role="alert">
+                                  Are you sure want to delete '.$medrow["username"].'?
+                              </div>
+                              <div class="mg-lg-b-30"></div>
+                              <form method="post" action="">
+                                  
+                                  <button value="'.$medid.'" name="deluser" class="btn btn-az-primary pd-x-20">Delete</button>
+                              </form>
+                              
+                                
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+  
+  
+  
+                  </td>
+
+               </tr>';
+              
+        $i++;
+        
+    }
+
+    //approve User
+    
+    if(isset($_POST["approveuser"])){
+        
+        $id = $_POST["approveuser"];
+        
+        $medname = stripslashes($_REQUEST['pusername'.$id.'']);
+        $medname = mysqli_real_escape_string($con,$medname);
+
+        $medshort = stripslashes($_REQUEST['puseremail'.$id.'']);
+        $medshort = mysqli_real_escape_string($con,$medshort);
+
+        $medchap = stripslashes($_REQUEST['puserphone'.$id.'']);
+        $medchap = mysqli_real_escape_string($con,$medchap);
+
+        $medsubchap = stripslashes($_REQUEST['puserrole'.$id.'']);
+        $medsubchap = mysqli_real_escape_string($con,$medsubchap);
+
+        $medsource = stripslashes($_REQUEST['pusercredit'.$id.'']);
+        $medsource = mysqli_real_escape_string($con,$medsource);
+
+
+        $medquery = "UPDATE users SET username = '$medname', email = '$medshort', phone = '$medchap', role = '$medsubchap', credit = '$medsource', pending = '$medprov', pending = 'Approved' WHERE id = $id LIMIT 1";
+        $mdresult = mysqli_query($con,$medquery);
+
+        if($mdresult){
+            echo '<div class="alert alert-success" role="alert">
+                     <strong>Well done!</strong> Medicine Approved. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+               
+        }
+        else{
+            echo '<div class="alert alert-danger" role="alert">
+                     <strong>Something Wrong!</strong> Medicine is not Approved. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+        }
+        
+    }
+
+    // Delete User
+    
+    if(isset($_POST["deluser"])){
+        
+        $delid = $_POST["deluser"];
+
+        $meddelquery = "DELETE FROM users WHERE id = $delid LIMIT 1";
+        $mddelresult = mysqli_query($con,$meddelquery);
+
+        if($mddelresult){
+            echo '<div class="alert alert-success" role="alert">
+                     <strong>Well done!</strong> You successfully Deleted User. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+                
+        }
+        else{
+            echo '<div class="alert alert-danger" role="alert">
+                    <strong>Something Wrong!</strong> User is not Deleted. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+        }
+        
+    }
+
+}
+
+
+//Banned User Page
+function bannedusers($con){
+    $query7 = "SELECT * FROM users WHERE pending = 'Banned' ORDER BY id DESC";
+    $result7 = mysqli_query($con,$query7);
+    $i = 1;
+    while($medrow = mysqli_fetch_assoc($result7)){
+        
+        $medid = $medrow["id"];
+
+        echo '<tr> 
+                  <td>'.$medid.'</td> 
+                  <td>'.$medrow["username"].'</td> 
+                  <td>'.$medrow["email"].'</td> 
+                  <td>'.$medrow["phone"].'</td> 
+                  <td>'.$medrow["role"].'</td> 
+                  <td>'.$medrow["credit"].'</td>
+                  <td>'.$medrow["pending"].'</td>
+                  <td>'.$medrow["refferid"].'</td>
+                    
+                   <td>
+                      <center>
+                          <div class="btn-icon-list">
+                          <a href="" data-toggle="modal" data-target="#modaldemobuser'.$i.'"><button class="btn btn-info btn-icon"><i class="la la-check-circle"></i></button></a>
+                          <a href="" data-toggle="modal" data-target="#modaldemodbuser'.$i.'"><button class="btn btn-danger btn-icon"><i class="la la-times-circle"></i></button></a>
+                              
+                          </div>
+  
+                      </center>
+                      <center>
+                      <div id="modaldemobuser'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Edit User Before Unbanned</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+                              <form method="post" action="">
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" placeholder="Name" name="pusername'.$medid.'" value="'.$medrow["username"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="puseremail'.$medid.'" placeholder="Email address" value="'.$medrow["email"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="puserphone'.$medid.'" placeholder="Phone" value="'.$medrow["phone"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <select class="form-control" name="puserrole'.$medid.'" id="sel111">';
+                                    if($medrow["role"] == "Admin"){
+                                        echo '<option value="Admin" selected>Admin</option>
+                                        <option value="Doctor">Doctor</option>';
+                                    }
+                                    elseif($medrow["role"] == "Doctor"){
+                                        echo '<option value="Admin">Admin</option>
+                                        <option value="Doctor" selected>Doctor</option>';
+                                    }
+                                    else{
+                                        echo '<option value="">Choose One</option>
+                                        <option value="Admin">Admin</option>
+                                        <option value="Doctor">Doctor</option>';
+                                    }
+                                  echo  '</select>
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="pusercredit'.$medid.'" placeholder="Total Credit" value="'.$medrow["credit"].'">
+                                  </div><!-- form-group -->
+                              
+                                  <button value="'.$medid.'" name="approveuser" class="btn btn-az-primary pd-x-20">Unbanned</button>
+                              </form>
+                              
+                                  </div>
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+  
+                      <center>
+                      <div id="modaldemodbuser'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Delete User</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="alert alert-danger mg-b-0" role="alert">
+                                  Are you sure want to delete '.$medrow["username"].'?
+                              </div>
+                              <div class="mg-lg-b-30"></div>
+                              <form method="post" action="">
+                                  
+                                  <button value="'.$medid.'" name="deluser" class="btn btn-az-primary pd-x-20">Delete</button>
+                              </form>
+                              
+                                
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+  
+  
+  
+                  </td>
+
+               </tr>';
+              
+        $i++;
+        
+    }
+
+    //approve User
+    
+    if(isset($_POST["approveuser"])){
+        
+        $id = $_POST["approveuser"];
+        
+        $medname = stripslashes($_REQUEST['pusername'.$id.'']);
+        $medname = mysqli_real_escape_string($con,$medname);
+
+        $medshort = stripslashes($_REQUEST['puseremail'.$id.'']);
+        $medshort = mysqli_real_escape_string($con,$medshort);
+
+        $medchap = stripslashes($_REQUEST['puserphone'.$id.'']);
+        $medchap = mysqli_real_escape_string($con,$medchap);
+
+        $medsubchap = stripslashes($_REQUEST['puserrole'.$id.'']);
+        $medsubchap = mysqli_real_escape_string($con,$medsubchap);
+
+        $medsource = stripslashes($_REQUEST['pusercredit'.$id.'']);
+        $medsource = mysqli_real_escape_string($con,$medsource);
+
+
+        $medquery = "UPDATE users SET username = '$medname', email = '$medshort', phone = '$medchap', role = '$medsubchap', credit = '$medsource', pending = '$medprov', pending = 'Pending' WHERE id = $id LIMIT 1";
+        $mdresult = mysqli_query($con,$medquery);
+
+        if($mdresult){
+            echo '<div class="alert alert-success" role="alert">
+                     <strong>Well done!</strong> Medicine Approved. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+               
+        }
+        else{
+            echo '<div class="alert alert-danger" role="alert">
+                     <strong>Something Wrong!</strong> Medicine is not Approved. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+        }
+        
+    }
+
+    // Delete User
+    
+    if(isset($_POST["deluser"])){
+        
+        $delid = $_POST["deluser"];
+
+        $meddelquery = "DELETE FROM users WHERE id = $delid LIMIT 1";
+        $mddelresult = mysqli_query($con,$meddelquery);
+
+        if($mddelresult){
+            echo '<div class="alert alert-success" role="alert">
+                     <strong>Well done!</strong> You successfully Deleted User. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+                
+        }
+        else{
+            echo '<div class="alert alert-danger" role="alert">
+                    <strong>Something Wrong!</strong> User is not Deleted. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+        }
+        
+    }
+
 }

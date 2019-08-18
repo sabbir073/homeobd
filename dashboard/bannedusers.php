@@ -19,13 +19,11 @@ if($role !== "Admin"){
                 <div class="az-content-body">
                     <div class="az-content-breadcrumb">
                         <span>Users</span>
-                        <span>All Users</span>
+                        <span>Banned Users</span>
                     </div>
                     <br />
-                    <div style="float:right;"><a href="" data-toggle="modal" data-target="#modaldemoadd"><button
-                                class="btn btn-success btn-with-icon"><i class="typcn typcn-document-add"></i> Add
-                                new</button></a></div>
-                    <div class="az-content-label mg-b-5">All Users</div>
+
+                    <div class="az-content-label mg-b-5">Banned Users</div>
 
                     <br />
                     <table id="datatable3" class="display responsive nowrap">
@@ -43,7 +41,7 @@ if($role !== "Admin"){
                             </tr>
                         </thead>
                         <tbody>
-                            <?php allusersshow($con);?>
+                            <?php bannedusers($con);?>
 
                         </tbody>
                     </table>
@@ -93,8 +91,6 @@ if($role !== "Admin"){
             $('.dataTables_length select').select2({
                 minimumResultsForSearch: Infinity
             });
-
-            //dropdown
 
         });
         </script>
