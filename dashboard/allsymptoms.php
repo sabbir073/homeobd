@@ -2,10 +2,6 @@
 include("auth.php");
 include("header.php");
 include("functions.php");
-if($role == "Admin"){
-    header("Location: allmedicines.php");
-    exit;
-}
 ?>
 
 <body class="az-body az-body-sidebar az-body-dashboard-nine">
@@ -18,35 +14,34 @@ if($role == "Admin"){
             <div class="container">
                 <div class="az-content-body">
                     <div class="az-content-breadcrumb">
-                        <span>Medicines</span>
-                        <span>My Medicines</span>
+                        <span>Symptoms</span>
+                        <span>ALL Symptoms</span>
                     </div>
                     <br />
-                    <div style="float:right;"><a href="" data-toggle="modal" data-target="#modaldemo13"><button
+                    <div style="float:right;"><a href="" data-toggle="modal" data-target="#modaldemoadd"><button
                                 class="btn btn-success btn-with-icon"><i class="typcn typcn-document-add"></i> Add
                                 new</button></a></div>
-
-                    <div class="az-content-label mg-b-5">My Medicines</div>
+                    <div class="az-content-label mg-b-5">ALL Symptoms</div>
 
                     <br />
-                    <table id="datatable5" class="display responsive nowrap">
+                    <table id="datatable1" class="display responsive nowrap">
                         <thead>
                             <tr>
 
 
                                 <th class="wd-5p">ID</th>
                                 <th class="wd-10p">Name</th>
-                                <th class="wd-10p">Short Form</th>
                                 <th class="wd-10p">Chapter</th>
-                                <th class="wd-10p">Source</th>
-                                <th class="wd-10p">Type</th>
-                                <th class="wd-10p">Status</th>
+                                <th class="wd-10p">Short Name</th>
+                                <th class="wd-10p">Related medicine</th>
+                                <th class="wd-10p">Added by</th>
+
                                 <th class="wd-10p">Actions</th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            <?php mymedicines($con,$myname);?>
+                            <?php showsymptoms($con,$role);?>
 
                         </tbody>
                     </table>
@@ -77,7 +72,7 @@ if($role == "Admin"){
         $(document).ready(function() {
             'use strict';
 
-            $('#datatable5').DataTable({
+            $('#datatable1').DataTable({
                 responsive: true,
                 language: {
                     searchPlaceholder: 'Search...',

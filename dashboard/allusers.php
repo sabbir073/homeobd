@@ -33,7 +33,7 @@ if($role !== "Admin"){
                             <tr>
                                 <th class="wd-5p">ID</th>
                                 <th class="wd-10p">Name</th>
-                                <th class="wd-10p">Email</th>
+
                                 <th class="wd-10p">Phone no</th>
                                 <th class="wd-10p">Role</th>
                                 <th class="wd-10p">Credit</th>

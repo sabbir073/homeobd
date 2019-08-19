@@ -29,18 +29,16 @@ include("functions.php");
                             <tr>
 
 
-                                <th class="wd-10p">ID</th>
+                                <th class="wd-5p">ID</th>
                                 <th class="wd-10p">Name</th>
                                 <th class="wd-10p">Short Form</th>
                                 <th class="wd-10p">Chapter</th>
-                                <th class="wd-10p">Sub Chapter</th>
                                 <th class="wd-10p">Source</th>
-                                <th class="wd-10p">Prover</th>
                                 <th class="wd-10p">Type</th>
                                 <th class="wd-10p">Added by</th>
-                                <?php if($role == "Admin"){ ?>
+
                                 <th class="wd-10p">Actions</th>
-                                <?php } ?>
+
                             </tr>
                         </thead>
                         <tbody>

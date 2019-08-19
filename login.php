@@ -30,31 +30,32 @@ and password='".md5($password)."'";
 }
 
 ?>
-  <body class="az-body">
+
+<body class="az-body">
     <div class="az-signin-wrapper">
-      <div class="az-card-signin">
-        <h1 class="az-logo">Homeo<span>B</span>D</h1>
-        <div class="az-signin-header">
-          <h2>Welcome back!</h2>
-          <h4>Please sign in to continue</h4>
-          <h4 style="color:red;"><?php echo $error;?></h4>
-          <form method="post" action="">
-            <div class="form-group">
-              <label>Email</label>
-              <input name="username" type="text" class="form-control" placeholder="Enter your email">
-            </div><!-- form-group -->
-            <div class="form-group">
-              <label>Password</label>
-              <input name="password" type="password" class="form-control" placeholder="Enter your password">
-            </div><!-- form-group -->
-            <button type="submit" name="login_user" class="btn btn-az-primary btn-block">Sign In</button>
-          </form>
-        </div><!-- az-signin-header -->
-        <div class="az-signin-footer">
-          <p><a href="forgetpass.php">Forgot password?</a></p>
-          <p>Don't have an account? <a href="signup.php">Create an Account</a></p>
-        </div><!-- az-signin-footer -->
-      </div><!-- az-card-signin -->
+        <div class="az-card-signin">
+            <h1 class="az-logo">Homeo<span>B</span>D</h1>
+            <div class="az-signin-header">
+                <h2>Welcome back!</h2>
+                <h4>Please sign in to continue</h4>
+                <h4 style="color:red;"><?php echo $error;?></h4>
+                <form method="post" action="">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input name="username" type="text" class="form-control" placeholder="Enter your email">
+                    </div><!-- form-group -->
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input name="password" type="password" class="form-control" placeholder="Enter your password">
+                    </div><!-- form-group -->
+                    <button type="submit" name="login_user" class="btn btn-az-primary btn-block">Sign In</button>
+                </form>
+            </div><!-- az-signin-header -->
+            <div class="az-signin-footer">
+                <p><a href="forgetpass.php">Forgot password?</a></p>
+                <p>Don't have an account? <a href="signup.php">Create an Account</a></p>
+            </div><!-- az-signin-footer -->
+        </div><!-- az-card-signin -->
     </div><!-- az-signin-wrapper -->
 
     <script src="./old/lib/jquery/jquery.min.js"></script>
@@ -63,10 +64,11 @@ and password='".md5($password)."'";
 
     <script src="./old/js/azia.js"></script>
     <script>
-      $(function(){
+    $(function() {
         'use strict'
 
-      });
+    });
     </script>
-  </body>
+</body>
+
 </html>

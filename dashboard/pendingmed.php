@@ -29,13 +29,12 @@ if($role !== "Admin"){
                     <table id="datatable3" class="display responsive nowrap">
                         <thead>
                             <tr>
-                                <th class="wd-10p">ID</th>
+                                <th class="wd-5p">ID</th>
                                 <th class="wd-10p">Name</th>
                                 <th class="wd-10p">Short Form</th>
                                 <th class="wd-10p">Chapter</th>
                                 <th class="wd-10p">Sub Chapter</th>
                                 <th class="wd-10p">Source</th>
-                                <th class="wd-10p">Prover</th>
                                 <th class="wd-10p">Type</th>
                                 <th class="wd-10p">Added by</th>
                                 <th class="wd-30p">Actions</th>
