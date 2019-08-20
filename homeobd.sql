@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 18, 2019 at 08:48 PM
+-- Generation Time: Aug 20, 2019 at 08:14 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -78,6 +78,26 @@ INSERT INTO `patient` (`id`, `name`, `age`, `gender`, `address`, `weight`, `heig
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `relatedmedicine`
+--
+
+CREATE TABLE IF NOT EXISTS `relatedmedicine` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `grade` varchar(255) NOT NULL,
+  `symptom` varchar(255) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `relatedmedicine`
+--
+
+INSERT INTO `relatedmedicine` (`id`, `name`, `grade`, `symptom`) VALUES
+(1, 'Paracitamol', '1', 'headache');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `symptoms`
 --
 
@@ -87,15 +107,17 @@ CREATE TABLE IF NOT EXISTS `symptoms` (
   `chapter` varchar(255) NOT NULL,
   `subchapter` varchar(255) NOT NULL,
   `shortform` varchar(255) NOT NULL,
-  `relatedmedicine` varchar(10000) NOT NULL
+  `relatedmedicine` varchar(10000) NOT NULL,
+  `pending` varchar(255) NOT NULL DEFAULT 'Pending',
+  `addedby` varchar(255) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `symptoms`
 --
 
-INSERT INTO `symptoms` (`id`, `name`, `chapter`, `subchapter`, `shortform`, `relatedmedicine`) VALUES
-(1, 'headache', 'head', 'normal', 'hd', 'paracitamol');
+INSERT INTO `symptoms` (`id`, `name`, `chapter`, `subchapter`, `shortform`, `relatedmedicine`, `pending`, `addedby`) VALUES
+(1, 'headache', 'head', 'normal', 'hd', 'paracitamol', 'Approved', 'Md Sabbir Ahmed');
 
 -- --------------------------------------------------------
 
@@ -142,6 +164,12 @@ ALTER TABLE `patient`
   ADD PRIMARY KEY (`id`) COMMENT 'primary';
 
 --
+-- Indexes for table `relatedmedicine`
+--
+ALTER TABLE `relatedmedicine`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `symptoms`
 --
 ALTER TABLE `symptoms`
@@ -166,6 +194,11 @@ ALTER TABLE `medicines`
 -- AUTO_INCREMENT for table `patient`
 --
 ALTER TABLE `patient`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `relatedmedicine`
+--
+ALTER TABLE `relatedmedicine`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `symptoms`

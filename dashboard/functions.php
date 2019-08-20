@@ -2097,10 +2097,20 @@ function showsymptoms($con,$role){
                                     placeholder="Short Form" required>
                             </div><!-- form-group -->
 
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="medprov"
-                                    placeholder="Related Medicine">
+                            <div class="form-group" id="add1">
+                            <select class="medi form-control select2">
+                                <option label="Choose one"></option>
+                                <option value="Firefox">oirefox</option>
+                                <option value="Chrome">orome</option>
+                                <option value="Safari">oafari</option>
+                                <option value="Opera">Opera</option>
+                                <option value="Internet Explorer">Internet Explorer</option>
+                            </select>
+                            <input type="text" class="grade form-control" placeholder="Grade"><div style="clear:both"></div>
                             </div><!-- form-group -->
+                            
+                            <button id="btn1" class="btn btn-success btn-icon"><i class="typcn typcn-document-add"></i></button>
+                            <br/>
 
                             <button name="addmed" class="btn btn-az-primary pd-x-20">Add</button>
                         </form>

@@ -68,6 +68,44 @@ include("functions.php");
         <script src="../old/lib/select2/js/select2.min.js"></script>
 
         <script src="../old/js/azia.js"></script>
+
+        <script>
+      // Additional code for adding placeholder in search box of select2
+      (function($) {
+        var Defaults = $.fn.select2.amd.require('select2/defaults');
+
+        $.extend(Defaults.defaults, {
+          searchInputPlaceholder: ''
+        });
+
+        var SearchDropdown = $.fn.select2.amd.require('select2/dropdown/search');
+
+        var _renderSearchDropdown = SearchDropdown.prototype.render;
+
+        SearchDropdown.prototype.render = function(decorated) {
+
+          // invoke parent method
+          var $rendered = _renderSearchDropdown.apply(this, Array.prototype.slice.apply(arguments));
+
+          this.$search.attr('placeholder', this.options.get('searchInputPlaceholder'));
+
+          return $rendered;
+        };
+
+      })(window.jQuery);
+    </script>
+        <script>
+        var i = 1;
+        $("#btn1").click(function(e) {
+            e.preventDefault();
+        $("<div />", { "class":"add13", id:"input"+i })
+            .append($("<select />", { placeholder: "Related Medicine", class:"medi form-control select2", id:"name"+i }))
+            .append($("<input />", { type: "text", placeholder: "Grade", class:"grade form-control", id:"property"+i }))
+            .appendTo("#add1");
+        i++;
+        });
+
+        </script>
         <script>
         $(document).ready(function() {
             'use strict';
@@ -91,6 +129,7 @@ include("functions.php");
             $('.dataTables_length select').select2({
                 minimumResultsForSearch: Infinity
             });
+            
 
         });
         </script>
