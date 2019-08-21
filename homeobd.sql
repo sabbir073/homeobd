@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 20, 2019 at 08:14 PM
+-- Generation Time: Aug 21, 2019 at 04:34 PM
 -- Server version: 5.6.25
--- PHP Version: 5.6.11
+-- PHP Version: 5.3.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -86,14 +86,25 @@ CREATE TABLE IF NOT EXISTS `relatedmedicine` (
   `name` varchar(255) NOT NULL,
   `grade` varchar(255) NOT NULL,
   `symptom` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `relatedmedicine`
 --
 
 INSERT INTO `relatedmedicine` (`id`, `name`, `grade`, `symptom`) VALUES
-(1, 'Paracitamol', '1', 'headache');
+(2, 'Ace+', '1', 'Fever'),
+(3, 'Paracitamol', '2', 'Fever'),
+(4, 'Napa+', '3', 'Fever'),
+(5, 'Ace+', '1', 'Chulkani'),
+(6, 'Napa+', '2', 'Chulkani'),
+(7, 'Paracitamol', '3', 'Chulkani'),
+(8, 'Ace+', '1', 'Senseless'),
+(9, 'Paracitamol', '2', 'Senseless'),
+(10, 'Napa+', '3', 'Senseless'),
+(11, 'Ace+', '1', 'test'),
+(12, 'Paracitamol', '2', 'test'),
+(13, 'Napa+', '3', 'test');
 
 -- --------------------------------------------------------
 
@@ -107,17 +118,20 @@ CREATE TABLE IF NOT EXISTS `symptoms` (
   `chapter` varchar(255) NOT NULL,
   `subchapter` varchar(255) NOT NULL,
   `shortform` varchar(255) NOT NULL,
-  `relatedmedicine` varchar(10000) NOT NULL,
   `pending` varchar(255) NOT NULL DEFAULT 'Pending',
   `addedby` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `symptoms`
 --
 
-INSERT INTO `symptoms` (`id`, `name`, `chapter`, `subchapter`, `shortform`, `relatedmedicine`, `pending`, `addedby`) VALUES
-(1, 'headache', 'head', 'normal', 'hd', 'paracitamol', 'Approved', 'Md Sabbir Ahmed');
+INSERT INTO `symptoms` (`id`, `name`, `chapter`, `subchapter`, `shortform`, `pending`, `addedby`) VALUES
+(1, 'headache', 'head', 'normal', 'hd', 'Approved', 'Md Sabbir Ahmed'),
+(5, 'Fever', 'Head', 'Fever', 'FV', 'Pending', 'Md Sabbir Ahmed'),
+(6, 'Chulkani', 'Body', 'Skin', 'CH', 'Pending', 'Md Sabbir Ahmed'),
+(7, 'Senseless', 'Body', 'Sense', 'SNS', 'Pending', 'Md Sabbir Ahmed'),
+(8, 'test', 'test', 'test', 'test', 'Pending', 'Md Sabbir Ahmed');
 
 -- --------------------------------------------------------
 
@@ -199,12 +213,12 @@ ALTER TABLE `patient`
 -- AUTO_INCREMENT for table `relatedmedicine`
 --
 ALTER TABLE `relatedmedicine`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `symptoms`
 --
 ALTER TABLE `symptoms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `users`
 --
