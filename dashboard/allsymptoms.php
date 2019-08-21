@@ -61,21 +61,21 @@ include("functions.php");
                                             <form method="post" action="">
                                                 <div class="form-group">
                                                     <input type="text" class="form-control" placeholder="Name"
-                                                        name="medname" required>
+                                                        name="symptomsname" required>
                                                 </div><!-- form-group -->
 
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" name="medchap"
+                                                    <input type="text" class="form-control" name="symptomschap"
                                                         placeholder="Chapter" required>
                                                 </div><!-- form-group -->
 
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" name="medsubchap"
+                                                    <input type="text" class="form-control" name="symptomssubchap"
                                                         placeholder="Sub Chapter">
                                                 </div><!-- form-group -->
 
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" name="medsource"
+                                                    <input type="text" class="form-control" name="symptomsshortform"
                                                         placeholder="Short Form" required>
                                                 </div><!-- form-group -->
 
@@ -83,7 +83,8 @@ include("functions.php");
                                                     <select class="medi form-control select2" name="relatedmedicine[]">
                                                         <?php getrelated($con);?>
                                                     </select>
-                                                    <input type="text" class="grade form-control" placeholder="Grade">
+                                                    <input type="text" name="grade[]" class="grade form-control"
+                                                        placeholder="Grade">
                                                     <div style="clear:both"></div>
                                                 </div><!-- form-group -->
 
@@ -91,7 +92,8 @@ include("functions.php");
                                                         class="typcn typcn-document-add"></i></button>
                                                 <br />
 
-                                                <button name="addmed" class="btn btn-az-primary pd-x-20">Add</button>
+                                                <button name="addsymptom"
+                                                    class="btn btn-az-primary pd-x-20">Add</button>
                                             </form>
 
                                         </div>
@@ -136,6 +138,7 @@ include("functions.php");
                     '" class="medi form-control select2" name="relatedmedicine[]"><?php getrelated($con);?></select>'
                 ))
                 .append($("<input />", {
+                    name: "grade[]",
                     type: "text",
                     placeholder: "Grade",
                     class: "grade form-control",

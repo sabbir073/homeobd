@@ -1997,6 +1997,10 @@ function showsymptoms($con,$role){
         
     }
 
+    //calling add function
+
+    addsymtomstodb ($con);
+
     //symptoms edit
     
     if(isset($_POST["subupdate"])){
@@ -2067,45 +2071,7 @@ function showsymptoms($con,$role){
     //add new symtoms
 
 
-//symptom add to database
 
-if(isset($_POST["addmed"])){
-    
-    $medname = stripslashes($_REQUEST['medname']);
-    $medname = mysqli_real_escape_string($con,$medname);
-
-    $medchap = stripslashes($_REQUEST['medchap']);
-    $medchap = mysqli_real_escape_string($con,$medchap);
-
-    $medsubchap = stripslashes($_REQUEST['medsubchap']);
-    $medsubchap = mysqli_real_escape_string($con,$medsubchap);
-
-    $medsource = stripslashes($_REQUEST['medsource']);
-    $medsource = mysqli_real_escape_string($con,$medsource);
-
-    $medprov = stripslashes($_REQUEST['medprov']);
-    $medprov = mysqli_real_escape_string($con,$medprov);
-
-    $addedby = $_SESSION['name'];
-
-
-    $medaddquery = "INSERT into `symptoms` (name, chapter, subchapter, shortform, relatedmedicine, addedby)
-            VALUES ('$medname', '$medchap', '$medsubchap', '$medsource', '$medprov','$addedby')";
-    $mdaddresult = mysqli_query($con,$medaddquery);
-
-    if($mdaddresult){
-        echo '<div class="alert alert-success" role="alert">
-                 <strong>Well done!</strong> You successfully added a Symptoms. <a href="" onClick="window.location.reload();">Refresh the page</a>
-            </div>';
-           
-    }
-    else{
-        echo '<div class="alert alert-danger" role="alert">
-                 <strong>Something Wrong!</strong> Symptom is not added. <a href="" onClick="window.location.reload();">Refresh the page</a>
-            </div>';
-    }
-    
-}
 }
 
   //selectbox value getting for database
@@ -2120,6 +2086,66 @@ if(isset($_POST["addmed"])){
         
             
             echo '<option value="'.$row['name'].'">'.$row['name'].'</option>';
+        
+    }
+}
+
+//symptom add to database
+
+function addsymtomstodb ($con){
+    if(isset($_POST["addsymptom"])){
+    
+        $medname = stripslashes($_REQUEST['symptomsname']);
+        $medname = mysqli_real_escape_string($con,$medname);
+    
+        $medchap = stripslashes($_REQUEST['symptomschap']);
+        $medchap = mysqli_real_escape_string($con,$medchap);
+    
+        $medsubchap = stripslashes($_REQUEST['symptomssubchap']);
+        $medsubchap = mysqli_real_escape_string($con,$medsubchap);
+    
+        $medsource = stripslashes($_REQUEST['symptomsshortform']);
+        $medsource = mysqli_real_escape_string($con,$medsource);
+    
+        $related_medicins = $_REQUEST['relatedmedicine'];
+        $related_medicins = array_map(array($con, 'real_escape_string'), $related_medicins);
+    
+        $grades = $_REQUEST['grade'];
+        $grades = array_map(array($con, 'real_escape_string'), $grades);
+    
+        $addedby = $_SESSION['name'];
+    
+    
+        $medaddquery = "INSERT into `symptoms` (name, chapter, subchapter, shortform, addedby)
+                VALUES ('$medname', '$medchap', '$medsubchap', '$medsource','$addedby')";
+        $mdaddresult = mysqli_query($con,$medaddquery);
+    
+        for($i=0; $i<count($related_medicins); $i++){
+            if($related_medicins[$i]!='' && $grades[$i]!=''){
+    
+                $each_single_related_medicin = $related_medicins[$i];
+                $each_single_grade = $grades[$i];
+    
+                $sympquery = "INSERT into `relatedmedicine` (name, grade, symptom) VALUES ('$each_single_related_medicin', '$each_single_grade', '$medname')";
+                $sympresult = mysqli_query($con,$sympquery);
+    
+                
+            }
+        }
+    
+        if($mdaddresult && $sympresult){
+            echo '<div class="alert alert-success" role="alert">
+                     <strong>Well done!</strong> You successfully added a Symptoms. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+               
+        }
+        else{
+            echo '<div class="alert alert-danger" role="alert">
+                     <strong>Something Wrong!</strong> Symptom is not added. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+        }
+    
+        
         
     }
 }
