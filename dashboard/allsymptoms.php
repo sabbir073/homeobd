@@ -46,6 +46,60 @@ include("functions.php");
                         </tbody>
                     </table>
                     <div class="mg-lg-b-30"></div>
+                    <center>
+                        <div id="modaldemoadd" class="modal">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content modal-content-demo">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title">Add New Symptoms</h6>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+                                            <form method="post" action="">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" placeholder="Name"
+                                                        name="medname" required>
+                                                </div><!-- form-group -->
+
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" name="medchap"
+                                                        placeholder="Chapter" required>
+                                                </div><!-- form-group -->
+
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" name="medsubchap"
+                                                        placeholder="Sub Chapter">
+                                                </div><!-- form-group -->
+
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" name="medsource"
+                                                        placeholder="Short Form" required>
+                                                </div><!-- form-group -->
+
+                                                <div class="form-group" id="add1">
+                                                    <select class="medi form-control select2" name="relatedmedicine[]">
+                                                        <?php getrelated($con);?>
+                                                    </select>
+                                                    <input type="text" class="grade form-control" placeholder="Grade">
+                                                    <div style="clear:both"></div>
+                                                </div><!-- form-group -->
+
+                                                <button id="btn1" class="btn btn-success btn-icon"><i
+                                                        class="typcn typcn-document-add"></i></button>
+                                                <br />
+
+                                                <button name="addmed" class="btn btn-az-primary pd-x-20">Add</button>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- modal-dialog -->
+                        </div><!-- modal -->
+                    </center>
 
                 </div><!-- az-content-body -->
             </div>
@@ -69,42 +123,29 @@ include("functions.php");
 
         <script src="../old/js/azia.js"></script>
 
-        <script>
-      // Additional code for adding placeholder in search box of select2
-      (function($) {
-        var Defaults = $.fn.select2.amd.require('select2/defaults');
 
-        $.extend(Defaults.defaults, {
-          searchInputPlaceholder: ''
-        });
-
-        var SearchDropdown = $.fn.select2.amd.require('select2/dropdown/search');
-
-        var _renderSearchDropdown = SearchDropdown.prototype.render;
-
-        SearchDropdown.prototype.render = function(decorated) {
-
-          // invoke parent method
-          var $rendered = _renderSearchDropdown.apply(this, Array.prototype.slice.apply(arguments));
-
-          this.$search.attr('placeholder', this.options.get('searchInputPlaceholder'));
-
-          return $rendered;
-        };
-
-      })(window.jQuery);
-    </script>
         <script>
         var i = 1;
         $("#btn1").click(function(e) {
             e.preventDefault();
-        $("<div />", { "class":"add13", id:"input"+i })
-            .append($("<select />", { placeholder: "Related Medicine", class:"medi form-control select2", id:"name"+i }))
-            .append($("<input />", { type: "text", placeholder: "Grade", class:"grade form-control", id:"property"+i }))
-            .appendTo("#add1");
-        i++;
-        });
+            $("<div />", {
+                    "class": "add13",
+                    id: "input" + i
+                })
+                .append($('<select id="name' + i +
+                    '" class="medi form-control select2" name="relatedmedicine[]"><?php getrelated($con);?></select>'
+                ))
+                .append($("<input />", {
+                    type: "text",
+                    placeholder: "Grade",
+                    class: "grade form-control",
+                    id: "property" + i
+                }))
 
+                .appendTo("#add1");
+            i++;
+
+        });
         </script>
         <script>
         $(document).ready(function() {
@@ -129,7 +170,7 @@ include("functions.php");
             $('.dataTables_length select').select2({
                 minimumResultsForSearch: Infinity
             });
-            
+
 
         });
         </script>
