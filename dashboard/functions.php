@@ -1820,13 +1820,16 @@ function showsymptoms($con,$role){
     while($medrow = mysqli_fetch_assoc($result6)){
         
         $medid = $medrow["id"];
+        $sympname = $medrow["name"];
 
         echo '<tr> 
                   <td>'.$medid.'</td> 
                   <td>'.$medrow["name"].'</td> 
                   <td>'.$medrow["chapter"].'</td> 
                   <td>'.$medrow["shortform"].'</td> 
-                  <td>'.$medrow["relatedmedicine"].'</td>
+                  <td>';
+                  viewsymptomfromdb($con,$sympname);
+                  echo '</td>
                   <td>'.$medrow["addedby"].'</td>
                   
                   <td>
@@ -1866,7 +1869,9 @@ function showsymptoms($con,$role){
                                     </tr>
                                     <tr>
                                     <th scope="row"><b>Related Medicines</b></th>
-                                    <td>'.$medrow["relatedmedicine"].'</td>
+                                    <td>'; 
+                                    viewsymptomfromdb($con,$sympname, $limit = 100);
+                                    echo '</td>
                                     </tr>
                                     <tr>
                                     <th scope="row"><b>Status</b></th>
@@ -1924,13 +1929,11 @@ function showsymptoms($con,$role){
   
                                   <div class="form-group">
                                   <input type="text" class="form-control" name="medsubchap'.$medid.'" placeholder="Short Form" value="'.$medrow["shortform"].'">
-                                  </div><!-- form-group -->
+                                  </div><!-- form-group -->';
   
-                                  <div class="form-group">
-                                  <input type="text" class="form-control" name="medsource'.$medid.'" placeholder="Related Medicine" value="'.$medrow["relatedmedicine"].'">
-                                  </div><!-- form-group -->
+                                  editsymptomstodb($con,$sympname);
 
-                                  <div class="form-group">
+                                  echo '<div class="form-group">
                                   <select class="form-control" name="status'.$medid.'" id="sel11">';
                                     if($medrow["pending"] == "Approved"){
                                         echo '<option value="Approved" selected>Approved</option>
@@ -2019,17 +2022,36 @@ function showsymptoms($con,$role){
         $medsubchap = stripslashes($_REQUEST['medsubchap'.$id.'']);
         $medsubchap = mysqli_real_escape_string($con,$medsubchap);
 
-        $medsource = stripslashes($_REQUEST['medsource'.$id.'']);
-        $medsource = mysqli_real_escape_string($con,$medsource);
+        $related_medicins = $_REQUEST['relatedmedicine'];
+        $related_medicins = array_map(array($con, 'real_escape_string'), $related_medicins);
+    
+        $grades = $_REQUEST['grade'];
+        $grades = array_map(array($con, 'real_escape_string'), $grades);
 
         $medstatus = stripslashes($_REQUEST['status'.$id.'']);
         $medstatus = mysqli_real_escape_string($con,$medstatus);
 
 
-        $medquery = "UPDATE symptoms SET name = '$medname', chapter = '$medshort', subchapter = '$medchap', shortform = '$medsubchap', relatedmedicine = '$medsource', pending='$medstatus' WHERE id = $id LIMIT 1";
+        $medquery = "UPDATE symptoms SET name = '$medname', chapter = '$medshort', subchapter = '$medchap', shortform = '$medsubchap', pending='$medstatus' WHERE id = $id LIMIT 1";
         $mdresult = mysqli_query($con,$medquery);
 
-        if($mdresult){
+        $sympdelquery = "DELETE FROM relatedmedicine WHERE symptom = '$medname'";
+        $sympdel = mysqli_query($con,$sympdelquery);
+
+        for($i=0; $i<count($related_medicins); $i++){
+            if($related_medicins[$i]!='' && $grades[$i]!=''){
+    
+                $each_single_related_medicin = $related_medicins[$i];
+                $each_single_grade = $grades[$i];
+    
+                $sympquery = "INSERT into `relatedmedicine` (name, grade, symptom) VALUES ('$each_single_related_medicin', '$each_single_grade', '$medname')";
+                $sympresult = mysqli_query($con,$sympquery);
+    
+                
+            }
+        }
+
+        if($mdresult && $sympresult){
             echo '<div class="alert alert-success" role="alert">
                      <strong>Well done!</strong> You successfully edited Symptom. <a href="" onClick="window.location.reload();">Refresh the page</a>
                 </div>';
@@ -2079,7 +2101,7 @@ function showsymptoms($con,$role){
     
   function getrelated($con){
         
-    echo '<option value="">Select one</option>';
+    
     $related_query = "SELECT * FROM medicines WHERE pending = 'Approved' ORDER BY id DESC";
     $related_execute = mysqli_query($con,$related_query);
     while ($row = mysqli_fetch_assoc($related_execute)){
@@ -2149,3 +2171,49 @@ function addsymtomstodb ($con){
         
     }
 }
+
+function viewsymptomfromdb($con,$sympname, $limit = 2){
+    $query9 = "SELECT * FROM relatedmedicine WHERE symptom= '$sympname' LIMIT $limit";
+    $result9 = mysqli_query($con,$query9);
+    $allrelated = array();
+    while($getrow = mysqli_fetch_assoc($result9)){
+        $getgrade = $getrow["grade"];
+        $allrelated[] = $getrow["name"]. '('.$getgrade.')';
+        
+    }
+    echo implode(", ", $allrelated);
+}
+
+function editsymptomstodb($con,$sympname){
+    $query9 = "SELECT * FROM relatedmedicine WHERE symptom= '$sympname'";
+    $result9 = mysqli_query($con,$query9);
+    $rowcount = mysqli_num_rows($result9);
+    while($getrow = mysqli_fetch_assoc($result9)){
+        $getgrade = $getrow["grade"];
+        $allrelated = $getrow["name"];
+            echo '<div class="form-group">
+            <select class="medi form-control select2" name="relatedmedicine[]">
+            
+            <option value="'.$getrow['name'].'" selected>'.$getrow['name'].'</option>
+            ';
+            getrelated($con);
+            echo'
+            </select>
+            <input type="text" name="grade[]" value="'.$getgrade.'" class="grade form-control"
+                placeholder="Grade">
+            <div style="clear:both"></div>
+        </div><!-- form-group -->';
+
+        
+
+    }
+    echo '<div class="symptomadd"></div><button class="addsympbtn btn btn-success btn-icon"><i
+    class="typcn typcn-document-add"></i></button>
+    <br />';
+    
+}
+
+
+
+
+

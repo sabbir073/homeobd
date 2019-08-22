@@ -79,8 +79,9 @@ include("functions.php");
                                                         placeholder="Short Form" required>
                                                 </div><!-- form-group -->
 
-                                                <div class="form-group" id="add1">
+                                                <div class="form-group symptomadd">
                                                     <select class="medi form-control select2" name="relatedmedicine[]">
+                                                    <option value="" selected>Select one</option>
                                                         <?php getrelated($con);?>
                                                     </select>
                                                     <input type="text" name="grade[]" class="grade form-control"
@@ -88,7 +89,7 @@ include("functions.php");
                                                     <div style="clear:both"></div>
                                                 </div><!-- form-group -->
 
-                                                <button id="btn1" class="btn btn-success btn-icon"><i
+                                                <button class="addsympbtn btn btn-success btn-icon"><i
                                                         class="typcn typcn-document-add"></i></button>
                                                 <br />
 
@@ -128,14 +129,14 @@ include("functions.php");
 
         <script>
         var i = 1;
-        $("#btn1").click(function(e) {
+        $(".addsympbtn").click(function(e) {
             e.preventDefault();
             $("<div />", {
                     "class": "add13",
                     id: "input" + i
                 })
                 .append($('<select id="name' + i +
-                    '" class="medi form-control select2" name="relatedmedicine[]"><?php getrelated($con);?></select>'
+                    '" class="medi form-control select2" name="relatedmedicine[]"><option value="" selected>Select one</option><?php getrelated($con);?></select>'
                 ))
                 .append($("<input />", {
                     name: "grade[]",
@@ -145,11 +146,19 @@ include("functions.php");
                     id: "property" + i
                 }))
 
-                .appendTo("#add1");
+                .appendTo(".symptomadd");
             i++;
 
         });
+
         </script>
+        <script>
+
+        
+
+        </script>
+        
+        
         <script>
         $(document).ready(function() {
             'use strict';
