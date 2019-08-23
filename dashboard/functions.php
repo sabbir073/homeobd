@@ -447,14 +447,14 @@ function pendingmedicine($con){
                    <td>
                       <center>
                           <div class="btn-icon-list">
-                          <a href="" data-toggle="modal" data-target="#modaldemo3'.$i.'"><button class="btn btn-info btn-icon"><i class="la la-check-circle"></i></button></a>
-                          <a href="" data-toggle="modal" data-target="#modaldemo4'.$i.'"><button class="btn btn-danger btn-icon"><i class="la la-times-circle"></i></button></a>
+                          <a href="" data-toggle="modal" data-target="#modaldemoedit'.$i.'"><button class="btn btn-info btn-icon"><i class="la la-check-circle"></i></button></a>
+                          <a href="" data-toggle="modal" data-target="#modaldemodel'.$i.'"><button class="btn btn-danger btn-icon"><i class="la la-times-circle"></i></button></a>
                               
                           </div>
   
                       </center>
                       <center>
-                      <div id="modaldemo3'.$i.'" class="modal">
+                      <div id="modaldemoedit'.$i.'" class="modal">
                           <div class="modal-dialog" role="document">
                               <div class="modal-content modal-content-demo">
                               <div class="modal-header">
@@ -505,7 +505,7 @@ function pendingmedicine($con){
                       </center>
   
                       <center>
-                      <div id="modaldemo4'.$i.'" class="modal">
+                      <div id="modaldemodel'.$i.'" class="modal">
                           <div class="modal-dialog" role="document">
                               <div class="modal-content modal-content-demo">
                               <div class="modal-header">
@@ -640,7 +640,7 @@ function adminmenu($role){
                 <a href="" class="nav-link with-sub"><i class="fa fa-stethoscope" aria-hidden="true"></i>Symptoms</a>
                 <nav class="nav-sub">
                     <a href="allsymptoms.php" class="nav-sub-link">All Symtoms</a>
-                    <a href="pending-symptoms.html" class="nav-sub-link">Pending Symptoms</a>
+                    <a href="pendingsymptoms.php" class="nav-sub-link">Pending Symptoms</a>
                 </nav>
             </li><!-- nav-item -->
 
@@ -2078,8 +2078,10 @@ function showsymptoms($con,$role){
         
         $delid = $_POST["subdelete"];
 
-        $meddelquery = "DELETE FROM symptoms WHERE id = $delid LIMIT 1";
-        $mddelresult = mysqli_query($con,$meddelquery);
+        $delnamesymp = $medrow["name"];
+
+        $mddelresult = mysqli_multi_query($con,"DELETE FROM symptoms WHERE id = $delid LIMIT 1;  DELETE FROM relatedmedicine WHERE name = '$delnamesymp';");
+        
 
         if($mddelresult){
             echo '<div class="alert alert-success" role="alert">
@@ -2223,5 +2225,261 @@ function editsymptomstodb($con,$sympname){
 
 
 
+// pending symptoms functionality
 
+function pendingsymptoms($con){
+    $query7 = "SELECT * FROM symptoms WHERE pending <> 'Approved' ORDER BY id DESC";
+    $result7 = mysqli_query($con,$query7);
+    $i = 1;
+    while($medrow = mysqli_fetch_assoc($result7)){
+        
+        $medid = $medrow["id"];
+        $sympname = $medrow["name"];
+
+        echo '<tr> 
+                  <td>'.$medid.'</td> 
+                  <td>'.$medrow["name"].'</td>
+                  <td>'.$medrow["chapter"].'</td> 
+                  <td>'.$medrow["subchapter"].'</td> 
+                  <td>'.$medrow["shortform"].'</td>
+                  <td>'.$medrow["addedby"].'</td>
+                    
+                   <td>
+                      <center>
+                          <div class="btn-icon-list">
+                          <a href="" data-toggle="modal" data-target="#modaldemoview'.$i.'"><button class="btn btn-indigo btn-icon"><i class="la la-eye"></i></button></a>
+                          <a href="" data-toggle="modal" data-target="#modaldemoedit'.$i.'"><button class="btn btn-info btn-icon"><i class="la la-check-circle"></i></button></a>
+                          <a href="" data-toggle="modal" data-target="#modaldemodel'.$i.'"><button class="btn btn-danger btn-icon"><i class="la la-times-circle"></i></button></a>
+                              
+                          </div>
+  
+                      </center>
+                      <center>
+                      <div id="modaldemoview'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Details - '.$medrow["name"].'</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+                              <div class="table-responsive">
+                                <table class="table table-bordered mg-b-0">
+                                <tbody>
+                                    <tr>
+                                    <th scope="row"><b>Name</b></th>
+                                    <td>'.$medrow["name"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Chapter</b></th>
+                                    <td>'.$medrow["chapter"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Sub Chapter</b></th>
+                                    <td>'.$medrow["subchapter"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Short Form</b></th>
+                                    <td>'.$medrow["shortform"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Related Medicines</b></th>
+                                    <td>'; 
+                                    viewsymptomfromdb($con,$sympname, $limit = 100);
+                                    echo '</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Status</b></th>
+                                    <td>'.$medrow["pending"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Added by</b></th>
+                                    <td>'.$medrow["addedby"].'</td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div></br>
+                            
+                              
+                                  </div>
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+                      <center>
+                      <div id="modaldemoedit'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Edit Symptom</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+                              <form method="post" action="">
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" placeholder="Name" name="medname'.$medid.'" value="'.$medrow["name"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medshort'.$medid.'" placeholder="Chapter" value="'.$medrow["chapter"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medchap'.$medid.'" placeholder="Sub Chapter" value="'.$medrow["subchapter"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medsubchap'.$medid.'" placeholder="Short Form" value="'.$medrow["shortform"].'">
+                                  </div><!-- form-group --><div>';
+  
+                                  editsymptomstodb($con,$sympname);
+
+                                  
+                                  echo  '</select>
+                                  </div><!-- form-group -->
+                              
+                                  <button value="'.$medid.'" name="pendingsymptomsupdate" class="btn btn-az-primary pd-x-20">Approve</button>
+                              </form>
+                              
+                                  </div>
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+  
+                      <center>
+                      <div id="modaldemodel'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Delete Medicine</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="alert alert-danger mg-b-0" role="alert">
+                                  Are you sure want to delete '.$medrow["name"].'?
+                              </div>
+                              <div class="mg-lg-b-30"></div>
+                              <form method="post" action="">
+                                  
+                                  <button value="'.$medid.'" name="symptomsunapprove" class="btn btn-az-primary pd-x-20">Delete</button>
+                              </form>
+                              
+                                
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+  
+  
+  
+                  </td>
+
+               </tr>';
+              
+        $i++;
+        
+    }
+
+    //approve symptoms
+    
+    if(isset($_POST["pendingsymptomsupdate"])){
+        
+        $id = $_POST["pendingsymptomsupdate"];
+        
+        $medname = stripslashes($_REQUEST['medname'.$id.'']);
+        $medname = mysqli_real_escape_string($con,$medname);
+
+        $medshort = stripslashes($_REQUEST['medshort'.$id.'']);
+        $medshort = mysqli_real_escape_string($con,$medshort);
+
+        $medchap = stripslashes($_REQUEST['medchap'.$id.'']);
+        $medchap = mysqli_real_escape_string($con,$medchap);
+
+        $medsubchap = stripslashes($_REQUEST['medsubchap'.$id.'']);
+        $medsubchap = mysqli_real_escape_string($con,$medsubchap);
+
+        $related_medicins = $_REQUEST['relatedmedicine'];
+        $related_medicins = array_map(array($con, 'real_escape_string'), $related_medicins);
+    
+        $grades = $_REQUEST['grade'];
+        $grades = array_map(array($con, 'real_escape_string'), $grades);
+
+        $medquery = "UPDATE symptoms SET name = '$medname', chapter = '$medshort', subchapter = '$medchap', shortform = '$medsubchap', pending='Approved' WHERE id = $id LIMIT 1";
+        $mdresult = mysqli_query($con,$medquery);
+
+        $checkquery = "SELECT * FROM relatedmedicine WHERE symptom = '$medname'";
+        $checkresult = mysqli_query($con,$checkquery);
+        $checkrow = mysqli_num_rows($checkresult);
+
+        if($checkrow){
+            $sympdelquery = "DELETE FROM relatedmedicine WHERE symptom = '$medname'";
+            $sympdel = mysqli_query($con,$sympdelquery);
+        }
+
+        for($i=0; $i<count($related_medicins); $i++){
+            if($related_medicins[$i]!='' && $grades[$i]!=''){
+    
+                $each_single_related_medicin = $related_medicins[$i];
+                $each_single_grade = $grades[$i];
+    
+                $sympquery = "INSERT into `relatedmedicine` (name, grade, symptom) VALUES ('$each_single_related_medicin', '$each_single_grade', '$medname')";
+                $sympresult = mysqli_query($con,$sympquery);
+    
+                
+            }
+        }
+
+        if($mdresult && $sympresult){
+            echo '<div class="alert alert-success" role="alert">
+                     <strong>Well done!</strong> You successfully approved Symptom. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+               
+        }
+        else{
+            echo '<div class="alert alert-danger" role="alert">
+                     <strong>Something Wrong!</strong> Symptom is not approved. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+                
+        }
+        
+    }
+
+    //symptom Delete
+    
+    if(isset($_POST["symptomsunapprove"])){
+        
+        $delid = $_POST["symptomsunapprove"];
+        $delnamesymp = $medrow["name"];
+
+
+
+        $mddelresult = mysqli_multi_query($con,"DELETE FROM symptoms WHERE id = $delid LIMIT 1;  DELETE FROM relatedmedicine WHERE name = '$delnamesymp';");
+
+        if($mddelresult){
+            echo '<div class="alert alert-success" role="alert">
+                     <strong>Well done!</strong> You successfully Deleted Symptom. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+                
+        }
+        else{
+            echo '<div class="alert alert-danger" role="alert">
+                    <strong>Something Wrong!</strong> Symptom is not Deleted. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+        }
+        
+    }
+
+}
 

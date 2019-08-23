@@ -2,6 +2,10 @@
 include("auth.php");
 include("header.php");
 include("functions.php");
+if($role !== "Admin"){
+    header("Location: allsymptoms.php");
+    exit;
+}
 ?>
 
 <body class="az-body az-body-sidebar az-body-dashboard-nine">
@@ -15,94 +19,31 @@ include("functions.php");
                 <div class="az-content-body">
                     <div class="az-content-breadcrumb">
                         <span>Symptoms</span>
-                        <span>ALL Symptoms</span>
+                        <span>Pending Symptoms</span>
                     </div>
                     <br />
-                    <div style="float:right;"><a href="" data-toggle="modal" data-target="#modaldemoadd"><button
-                                class="btn btn-success btn-with-icon"><i class="typcn typcn-document-add"></i> Add
-                                new</button></a></div>
-                    <div class="az-content-label mg-b-5">ALL Symptoms</div>
+
+                    <div class="az-content-label mg-b-5">Pending Symptoms</div>
 
                     <br />
-                    <table id="datatable1" class="display responsive nowrap">
+                    <table id="datatable3" class="display responsive nowrap">
                         <thead>
                             <tr>
-
-
                                 <th class="wd-5p">ID</th>
                                 <th class="wd-10p">Name</th>
                                 <th class="wd-10p">Chapter</th>
-                                <th class="wd-10p">Short Name</th>
-                                <th class="wd-10p">Related medicine</th>
+                                <th class="wd-10p">Sub Chapter</th>
+                                <th class="wd-10p">Short Form</th>
                                 <th class="wd-10p">Added by</th>
                                 <th class="wd-10p">Actions</th>
-
                             </tr>
                         </thead>
                         <tbody>
-                            <?php showsymptoms($con,$role);?>
+                            <?php pendingsymptoms($con);?>
 
                         </tbody>
                     </table>
                     <div class="mg-lg-b-30"></div>
-                    <center>
-                        <div id="modaldemoadd" class="modal">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content modal-content-demo">
-                                    <div class="modal-header">
-                                        <h6 class="modal-title">Add New Symptoms</h6>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
-                                            <form method="post" action="">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Name"
-                                                        name="symptomsname" required>
-                                                </div><!-- form-group -->
-
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" name="symptomschap"
-                                                        placeholder="Chapter" required>
-                                                </div><!-- form-group -->
-
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" name="symptomssubchap"
-                                                        placeholder="Sub Chapter">
-                                                </div><!-- form-group -->
-
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" name="symptomsshortform"
-                                                        placeholder="Short Form" required>
-                                                </div><!-- form-group -->
-
-                                                <div class="form-group symptomadd">
-                                                    <select class="medi form-control select2" name="relatedmedicine[]">
-                                                    <option value="" selected>Select one</option>
-                                                        <?php getrelated($con);?>
-                                                    </select>
-                                                    <input type="text" name="grade[]" class="grade form-control"
-                                                        placeholder="Grade">
-                                                    <div style="clear:both"></div>
-                                                </div><!-- form-group -->
-                                                
-                                                <button class="addsympbtn btn btn-success btn-icon"><i
-                                                        class="typcn typcn-document-add"></i></button>
-                                                        
-                                                <br />
-
-                                                <button name="addsymptom"
-                                                    class="btn btn-az-primary pd-x-20">Add</button>
-                                            </form>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- modal-dialog -->
-                        </div><!-- modal -->
-                    </center>
 
                 </div><!-- az-content-body -->
             </div>
@@ -125,7 +66,6 @@ include("functions.php");
         <script src="../old/lib/select2/js/select2.min.js"></script>
 
         <script src="../old/js/azia.js"></script>
-
 
         <script>
         var i = 1;
@@ -157,16 +97,14 @@ include("functions.php");
 
         });
 
-        
-        
 
         </script>
-        
+
         <script>
         $(document).ready(function() {
             'use strict';
 
-            $('#datatable1').DataTable({
+            $('#datatable3').DataTable({
                 responsive: true,
                 language: {
                     searchPlaceholder: 'Search...',
@@ -185,7 +123,6 @@ include("functions.php");
             $('.dataTables_length select').select2({
                 minimumResultsForSearch: Infinity
             });
-
 
         });
         </script>
