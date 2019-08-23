@@ -88,9 +88,10 @@ include("functions.php");
                                                         placeholder="Grade">
                                                     <div style="clear:both"></div>
                                                 </div><!-- form-group -->
-
+                                                
                                                 <button class="addsympbtn btn btn-success btn-icon"><i
                                                         class="typcn typcn-document-add"></i></button>
+                                                        
                                                 <br />
 
                                                 <button name="addsymptom"
@@ -145,16 +146,25 @@ include("functions.php");
                     class: "grade form-control",
                     id: "property" + i
                 }))
+                .append($('<a href="#" class="remove_field"><i class="fa fa-times"></a>'))
 
                 .appendTo(".symptomadd");
             i++;
 
+            $('.remove_field').click(function(e){
+            e.preventDefault();
+            $(this).parent('div').remove();
+            })
+
         });
+
+        
+        
 
         </script>
         <script>
 
-        
+            
 
         </script>
         

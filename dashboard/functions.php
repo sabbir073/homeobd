@@ -1929,11 +1929,11 @@ function showsymptoms($con,$role){
   
                                   <div class="form-group">
                                   <input type="text" class="form-control" name="medsubchap'.$medid.'" placeholder="Short Form" value="'.$medrow["shortform"].'">
-                                  </div><!-- form-group -->';
+                                  </div><!-- form-group --><div>';
   
                                   editsymptomstodb($con,$sympname);
 
-                                  echo '<div class="form-group">
+                                  echo '</div><div class="form-group">
                                   <select class="form-control" name="status'.$medid.'" id="sel11">';
                                     if($medrow["pending"] == "Approved"){
                                         echo '<option value="Approved" selected>Approved</option>
@@ -2035,8 +2035,14 @@ function showsymptoms($con,$role){
         $medquery = "UPDATE symptoms SET name = '$medname', chapter = '$medshort', subchapter = '$medchap', shortform = '$medsubchap', pending='$medstatus' WHERE id = $id LIMIT 1";
         $mdresult = mysqli_query($con,$medquery);
 
-        $sympdelquery = "DELETE FROM relatedmedicine WHERE symptom = '$medname'";
-        $sympdel = mysqli_query($con,$sympdelquery);
+        $checkquery = "SELECT * FROM relatedmedicine WHERE symptom = '$medname'";
+        $checkresult = mysqli_query($con,$checkquery);
+        $checkrow = mysqli_num_rows($checkresult);
+
+        if($checkrow){
+            $sympdelquery = "DELETE FROM relatedmedicine WHERE symptom = '$medname'";
+            $sympdel = mysqli_query($con,$sympdelquery);
+        }
 
         for($i=0; $i<count($related_medicins); $i++){
             if($related_medicins[$i]!='' && $grades[$i]!=''){
@@ -2061,6 +2067,7 @@ function showsymptoms($con,$role){
             echo '<div class="alert alert-danger" role="alert">
                      <strong>Something Wrong!</strong> Symptom is not edited. <a href="" onClick="window.location.reload();">Refresh the page</a>
                 </div>';
+                
         }
         
     }
@@ -2202,6 +2209,7 @@ function editsymptomstodb($con,$sympname){
             <input type="text" name="grade[]" value="'.$getgrade.'" class="grade form-control"
                 placeholder="Grade">
             <div style="clear:both"></div>
+            <a href="#" class="remove_field fa fa-times"></a>
         </div><!-- form-group -->';
 
         
