@@ -51,6 +51,7 @@ function showmedicine($con,$role){
     while($medrow = mysqli_fetch_assoc($result6)){
         
         $medid = $medrow["id"];
+        $antimed = $medrow["name"];
 
         echo '<tr> 
                   <td>'.$medid.'</td> 
@@ -59,7 +60,9 @@ function showmedicine($con,$role){
                   <td>'.$medrow["chapter"].'</td> 
                   <td>'.$medrow["source"].'</td>
                   <td>'.$medrow["type"].'</td>
-                  <td>'.$medrow["addedby"].'</td>
+                  <td>';
+                  viewantidot($con,$antimed);
+                  echo'</td>
                   
                   <td>
                       <center>
@@ -107,6 +110,12 @@ function showmedicine($con,$role){
                                     <tr>
                                     <th scope="row"><b>Type</b></th>
                                     <td>'.$medrow["type"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Anti DOT</b></th>
+                                    <td>'; 
+                                    viewantidot($con,$antimed, $limit = 100);
+                                    echo'</td>
                                     </tr>
                                     <tr>
                                     <th scope="row"><b>Added by</b></th>
@@ -176,9 +185,9 @@ function showmedicine($con,$role){
   
                                   <div class="form-group">
                                   <input type="text" class="form-control" name="medtype'.$medid.'" placeholder="Type" value="'.$medrow["type"].'">
-                                  </div><!-- form-group -->
-
-                                  <div class="form-group">
+                                  </div><!-- form-group --><div>';
+                                  editantidot($con,$antimed);
+                                  echo '</div><div class="form-group">
                                   <select class="form-control" name="status'.$medid.'" id="sel11">';
                                     if($medrow["pending"] == "Approved"){
                                         echo '<option value="Approved" selected>Approved</option>
@@ -276,11 +285,35 @@ function showmedicine($con,$role){
         $medstatus = stripslashes($_REQUEST['status'.$id.'']);
         $medstatus = mysqli_real_escape_string($con,$medstatus);
 
+        $antidot = $_REQUEST['antidot'];
+        $antidot = array_map(array($con, 'real_escape_string'), $antidot);
+
 
         $medquery = "UPDATE medicines SET name = '$medname', shortform = '$medshort', chapter = '$medchap', subchapter = '$medsubchap', source = '$medsource', prover = '$medprov', type = '$medtype', pending='$medstatus' WHERE id = $id LIMIT 1";
         $mdresult = mysqli_query($con,$medquery);
 
-        if($mdresult){
+        $checkquery = "SELECT * FROM antidot WHERE medicine = '$medname'";
+        $checkresult = mysqli_query($con,$checkquery);
+        $checkrow = mysqli_num_rows($checkresult);
+
+        if($checkrow){
+            $antidelquery = "DELETE FROM antidot WHERE medicine = '$medname'";
+            $antidel = mysqli_query($con,$antidelquery);
+        }
+
+        for($i=0; $i<count($antidot); $i++){
+            if($antidot[$i]!=''){
+    
+                $each_single_anti_dot = $antidot[$i];
+    
+                $antiquery = "INSERT into `antidot` (antimedicine, medicine) VALUES ('$each_single_anti_dot', '$medname')";
+                $antiresult = mysqli_query($con,$antiquery);
+    
+                
+            }
+        }
+
+        if($mdresult && $antiresult){
             echo '<div class="alert alert-success" role="alert">
                      <strong>Well done!</strong> You successfully edited medicine. <a href="" onClick="window.location.reload();">Refresh the page</a>
                 </div>';
@@ -299,9 +332,9 @@ function showmedicine($con,$role){
     if(isset($_POST["subdelete"])){
         
         $delid = $_POST["subdelete"];
+        $delnameanti = $medrow["name"];
 
-        $meddelquery = "DELETE FROM medicines WHERE id = $delid LIMIT 1";
-        $mddelresult = mysqli_query($con,$meddelquery);
+        $mddelresult = mysqli_multi_query($con,"DELETE FROM medicines WHERE id = $delid LIMIT 1;  DELETE FROM antidot WHERE medicine = '$delnameanti';");
 
         if($mddelresult){
             echo '<div class="alert alert-success" role="alert">
@@ -318,64 +351,6 @@ function showmedicine($con,$role){
     }
 
     //add new medicine
-
-    echo '<center>
-    <div id="modaldemoadd" class="modal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content modal-content-demo">
-                <div class="modal-header">
-                    <h6 class="modal-title">Add New Medicine</h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
-                        <form method="post" action="">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Name"
-                                    name="medname" required>
-                            </div><!-- form-group -->
-
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="medshort"
-                                    placeholder="Medicine Short Form" required>
-                            </div><!-- form-group -->
-
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="medchap"
-                                    placeholder="Chapter" required>
-                            </div><!-- form-group -->
-
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="medsubchap"
-                                    placeholder="Sub Chapter">
-                            </div><!-- form-group -->
-
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="medsource"
-                                    placeholder="Source" required>
-                            </div><!-- form-group -->
-
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="medprov"
-                                    placeholder="Prover">
-                            </div><!-- form-group -->
-
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="medtype"
-                                    placeholder="Type" required>
-                            </div><!-- form-group -->
-
-                            <button name="addmed" class="btn btn-az-primary pd-x-20">Add</button>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-        </div><!-- modal-dialog -->
-    </div><!-- modal -->
-</center>';
 
 //medine add to database
 
@@ -402,6 +377,9 @@ if(isset($_POST["addmed"])){
     $medtype = stripslashes($_REQUEST['medtype']);
     $medtype = mysqli_real_escape_string($con,$medtype);
 
+    $antidot_med = $_REQUEST['antidot'];
+    $antidot_med = array_map(array($con, 'real_escape_string'), $antidot_med);
+
     $addedby = $_SESSION['name'];
 
 
@@ -409,7 +387,19 @@ if(isset($_POST["addmed"])){
             VALUES ('$medname', '$medshort', '$medchap', '$medsubchap', '$medsource', '$medprov', '$medtype','$addedby')";
     $mdaddresult = mysqli_query($con,$medaddquery);
 
-    if($mdaddresult){
+    for($i=0; $i<count($antidot_med); $i++){
+        if($antidot_med[$i]!=''){
+
+            $each_single_antidot_med = $antidot_med[$i];
+
+            $antidotquery = "INSERT into `antidot` (antimedicine, medicine) VALUES ('$each_single_antidot_med', '$medname')";
+            $antidotresult = mysqli_query($con,$antidotquery);
+
+            
+        }
+    }
+
+    if($mdaddresult && $antidotresult){
         echo '<div class="alert alert-success" role="alert">
                  <strong>Well done!</strong> You successfully added Medicine. <a href="" onClick="window.location.reload();">Refresh the page</a>
             </div>';
@@ -433,20 +423,23 @@ function pendingmedicine($con){
     while($medrow = mysqli_fetch_assoc($result7)){
         
         $medid = $medrow["id"];
+        $antimed = $medrow["name"];
 
         echo '<tr> 
                   <td>'.$medid.'</td> 
                   <td>'.$medrow["name"].'</td> 
                   <td>'.$medrow["shortform"].'</td> 
-                  <td>'.$medrow["chapter"].'</td> 
-                  <td>'.$medrow["subchapter"].'</td> 
+                  <td>'.$medrow["chapter"].'</td>
                   <td>'.$medrow["source"].'</td>
-                  <td>'.$medrow["type"].'</td>
+                  <td>';
+                  viewantidot($con,$antimed);
+                  echo'</td>
                   <td>'.$medrow["addedby"].'</td>
                     
                    <td>
                       <center>
                           <div class="btn-icon-list">
+                          <a href="" data-toggle="modal" data-target="#modaldemoview'.$i.'"><button class="btn btn-indigo btn-icon"><i class="la la-eye"></i></button></a>
                           <a href="" data-toggle="modal" data-target="#modaldemoedit'.$i.'"><button class="btn btn-info btn-icon"><i class="la la-check-circle"></i></button></a>
                           <a href="" data-toggle="modal" data-target="#modaldemodel'.$i.'"><button class="btn btn-danger btn-icon"><i class="la la-times-circle"></i></button></a>
                               
@@ -454,11 +447,79 @@ function pendingmedicine($con){
   
                       </center>
                       <center>
+                      <div id="modaldemoview'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Details - '.$medrow["name"].'</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+                              <div class="table-responsive">
+                                <table class="table table-bordered mg-b-0">
+                                <tbody>
+                                    <tr>
+                                    <th scope="row"><b>Name</b></th>
+                                    <td>'.$medrow["name"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Short Form</b></th>
+                                    <td>'.$medrow["shortform"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Chapter</b></th>
+                                    <td>'.$medrow["chapter"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Sub Chapter</b></th>
+                                    <td>'.$medrow["subchapter"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Source</b></th>
+                                    <td>'.$medrow["source"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Prover</b></th>
+                                    <td>'.$medrow["prover"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Type</b></th>
+                                    <td>'.$medrow["type"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Anti DOT</b></th>
+                                    <td>'; 
+                                    viewantidot($con,$antimed, $limit = 100);
+                                    echo'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Added by</b></th>
+                                    <td>'.$medrow["addedby"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Status</b></th>
+                                    <td>'.$medrow["pending"].'</td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div></br>
+                            
+                              
+                                  </div>
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+                      <center>
                       <div id="modaldemoedit'.$i.'" class="modal">
                           <div class="modal-dialog" role="document">
                               <div class="modal-content modal-content-demo">
                               <div class="modal-header">
-                                  <h6 class="modal-title">Edit Medicine Before Approve</h6>
+                                  <h6 class="modal-title">Edit Medicine</h6>
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                   <span aria-hidden="true">&times;</span>
                                   </button>
@@ -492,9 +553,11 @@ function pendingmedicine($con){
   
                                   <div class="form-group">
                                   <input type="text" class="form-control" name="medtype'.$medid.'" placeholder="Type" value="'.$medrow["type"].'">
-                                  </div><!-- form-group -->
+                                  </div><!-- form-group --><div>';
+                                  editantidot($con,$antimed);
+                                  echo '</div>
                               
-                                  <button value="'.$medid.'" name="approvemed" class="btn btn-az-primary pd-x-20">Approve</button>
+                                  <button value="'.$medid.'" name="approvemed" class="btn btn-az-primary pd-x-20">Update</button>
                               </form>
                               
                                   </div>
@@ -568,11 +631,35 @@ function pendingmedicine($con){
         $medtype = stripslashes($_REQUEST['medtype'.$id.'']);
         $medtype = mysqli_real_escape_string($con,$medtype);
 
+        $antidot_med = $_REQUEST['antidot'];
+        $antidot_med = array_map(array($con, 'real_escape_string'), $antidot_med);
+
 
         $medquery = "UPDATE medicines SET name = '$medname', shortform = '$medshort', chapter = '$medchap', subchapter = '$medsubchap', source = '$medsource', prover = '$medprov', type = '$medtype', pending = 'Approved' WHERE id = $id LIMIT 1";
         $mdresult = mysqli_query($con,$medquery);
 
-        if($mdresult){
+        $checkquery = "SELECT * FROM antidot WHERE medicine = '$medname'";
+        $checkresult = mysqli_query($con,$checkquery);
+        $checkrow = mysqli_num_rows($checkresult);
+
+        if($checkrow){
+            $antidelquery = "DELETE FROM antidot WHERE medicine = '$medname'";
+            $antidel = mysqli_query($con,$antidelquery);
+        }
+
+        for($i=0; $i<count($antidot_med); $i++){
+            if($antidot_med[$i]!=''){
+    
+                $each_single_anti_dot = $antidot_med[$i];
+    
+                $antiquery = "INSERT into `antidot` (antimedicine, medicine) VALUES ('$each_single_anti_dot', '$medname')";
+                $antiresult = mysqli_query($con,$antiquery);
+    
+                
+            }
+        }
+
+        if($mdresult && $antiresult){
             echo '<div class="alert alert-success" role="alert">
                      <strong>Well done!</strong> Medicine Approved. <a href="" onClick="window.location.reload();">Refresh the page</a>
                 </div>';
@@ -591,9 +678,9 @@ function pendingmedicine($con){
     if(isset($_POST["unapprove"])){
         
         $delid = $_POST["unapprove"];
+        $delnameanti = $medrow["name"];
 
-        $meddelquery = "DELETE FROM medicines WHERE id = $delid LIMIT 1";
-        $mddelresult = mysqli_query($con,$meddelquery);
+        $mddelresult = mysqli_multi_query($con,"DELETE FROM medicines WHERE id = $delid LIMIT 1;  DELETE FROM antidot WHERE medicine = '$delnameanti';");
 
         if($mddelresult){
             echo '<div class="alert alert-success" role="alert">
@@ -680,7 +767,7 @@ function adminmenu($role){
                 <a href="" class="nav-link with-sub"><i class="fa fa-stethoscope" aria-hidden="true"></i>Symptoms</a>
                 <nav class="nav-sub">
                     <a href="allsymptoms.php" class="nav-sub-link">All Symtoms</a>
-                    <a href="all-symptoms.html" class="nav-sub-link">My Symtoms</a>
+                    <a href="mysymptoms.php" class="nav-sub-link">My Symtoms</a>
 
                 </nav>
             </li><!-- nav-item -->
@@ -2483,3 +2570,320 @@ function pendingsymptoms($con){
 
 }
 
+
+
+//My Symptoms Page Functionality
+
+function mysymptoms($con,$myname){
+    $query6 = "SELECT * FROM symptoms WHERE addedby = '$myname' ORDER BY id DESC";
+    $result6 = mysqli_query($con,$query6);
+    $i = 1;
+    while($medrow = mysqli_fetch_assoc($result6)){
+        
+        $medid = $medrow["id"];
+        $sympname = $medrow["name"];
+
+        echo '<tr> 
+                  <td>'.$medid.'</td> 
+                  <td>'.$medrow["name"].'</td> 
+                  <td>'.$medrow["chapter"].'</td>
+                  <td>'.$medrow["shortform"].'</td>
+                  <td>'.$medrow["pending"].'</td>
+                  <td>';
+                  viewsymptomfromdb($con,$sympname);
+                  echo '</td>
+                  <td>
+                      <center>
+                          <div class="btn-icon-list">
+                          <a href="" data-toggle="modal" data-target="#modaldemoview'.$i.'"><button class="btn btn-indigo btn-icon"><i class="la la-eye"></i></button></a>
+                          <center>
+                      <div id="modaldemoview'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Details - '.$medrow["name"].'</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+                              <div class="table-responsive">
+                                <table class="table table-bordered mg-b-0">
+                                <tbody>
+                                    <tr>
+                                    <th scope="row"><b>Name</b></th>
+                                    <td>'.$medrow["name"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Chapter</b></th>
+                                    <td>'.$medrow["chapter"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Sub Chapter</b></th>
+                                    <td>'.$medrow["subchapter"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Short Form</b></th>
+                                    <td>'.$medrow["shortform"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Related Medicines</b></th>
+                                    <td>'; 
+                                    viewsymptomfromdb($con,$sympname, $limit = 100);
+                                    echo '</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Status</b></th>
+                                    <td>'.$medrow["pending"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Added by</b></th>
+                                    <td>'.$medrow["addedby"].'</td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div></br>
+                            
+                              
+                                  </div>
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+                      
+                      <a href="" data-toggle="modal" data-target="#modaldemoedit'.$i.'"><button class="btn btn-info btn-icon"><i class="la la-edit"></i></button></a>
+                          <a href="" data-toggle="modal" data-target="#modaldemodel'.$i.'"><button class="btn btn-danger btn-icon"><i class="la la-times-circle"></i></button></a>
+                              
+                          </div>
+  
+                      </center>
+
+                      
+
+                      <center>
+                      <div id="modaldemoedit'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Edit Symptom</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+                              <form method="post" action="">
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" placeholder="Name" name="medname'.$medid.'" value="'.$medrow["name"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medshort'.$medid.'" placeholder="Chapter" value="'.$medrow["chapter"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medchap'.$medid.'" placeholder="Sub Chapter" value="'.$medrow["subchapter"].'">
+                                  </div><!-- form-group -->
+  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medsubchap'.$medid.'" placeholder="Short Form" value="'.$medrow["shortform"].'">
+                                  </div><!-- form-group --><div>';
+  
+                                  editsymptomstodb($con,$sympname);
+
+                                  echo '</div>
+                              
+                                  <button value="'.$medid.'" name="subupdate" class="btn btn-az-primary pd-x-20">Update</button>
+                              </form>
+                              
+                                  </div>
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+  
+                      <center>
+                      <div id="modaldemodel'.$i.'" class="modal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content modal-content-demo">
+                              <div class="modal-header">
+                                  <h6 class="modal-title">Delete Symptom</h6>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                              <div class="alert alert-danger mg-b-0" role="alert">
+                                  Are you sure want to delete '.$medrow["name"].'?
+                              </div>
+                              <div class="mg-lg-b-30"></div>
+                              <form method="post" action="">
+                                  
+                                  <button value="'.$medid.'" name="subdelete" class="btn btn-az-primary pd-x-20">Delete</button>
+                              </form>
+                              
+                                
+                              </div>
+                              </div>
+                          </div><!-- modal-dialog -->
+                          </div><!-- modal -->
+                      </center>
+  
+  
+  
+                  </td>
+
+                  </tr>';
+              
+        $i++;
+        
+    }
+
+    //calling add function
+
+    addsymtomstodb ($con);
+
+    //symptoms edit
+    
+    if(isset($_POST["subupdate"])){
+        
+        $id = $_POST["subupdate"];
+        
+        $medname = stripslashes($_REQUEST['medname'.$id.'']);
+        $medname = mysqli_real_escape_string($con,$medname);
+
+        $medshort = stripslashes($_REQUEST['medshort'.$id.'']);
+        $medshort = mysqli_real_escape_string($con,$medshort);
+
+        $medchap = stripslashes($_REQUEST['medchap'.$id.'']);
+        $medchap = mysqli_real_escape_string($con,$medchap);
+
+        $medsubchap = stripslashes($_REQUEST['medsubchap'.$id.'']);
+        $medsubchap = mysqli_real_escape_string($con,$medsubchap);
+
+        $related_medicins = $_REQUEST['relatedmedicine'];
+        $related_medicins = array_map(array($con, 'real_escape_string'), $related_medicins);
+    
+        $grades = $_REQUEST['grade'];
+        $grades = array_map(array($con, 'real_escape_string'), $grades);
+
+
+        $medquery = "UPDATE symptoms SET name = '$medname', chapter = '$medshort', subchapter = '$medchap', shortform = '$medsubchap' pending = 'Pending' WHERE id = $id LIMIT 1";
+        $mdresult = mysqli_query($con,$medquery);
+
+        $checkquery = "SELECT * FROM relatedmedicine WHERE symptom = '$medname'";
+        $checkresult = mysqli_query($con,$checkquery);
+        $checkrow = mysqli_num_rows($checkresult);
+
+        if($checkrow){
+            $sympdelquery = "DELETE FROM relatedmedicine WHERE symptom = '$medname'";
+            $sympdel = mysqli_query($con,$sympdelquery);
+        }
+
+        for($i=0; $i<count($related_medicins); $i++){
+            if($related_medicins[$i]!='' && $grades[$i]!=''){
+    
+                $each_single_related_medicin = $related_medicins[$i];
+                $each_single_grade = $grades[$i];
+    
+                $sympquery = "INSERT into `relatedmedicine` (name, grade, symptom) VALUES ('$each_single_related_medicin', '$each_single_grade', '$medname')";
+                $sympresult = mysqli_query($con,$sympquery);
+    
+                
+            }
+        }
+
+        if($mdresult && $sympresult){
+            echo '<div class="alert alert-success" role="alert">
+                     <strong>Well done!</strong> You successfully edited Symptom. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+               
+        }
+        else{
+            echo '<div class="alert alert-danger" role="alert">
+                     <strong>Something Wrong!</strong> Symptom is not edited. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+                
+        }
+        
+    }
+
+    //symtoms Delete
+    
+    if(isset($_POST["subdelete"])){
+        
+        $delid = $_POST["subdelete"];
+
+        $delnamesymp = $medrow["name"];
+
+        $mddelresult = mysqli_multi_query($con,"DELETE FROM symptoms WHERE id = $delid LIMIT 1;  DELETE FROM relatedmedicine WHERE name = '$delnamesymp';");
+        
+
+        if($mddelresult){
+            echo '<div class="alert alert-success" role="alert">
+                     <strong>Well done!</strong> You successfully Deleted Symptom. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+                
+        }
+        else{
+            echo '<div class="alert alert-danger" role="alert">
+                    <strong>Something Wrong!</strong> Symptom is not Deleted. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+        }
+        
+    }
+
+  
+
+    //add new symtoms
+
+
+
+}
+
+
+//antidot view from DB
+
+function viewantidot($con,$antimed, $limit = 2){
+    $query9 = "SELECT * FROM antidot WHERE medicine= '$antimed' LIMIT $limit";
+    $result9 = mysqli_query($con,$query9);
+    $allrelated = array();
+    while($getrow = mysqli_fetch_assoc($result9)){
+       
+        $allrelated[] = $getrow["antimedicine"];
+        
+    }
+    echo implode(", ", $allrelated);
+}
+
+//edit antidot
+
+function editantidot($con,$antimed){
+    $query9 = "SELECT * FROM antidot WHERE medicine= '$antimed'";
+    $result9 = mysqli_query($con,$query9);
+    $rowcount = mysqli_num_rows($result9);
+    while($getrow = mysqli_fetch_assoc($result9)){
+        $allrelated = $getrow["antimedicine"];
+            echo '<div class="form-group">
+            <select class="form-control select2" name="antidot[]">
+            
+            <option value="'.$getrow['antimedicine'].'" selected>'.$getrow['antimedicine'].'</option>
+            ';
+            getrelated($con);
+            echo'
+            </select>
+            <div style="clear:both"></div>
+            <a href="#" class="remove_field_anti fa fa-times"></a>
+        </div><!-- form-group -->';
+
+        
+
+    }
+    echo '<div class="antiadd"></div><button type="button" class="addantibtn btn btn-success btn-icon"><i
+    class="typcn typcn-document-add"></i></button>
+    <br />';
+    
+}

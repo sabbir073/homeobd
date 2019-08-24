@@ -33,9 +33,8 @@ if($role !== "Admin"){
                                 <th class="wd-10p">Name</th>
                                 <th class="wd-10p">Short Form</th>
                                 <th class="wd-10p">Chapter</th>
-                                <th class="wd-10p">Sub Chapter</th>
                                 <th class="wd-10p">Source</th>
-                                <th class="wd-10p">Type</th>
+                                <th class="wd-10p">Anti DOT</th>
                                 <th class="wd-10p">Added by</th>
                                 <th class="wd-30p">Actions</th>
                             </tr>
@@ -68,6 +67,31 @@ if($role !== "Admin"){
         <script src="../old/lib/select2/js/select2.min.js"></script>
 
         <script src="../old/js/azia.js"></script>
+
+        <script>
+        var i = 1;
+        $(".addantibtn").click(function(e) {
+            e.preventDefault();
+            $("<div />", {
+                    "class": "add13",
+                    id: "input" + i
+                })
+                .append($('<select id="name' + i +
+                    '" class="form-control select2" name="antidot[]"><option value="" selected>Select one</option><?php getrelated($con);?></select>'
+                )).append($('<a href="#" class="remove_field_anti"><i class="fa fa-times"></a>'))
+
+                .appendTo(".antiadd");
+            i++;
+
+            $('.remove_field_anti').click(function(e){
+            e.preventDefault();
+            $(this).parent('div').remove();
+            })
+
+        });
+
+
+        </script>
         <script>
         $(document).ready(function() {
             'use strict';

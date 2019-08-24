@@ -35,7 +35,7 @@ include("functions.php");
                                 <th class="wd-10p">Chapter</th>
                                 <th class="wd-10p">Source</th>
                                 <th class="wd-10p">Type</th>
-                                <th class="wd-10p">Added by</th>
+                                <th class="wd-10p">Anti DOT</th>
 
                                 <th class="wd-10p">Actions</th>
 
@@ -47,7 +47,76 @@ include("functions.php");
                         </tbody>
                     </table>
                     <div class="mg-lg-b-30"></div>
+                    <center>
+                    <div id="modaldemoadd" class="modal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content modal-content-demo">
+                                <div class="modal-header">
+                                    <h6 class="modal-title">Add New Medicine</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
+                                        <form method="post" action="">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Name"
+                                                    name="medname" required>
+                                            </div><!-- form-group -->
 
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="medshort"
+                                                    placeholder="Medicine Short Form" required>
+                                            </div><!-- form-group -->
+
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="medchap"
+                                                    placeholder="Chapter" required>
+                                            </div><!-- form-group -->
+
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="medsubchap"
+                                                    placeholder="Sub Chapter">
+                                            </div><!-- form-group -->
+
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="medsource"
+                                                    placeholder="Source" required>
+                                            </div><!-- form-group -->
+
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="medprov"
+                                                    placeholder="Prover">
+                                            </div><!-- form-group -->
+
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="medtype"
+                                                    placeholder="Type" required>
+                                            </div><!-- form-group -->
+
+                                            <div class="form-group antiadd">
+                                                    <select class="form-control select2" name="antidot[]">
+                                                    <option value="" selected>Select one</option>
+                                                        <?php getrelated($con);?>
+                                                    </select>
+                                                    <div style="clear:both"></div>
+                                                </div><!-- form-group -->
+                                                
+                                                <button class="addantibtn btn btn-success btn-icon"><i
+                                                        class="typcn typcn-document-add"></i></button>
+                                                        
+                                                <br />
+
+                                            <button name="addmed" class="btn btn-az-primary pd-x-20">Add</button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- modal-dialog -->
+                    </div><!-- modal -->
+                </center>
                 </div><!-- az-content-body -->
             </div>
         </div><!-- az-content -->
@@ -69,6 +138,32 @@ include("functions.php");
         <script src="../old/lib/select2/js/select2.min.js"></script>
 
         <script src="../old/js/azia.js"></script>
+
+        <script>
+        var i = 1;
+        $(".addantibtn").click(function(e) {
+            e.preventDefault();
+            $("<div />", {
+                    "class": "add13",
+                    id: "input" + i
+                })
+                .append($('<select id="name' + i +
+                    '" class="form-control select2" name="antidot[]"><option value="" selected>Select one</option><?php getrelated($con);?></select>'
+                )).append($('<a href="#" class="remove_field_anti"><i class="fa fa-times"></a>'))
+
+                .appendTo(".antiadd");
+            i++;
+
+            $('.remove_field_anti').click(function(e){
+            e.preventDefault();
+            $(this).parent('div').remove();
+            })
+
+        });
+
+
+        </script>
+
         <script>
         $(document).ready(function() {
             'use strict';

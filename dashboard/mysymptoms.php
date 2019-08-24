@@ -15,13 +15,13 @@ include("functions.php");
                 <div class="az-content-body">
                     <div class="az-content-breadcrumb">
                         <span>Symptoms</span>
-                        <span>ALL Symptoms</span>
+                        <span>My Symptoms</span>
                     </div>
                     <br />
                     <div style="float:right;"><a href="" data-toggle="modal" data-target="#modaldemoadd"><button
                                 class="btn btn-success btn-with-icon"><i class="typcn typcn-document-add"></i> Add
                                 new</button></a></div>
-                    <div class="az-content-label mg-b-5">ALL Symptoms</div>
+                    <div class="az-content-label mg-b-5">My Symptoms</div>
 
                     <br />
                     <table id="datatable1" class="display responsive nowrap">
@@ -33,14 +33,14 @@ include("functions.php");
                                 <th class="wd-10p">Name</th>
                                 <th class="wd-10p">Chapter</th>
                                 <th class="wd-10p">Short Form</th>
+                                <th class="wd-10p">Status</th>
                                 <th class="wd-10p">Related medicine</th>
-                                <th class="wd-10p">Added by</th>
                                 <th class="wd-10p">Actions</th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            <?php showsymptoms($con,$role);?>
+                            <?php mysymptoms($con,$myname);?>
 
                         </tbody>
                     </table>

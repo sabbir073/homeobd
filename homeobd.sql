@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 21, 2019 at 04:34 PM
+-- Generation Time: Aug 24, 2019 at 03:17 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.3.29
 
@@ -23,6 +23,26 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `antidot`
+--
+
+CREATE TABLE IF NOT EXISTS `antidot` (
+  `id` int(11) NOT NULL,
+  `antimedicine` varchar(255) NOT NULL,
+  `medicine` varchar(255) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `antidot`
+--
+
+INSERT INTO `antidot` (`id`, `antimedicine`, `medicine`) VALUES
+(14, 'Napa', 'Proto'),
+(16, 'Proto', 'Test medicine');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `medicines`
 --
 
@@ -37,17 +57,18 @@ CREATE TABLE IF NOT EXISTS `medicines` (
   `type` varchar(255) NOT NULL,
   `addedby` varchar(255) NOT NULL,
   `pending` varchar(255) NOT NULL DEFAULT 'Pending'
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `medicines`
 --
 
 INSERT INTO `medicines` (`id`, `name`, `shortform`, `chapter`, `subchapter`, `source`, `prover`, `type`, `addedby`, `pending`) VALUES
-(32, 'Napa+', 'Np', 'Head', 'Fever', 'Homeobd', 'Homeobd', 'Antibiotic', 'Raisa Islam Noushin', 'Approved'),
+(32, 'Napa', 'Np', 'Head', 'Fever', 'Homeobd', 'Homeobd', 'Antibiotic', 'Raisa Islam Noushin', 'Approved'),
 (34, 'Paracitamol', 'Prm', 'Head', 'Fever', 'Homeobd', 'Homeobd', 'Antibiotic', 'Raisa Islam Noushin', 'Approved'),
 (35, 'Ace+', 'Ace', 'Head', 'Fever', 'Homeobd', 'Homeobd', 'antibiotic', 'Raisa Islam Noushin', 'Approved'),
-(36, 'Test medicine', 'Test medicine', 'Test medicine', 'Test medicine', 'Test medicine', 'Test medicine', 'Test medicine', 'Md Sabbir Ahmed', 'Pending');
+(36, 'Test medicine', 'Test medicine', 'Test medicine', 'Test medicine', 'Test medicine', 'Test medicine', 'Test medicine', 'Md Sabbir Ahmed', 'Pending'),
+(37, 'Proto', 'PT', 'Health', 'Food', 'Homeobd', 'Homeobd', 'Ebergy Gainer', 'Md Sabbir Ahmed', 'Approved');
 
 -- --------------------------------------------------------
 
@@ -86,25 +107,26 @@ CREATE TABLE IF NOT EXISTS `relatedmedicine` (
   `name` varchar(255) NOT NULL,
   `grade` varchar(255) NOT NULL,
   `symptom` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `relatedmedicine`
 --
 
 INSERT INTO `relatedmedicine` (`id`, `name`, `grade`, `symptom`) VALUES
-(2, 'Ace+', '1', 'Fever'),
-(3, 'Paracitamol', '2', 'Fever'),
-(4, 'Napa+', '3', 'Fever'),
-(5, 'Ace+', '1', 'Chulkani'),
-(6, 'Napa+', '2', 'Chulkani'),
-(7, 'Paracitamol', '3', 'Chulkani'),
 (8, 'Ace+', '1', 'Senseless'),
 (9, 'Paracitamol', '2', 'Senseless'),
 (10, 'Napa+', '3', 'Senseless'),
-(11, 'Ace+', '1', 'test'),
-(12, 'Paracitamol', '2', 'test'),
-(13, 'Napa+', '3', 'test');
+(17, 'Ace+', '1', 'Chulkani'),
+(18, 'Paracitamol', '1', 'Chulkani'),
+(25, 'Ace+', '1', 'test'),
+(26, 'Paracitamol', '2', 'test'),
+(27, 'Ace+', '3', 'Food Poison'),
+(28, 'Paracitamol', '2', 'Food Poison'),
+(29, 'Napa+', '1', 'Food Poison'),
+(30, 'Ace+', '3', 'Fever'),
+(31, 'Paracitamol', '3', 'Fever'),
+(32, 'Napa+', '3', 'Fever');
 
 -- --------------------------------------------------------
 
@@ -120,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `symptoms` (
   `shortform` varchar(255) NOT NULL,
   `pending` varchar(255) NOT NULL DEFAULT 'Pending',
   `addedby` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `symptoms`
@@ -128,10 +150,10 @@ CREATE TABLE IF NOT EXISTS `symptoms` (
 
 INSERT INTO `symptoms` (`id`, `name`, `chapter`, `subchapter`, `shortform`, `pending`, `addedby`) VALUES
 (1, 'headache', 'head', 'normal', 'hd', 'Approved', 'Md Sabbir Ahmed'),
-(5, 'Fever', 'Head', 'Fever', 'FV', 'Pending', 'Md Sabbir Ahmed'),
-(6, 'Chulkani', 'Body', 'Skin', 'CH', 'Pending', 'Md Sabbir Ahmed'),
-(7, 'Senseless', 'Body', 'Sense', 'SNS', 'Pending', 'Md Sabbir Ahmed'),
-(8, 'test', 'test', 'test', 'test', 'Pending', 'Md Sabbir Ahmed');
+(5, 'Fever', 'Head', 'Fever', 'FV', 'Approved', 'Md Sabbir Ahmed'),
+(6, 'Chulkani', 'Body', 'Skin', 'CH', 'Approved', 'Md Sabbir Ahmed'),
+(7, 'Senseless', 'Body', 'Sense', 'SNS', 'Approved', 'Md Sabbir Ahmed'),
+(9, 'Food Poison', 'Health', 'Food', 'FP', 'Pending', 'Raisa Islam Noushin');
 
 -- --------------------------------------------------------
 
@@ -164,6 +186,12 @@ INSERT INTO `users` (`id`, `username`, `email`, `phone`, `password`, `token`, `r
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `antidot`
+--
+ALTER TABLE `antidot`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `medicines`
@@ -200,10 +228,15 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `antidot`
+--
+ALTER TABLE `antidot`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
+--
 -- AUTO_INCREMENT for table `medicines`
 --
 ALTER TABLE `medicines`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=38;
 --
 -- AUTO_INCREMENT for table `patient`
 --
@@ -213,12 +246,12 @@ ALTER TABLE `patient`
 -- AUTO_INCREMENT for table `relatedmedicine`
 --
 ALTER TABLE `relatedmedicine`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT for table `symptoms`
 --
 ALTER TABLE `symptoms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `users`
 --
