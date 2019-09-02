@@ -286,44 +286,65 @@ function showmedicine($con,$role){
         $medstatus = mysqli_real_escape_string($con,$medstatus);
 
         $antidot = $_REQUEST['antidot'];
-        $antidot = array_map(array($con, 'real_escape_string'), $antidot);
-
+        if($antidot){
+            $antidot = array_map(array($con, 'real_escape_string'), $antidot);
+        }
 
         $medquery = "UPDATE medicines SET name = '$medname', shortform = '$medshort', chapter = '$medchap', subchapter = '$medsubchap', source = '$medsource', prover = '$medprov', type = '$medtype', pending='$medstatus' WHERE id = $id LIMIT 1";
         $mdresult = mysqli_query($con,$medquery);
 
         $checkquery = "SELECT * FROM antidot WHERE medicine = '$medname'";
-        $checkresult = mysqli_query($con,$checkquery);
-        $checkrow = mysqli_num_rows($checkresult);
+            $checkresult = mysqli_query($con,$checkquery);
+            $checkrow = mysqli_num_rows($checkresult);
 
-        if($checkrow){
-            $antidelquery = "DELETE FROM antidot WHERE medicine = '$medname'";
-            $antidel = mysqli_query($con,$antidelquery);
-        }
+            if($checkrow){
+                $antidelquery = "DELETE FROM antidot WHERE medicine = '$medname'";
+                $antidel = mysqli_query($con,$antidelquery);
+            }
 
-        for($i=0; $i<count($antidot); $i++){
-            if($antidot[$i]!=''){
-    
-                $each_single_anti_dot = $antidot[$i];
-    
-                $antiquery = "INSERT into `antidot` (antimedicine, medicine) VALUES ('$each_single_anti_dot', '$medname')";
-                $antiresult = mysqli_query($con,$antiquery);
-    
-                
+        if($antidot){
+            
+            for($i=0; $i<count($antidot); $i++){
+                if($antidot[$i]!=''){
+        
+                    $each_single_anti_dot = $antidot[$i];
+        
+                    $antiquery = "INSERT into `antidot` (antimedicine, medicine) VALUES ('$each_single_anti_dot', '$medname')";
+                    $antiresult = mysqli_query($con,$antiquery);
+        
+                    
+                }
             }
         }
-
-        if($mdresult && $antiresult){
-            echo '<div class="alert alert-success" role="alert">
-                     <strong>Well done!</strong> You successfully edited medicine. <a href="" onClick="window.location.reload();">Refresh the page</a>
-                </div>';
-               
+        
+        if($antiresult){
+            if($mdresult){
+                echo '<div class="alert alert-success" role="alert">
+                         <strong>Well done!</strong> You successfully edited medicine. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                    </div>';
+                   
+            }
+            else{
+                echo '<div class="alert alert-danger" role="alert">
+                         <strong>Something Wrong!</strong> Medicine is not edited. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                    </div>';
+            }
         }
         else{
-            echo '<div class="alert alert-danger" role="alert">
-                     <strong>Something Wrong!</strong> Medicine is not edited. <a href="" onClick="window.location.reload();">Refresh the page</a>
-                </div>';
+            if($mdresult){
+                echo '<div class="alert alert-success" role="alert">
+                         <strong>Well done!</strong> You successfully edited medicine. But antiDot is not added! <a href="" onClick="window.location.reload();">Refresh the page</a>
+                    </div>';
+                   
+            }
+            else{
+                echo '<div class="alert alert-danger" role="alert">
+                         <strong>Something Wrong!</strong> Medicine is not edited. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                    </div>';
+            }
         }
+        
+        
         
     }
 
@@ -2171,11 +2192,15 @@ function showsymptoms($con,$role){
         $medsubchap = mysqli_real_escape_string($con,$medsubchap);
 
         $related_medicins = $_REQUEST['relatedmedicine'];
-        $related_medicins = array_map(array($con, 'real_escape_string'), $related_medicins);
-    
+        if($related_medicins){
+            $related_medicins = array_map(array($con, 'real_escape_string'), $related_medicins);
+        }
+        
         $grades = $_REQUEST['grade'];
-        $grades = array_map(array($con, 'real_escape_string'), $grades);
-
+        if($grades){
+            $grades = array_map(array($con, 'real_escape_string'), $grades);
+        }
+        
         $medstatus = stripslashes($_REQUEST['status'.$id.'']);
         $medstatus = mysqli_real_escape_string($con,$medstatus);
 
@@ -2183,27 +2208,36 @@ function showsymptoms($con,$role){
         $medquery = "UPDATE symptoms SET name = '$medname', chapter = '$medshort', subchapter = '$medchap', shortform = '$medsubchap', pending='$medstatus' WHERE id = $id LIMIT 1";
         $mdresult = mysqli_query($con,$medquery);
 
-        $checkquery = "SELECT * FROM relatedmedicine WHERE symptom = '$medname'";
-        $checkresult = mysqli_query($con,$checkquery);
-        $checkrow = mysqli_num_rows($checkresult);
 
-        if($checkrow){
-            $sympdelquery = "DELETE FROM relatedmedicine WHERE symptom = '$medname'";
-            $sympdel = mysqli_query($con,$sympdelquery);
-        }
+        if($related_medicins && $grades){
+            $checkquery = "SELECT * FROM relatedmedicine WHERE symptom = '$medname'";
+            $checkresult = mysqli_query($con,$checkquery);
+            $checkrow = mysqli_num_rows($checkresult);
 
-        for($i=0; $i<count($related_medicins); $i++){
-            if($related_medicins[$i]!='' && $grades[$i]!=''){
-    
-                $each_single_related_medicin = $related_medicins[$i];
-                $each_single_grade = $grades[$i];
-    
-                $sympquery = "INSERT into `relatedmedicine` (name, grade, symptom) VALUES ('$each_single_related_medicin', '$each_single_grade', '$medname')";
-                $sympresult = mysqli_query($con,$sympquery);
-    
-                
+            if($checkrow){
+                $sympdelquery = "DELETE FROM relatedmedicine WHERE symptom = '$medname'";
+                $sympdel = mysqli_query($con,$sympdelquery);
+            }
+            for($i=0; $i<count($related_medicins); $i++){
+                if($related_medicins[$i]!='' && $grades[$i]!=''){
+        
+                    $each_single_related_medicin = $related_medicins[$i];
+                    $each_single_grade = $grades[$i];
+        
+                    $sympquery = "INSERT into `relatedmedicine` (name, grade, symptom) VALUES ('$each_single_related_medicin', '$each_single_grade', '$medname')";
+                    $sympresult = mysqli_query($con,$sympquery);
+        
+                    
+                }
             }
         }
+        else{
+            echo '<div class="alert alert-danger" role="alert">
+                     <strong>Hey!</strong>Related medicine and Grade both are required! try again. <a href="" onClick="window.location.reload();">Refresh the page</a>
+                </div>';
+        }
+
+        
 
         if($mdresult && $sympresult){
             echo '<div class="alert alert-success" role="alert">
@@ -2357,7 +2391,7 @@ function editsymptomstodb($con,$sympname){
             echo'
             </select>
             <input type="text" name="grade[]" value="'.$getgrade.'" class="grade form-control"
-                placeholder="Grade">
+                placeholder="Grade" required>
             <div style="clear:both"></div>
             <a href="#" class="remove_field fa fa-times"></a>
         </div><!-- form-group -->';

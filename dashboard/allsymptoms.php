@@ -84,7 +84,7 @@ include("functions.php");
                                                         <?php getrelated($con);?>
                                                     </select>
                                                     <input type="text" name="grade[]" class="grade form-control"
-                                                        placeholder="Grade">
+                                                        placeholder="Grade" required>
                                                     <div style="clear:both"></div>
                                                 </div><!-- form-group -->
                                                 
