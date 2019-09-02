@@ -73,6 +73,31 @@ if($role == "Admin"){
         <script src="../old/lib/select2/js/select2.min.js"></script>
 
         <script src="../old/js/azia.js"></script>
+
+        <script>
+        var i = 1;
+        $(".addantibtn").click(function(e) {
+            e.preventDefault();
+            $("<div />", {
+                    "class": "add13",
+                    id: "input" + i
+                })
+                .append($('<select id="name' + i +
+                    '" class="form-control select2" name="antidot[]"><option value="" selected>Select one</option><?php getrelated($con);?></select>'
+                )).append($('<a href="#" class="remove_field_anti"><i class="fa fa-times"></a>'))
+
+                .appendTo(".antiadd");
+            i++;
+
+            $('.remove_field_anti').click(function(e){
+            e.preventDefault();
+            $(this).parent('div').remove();
+            })
+
+        });
+
+
+        </script>
         <script>
         $(document).ready(function() {
             'use strict';

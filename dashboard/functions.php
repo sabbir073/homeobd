@@ -557,7 +557,7 @@ function pendingmedicine($con){
                                   editantidot($con,$antimed);
                                   echo '</div>
                               
-                                  <button value="'.$medid.'" name="approvemed" class="btn btn-az-primary pd-x-20">Update</button>
+                                  <button value="'.$medid.'" name="approvemed" class="btn btn-az-primary pd-x-20">Approve</button>
                               </form>
                               
                                   </div>
@@ -801,6 +801,7 @@ function mymedicines($con,$myname){
     while($medrow = mysqli_fetch_assoc($result8)){
         
         $medid = $medrow["id"];
+        $antimed = $medrow["name"];
 
         echo '<tr> 
                   <td>'.$medid.'</td> 
@@ -865,6 +866,13 @@ function mymedicines($con,$myname){
                                     <td>'.$medrow["type"].'</td>
                                     </tr>
                                     <tr>
+                                    <th scope="row"><b>Anti DOT</b></th>
+                                    <td>'; 
+                                    viewantidot($con,$antimed, $limit = 100);
+                                    echo'</td>
+                                    </tr>
+                                    <tr>
+                                    <tr>
                                     <th scope="row"><b>Added by</b></th>
                                     <td>'.$medrow["addedby"].'</td>
                                     </tr>
@@ -922,7 +930,9 @@ function mymedicines($con,$myname){
   
                                   <div class="form-group">
                                   <input type="text" class="form-control" name="medtype'.$medid.'" placeholder="Type" value="'.$medrow["type"].'">
-                                  </div><!-- form-group -->
+                                  </div><!-- form-group --><div>';
+                                  editantidot($con,$antimed);
+                                  echo '</div>
                               
                                   <button value="'.$medid.'" name="myupdate" class="btn btn-az-primary pd-x-20">Update</button>
                               </form>
@@ -1019,6 +1029,18 @@ function mymedicines($con,$myname){
                                 <input type="text" class="form-control" name="medtype"
                                     placeholder="Type">
                             </div><!-- form-group -->
+                            <div class="form-group antiadd">
+                                <select class="form-control select2" name="antidot[]">
+                                <option value="" selected>Select one</option>';
+                                   getrelated($con);
+                                echo '</select>
+                                <div style="clear:both"></div>
+                            </div><!-- form-group -->
+
+                            <button class="addantibtn btn btn-success btn-icon"><i
+                                                        class="typcn typcn-document-add"></i></button>
+                                                        
+                                                <br />
 
                             <button name="myaddmed" class="btn btn-az-primary pd-x-20">Add</button>
                         </form>
@@ -1054,6 +1076,9 @@ if(isset($_POST["myaddmed"])){
     $medtype = stripslashes($_REQUEST['medtype']);
     $medtype = mysqli_real_escape_string($con,$medtype);
 
+    $antidot_med = $_REQUEST['antidot'];
+    $antidot_med = array_map(array($con, 'real_escape_string'), $antidot_med);
+
     $addedby = $_SESSION['name'];
 
 
@@ -1061,7 +1086,19 @@ if(isset($_POST["myaddmed"])){
             VALUES ('$medname', '$medshort', '$medchap', '$medsubchap', '$medsource', '$medprov', '$medtype','$addedby')";
     $mdaddresult = mysqli_query($con,$medaddquery);
 
-    if($mdaddresult){
+    for($i=0; $i<count($antidot_med); $i++){
+        if($antidot_med[$i]!=''){
+
+            $each_single_antidot_med = $antidot_med[$i];
+
+            $antidotquery = "INSERT into `antidot` (antimedicine, medicine) VALUES ('$each_single_antidot_med', '$medname')";
+            $antidotresult = mysqli_query($con,$antidotquery);
+
+            
+        }
+    }
+
+    if($mdaddresult && $antidotresult){
         echo '<div class="alert alert-success" role="alert">
                  <strong>Well done!</strong> You successfully added Medicine. <a href="" onClick="window.location.reload();">Refresh the page</a>
             </div>';
@@ -1103,11 +1140,35 @@ if(isset($_POST["myaddmed"])){
         $medtype = stripslashes($_REQUEST['medtype'.$id.'']);
         $medtype = mysqli_real_escape_string($con,$medtype);
 
+        $antidot = $_REQUEST['antidot'];
+        $antidot = array_map(array($con, 'real_escape_string'), $antidot);
 
-        $medquery = "UPDATE medicines SET name = '$medname', shortform = '$medshort', chapter = '$medchap', subchapter = '$medsubchap', source = '$medsource', prover = '$medprov', type = '$medtype', pending = 'Pending' WHERE id = $id LIMIT 1";
+
+        $medquery = "UPDATE medicines SET name = '$medname', shortform = '$medshort', chapter = '$medchap', subchapter = '$medsubchap', source = '$medsource', prover = '$medprov', type = '$medtype', pending='Pending' WHERE id = $id LIMIT 1";
         $mdresult = mysqli_query($con,$medquery);
 
-        if($mdresult){
+        $checkquery = "SELECT * FROM antidot WHERE medicine = '$medname'";
+        $checkresult = mysqli_query($con,$checkquery);
+        $checkrow = mysqli_num_rows($checkresult);
+
+        if($checkrow){
+            $antidelquery = "DELETE FROM antidot WHERE medicine = '$medname'";
+            $antidel = mysqli_query($con,$antidelquery);
+        }
+
+        for($i=0; $i<count($antidot); $i++){
+            if($antidot[$i]!=''){
+    
+                $each_single_anti_dot = $antidot[$i];
+    
+                $antiquery = "INSERT into `antidot` (antimedicine, medicine) VALUES ('$each_single_anti_dot', '$medname')";
+                $antiresult = mysqli_query($con,$antiquery);
+    
+                
+            }
+        }
+
+        if($mdresult && $antiresult){
             echo '<div class="alert alert-success" role="alert">
                      <strong>Well done!</strong> You successfully edited medicine. <a href="" onClick="window.location.reload();">Refresh the page</a>
                 </div>';
@@ -1126,9 +1187,9 @@ if(isset($_POST["myaddmed"])){
     if(isset($_POST["mydelete"])){
         
         $delid = $_POST["mydelete"];
+        $delnameanti = $medrow["name"];
 
-        $meddelquery = "DELETE FROM medicines WHERE id = $delid LIMIT 1";
-        $mddelresult = mysqli_query($con,$meddelquery);
+        $mddelresult = mysqli_multi_query($con,"DELETE FROM medicines WHERE id = $delid LIMIT 1;  DELETE FROM antidot WHERE medicine = '$delnameanti';");
 
         if($mddelresult){
             echo '<div class="alert alert-success" role="alert">
@@ -2887,3 +2948,4 @@ function editantidot($con,$antimed){
     <br />';
     
 }
+
