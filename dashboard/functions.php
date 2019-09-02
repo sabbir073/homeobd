@@ -905,15 +905,15 @@ function mymedicines($con,$myname){
                               <div class="d-flex flex-column wd-md-400 pd-30 pd-sm-40 bg-gray-200">
                               <form method="post" action="">
                                   <div class="form-group">
-                                  <input type="text" class="form-control" placeholder="Name" name="medname'.$medid.'" value="'.$medrow["name"].'">
+                                  <input type="text" class="form-control" placeholder="Name" name="medname'.$medid.'" value="'.$medrow["name"].'" required>
                                   </div><!-- form-group -->
   
                                   <div class="form-group">
-                                  <input type="text" class="form-control" name="medshort'.$medid.'" placeholder="Medicine Short Form" value="'.$medrow["shortform"].'">
+                                  <input type="text" class="form-control" name="medshort'.$medid.'" placeholder="Medicine Short Form" value="'.$medrow["shortform"].'" required>
                                   </div><!-- form-group -->
   
                                   <div class="form-group">
-                                  <input type="text" class="form-control" name="medchap'.$medid.'" placeholder="Chapter" value="'.$medrow["chapter"].'">
+                                  <input type="text" class="form-control" name="medchap'.$medid.'" placeholder="Chapter" value="'.$medrow["chapter"].'" required>
                                   </div><!-- form-group -->
   
                                   <div class="form-group">
@@ -921,7 +921,7 @@ function mymedicines($con,$myname){
                                   </div><!-- form-group -->
   
                                   <div class="form-group">
-                                  <input type="text" class="form-control" name="medsource'.$medid.'" placeholder="Source" value="'.$medrow["source"].'">
+                                  <input type="text" class="form-control" name="medsource'.$medid.'" placeholder="Source" value="'.$medrow["source"].'" required>
                                   </div><!-- form-group -->
   
                                   <div class="form-group">
@@ -929,7 +929,7 @@ function mymedicines($con,$myname){
                                   </div><!-- form-group --> 
   
                                   <div class="form-group">
-                                  <input type="text" class="form-control" name="medtype'.$medid.'" placeholder="Type" value="'.$medrow["type"].'">
+                                  <input type="text" class="form-control" name="medtype'.$medid.'" placeholder="Type" value="'.$medrow["type"].'" required>
                                   </div><!-- form-group --><div>';
                                   editantidot($con,$antimed);
                                   echo '</div>
@@ -997,17 +997,17 @@ function mymedicines($con,$myname){
                         <form method="post" action="">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Name"
-                                    name="medname">
+                                    name="medname" required>
                             </div><!-- form-group -->
 
                             <div class="form-group">
                                 <input type="text" class="form-control" name="medshort"
-                                    placeholder="Medicine Short Form">
+                                    placeholder="Medicine Short Form" required>
                             </div><!-- form-group -->
 
                             <div class="form-group">
                                 <input type="text" class="form-control" name="medchap"
-                                    placeholder="Chapter">
+                                    placeholder="Chapter" required>
                             </div><!-- form-group -->
 
                             <div class="form-group">
@@ -1017,7 +1017,7 @@ function mymedicines($con,$myname){
 
                             <div class="form-group">
                                 <input type="text" class="form-control" name="medsource"
-                                    placeholder="Source">
+                                    placeholder="Source" required>
                             </div><!-- form-group -->
 
                             <div class="form-group">
@@ -1027,7 +1027,7 @@ function mymedicines($con,$myname){
 
                             <div class="form-group">
                                 <input type="text" class="form-control" name="medtype"
-                                    placeholder="Type">
+                                    placeholder="Type" required>
                             </div><!-- form-group -->
                             <div class="form-group antiadd">
                                 <select class="form-control select2" name="antidot[]">
