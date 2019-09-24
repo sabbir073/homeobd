@@ -95,9 +95,29 @@ include("functions.php");
                                                     placeholder="Type" required>
                                             </div><!-- form-group -->
 
+                                            <div class="form-group">
+                                                <textarea class="form-control" name="medagam"
+                                                    placeholder="Ag/Am"></textarea>
+                                            </div><!-- form-group -->
+
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="medsupp"
+                                                    placeholder="Supplement">
+                                            </div><!-- form-group -->
+
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="medresupp"
+                                                    placeholder="Re Supplement">
+                                            </div><!-- form-group -->
+
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="medprohi"
+                                                    placeholder="Prohibition">
+                                            </div><!-- form-group -->
+
                                             <div class="form-group antiadd">
                                                     <select class="form-control select2" name="antidot[]">
-                                                    <option value="" selected>Select one</option>
+                                                    <option value="" selected>Antidot</option>
                                                         <?php getrelated($con);?>
                                                     </select>
                                                     <div style="clear:both"></div>

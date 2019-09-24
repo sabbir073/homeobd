@@ -112,6 +112,22 @@ function showmedicine($con,$role){
                                     <td>'.$medrow["type"].'</td>
                                     </tr>
                                     <tr>
+                                    <th scope="row"><b>Ag/Am</b></th>
+                                    <td>'.$medrow["agam"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Suppliment</b></th>
+                                    <td>'.$medrow["suppliment"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Re Suppliment</b></th>
+                                    <td>'.$medrow["resuppliment"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Prohibition</b></th>
+                                    <td>'.$medrow["prohibition"].'</td>
+                                    </tr>
+                                    <tr>
                                     <th scope="row"><b>Anti DOT</b></th>
                                     <td>'; 
                                     viewantidot($con,$antimed, $limit = 100);
@@ -185,6 +201,22 @@ function showmedicine($con,$role){
   
                                   <div class="form-group">
                                   <input type="text" class="form-control" name="medtype'.$medid.'" placeholder="Type" value="'.$medrow["type"].'">
+                                  </div><!-- form-group -->
+                                  
+                                  <div class="form-group">
+                                  <textarea class="form-control" name="medagam'.$medid.'" placeholder="Ag/Am">'.$medrow["agam"].'</textarea>
+                                  </div><!-- form-group -->
+                                  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medsupp'.$medid.'" placeholder="Suppliment" value="'.$medrow["suppliment"].'">
+                                  </div><!-- form-group -->
+                                  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medresupp'.$medid.'" placeholder="Re Suppliment" value="'.$medrow["resuppliment"].'">
+                                  </div><!-- form-group -->
+                                  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medprohi'.$medid.'" placeholder="Prohibition" value="'.$medrow["prohibition"].'">
                                   </div><!-- form-group --><div>';
                                   editantidot($con,$antimed);
                                   echo '</div><div class="form-group">
@@ -227,11 +259,11 @@ function showmedicine($con,$role){
                               </div>
                               <div class="modal-body">
                               <div class="alert alert-danger mg-b-0" role="alert">
-                                  Are you sure want to delete '.$medrow["name"].'?
+                                  Are you sure want to delete '.$antimed.'?
                               </div>
                               <div class="mg-lg-b-30"></div>
                               <form method="post" action="">
-                                  
+                                  <input type="hidden" value="'.$antimed.'" name="antimeddel"/>
                                   <button value="'.$medid.'" name="subdelete" class="btn btn-az-primary pd-x-20">Delete</button>
                               </form>
                               
@@ -282,6 +314,20 @@ function showmedicine($con,$role){
         $medtype = stripslashes($_REQUEST['medtype'.$id.'']);
         $medtype = mysqli_real_escape_string($con,$medtype);
 
+        //newly added features
+        $medagam = stripslashes($_REQUEST['medagam'.$id.'']);
+        $medagam = mysqli_real_escape_string($con,$medagam);
+
+        $medsupp = stripslashes($_REQUEST['medsupp'.$id.'']);
+        $medsupp = mysqli_real_escape_string($con,$medsupp);
+
+        $medresupp = stripslashes($_REQUEST['medresupp'.$id.'']);
+        $medresupp = mysqli_real_escape_string($con,$medresupp);
+
+        $medprohi = stripslashes($_REQUEST['medprohi'.$id.'']);
+        $medprohi = mysqli_real_escape_string($con,$medprohi);
+        //ends of new features
+
         $medstatus = stripslashes($_REQUEST['status'.$id.'']);
         $medstatus = mysqli_real_escape_string($con,$medstatus);
 
@@ -290,7 +336,7 @@ function showmedicine($con,$role){
             $antidot = array_map(array($con, 'real_escape_string'), $antidot);
         }
 
-        $medquery = "UPDATE medicines SET name = '$medname', shortform = '$medshort', chapter = '$medchap', subchapter = '$medsubchap', source = '$medsource', prover = '$medprov', type = '$medtype', pending='$medstatus' WHERE id = $id LIMIT 1";
+        $medquery = "UPDATE medicines SET name = '$medname', shortform = '$medshort', chapter = '$medchap', subchapter = '$medsubchap', source = '$medsource', prover = '$medprov', type = '$medtype', agam = '$medagam', suppliment = '$medsupp', resuppliment = '$medresupp', prohibition = '$medprohi', pending='$medstatus' WHERE id = $id LIMIT 1";
         $mdresult = mysqli_query($con,$medquery);
 
         $checkquery = "SELECT * FROM antidot WHERE medicine = '$medname'";
@@ -353,7 +399,7 @@ function showmedicine($con,$role){
     if(isset($_POST["subdelete"])){
         
         $delid = $_POST["subdelete"];
-        $delnameanti = $medrow["name"];
+        $delnameanti = $_POST["antimeddel"];
 
         $mddelresult = mysqli_multi_query($con,"DELETE FROM medicines WHERE id = $delid LIMIT 1;  DELETE FROM antidot WHERE medicine = '$delnameanti';");
 
@@ -361,6 +407,7 @@ function showmedicine($con,$role){
             echo '<div class="alert alert-success" role="alert">
                      <strong>Well done!</strong> You successfully Deleted medicine. <a href="" onClick="window.location.reload();">Refresh the page</a>
                 </div>';
+                
                 
         }
         else{
@@ -398,14 +445,28 @@ if(isset($_POST["addmed"])){
     $medtype = stripslashes($_REQUEST['medtype']);
     $medtype = mysqli_real_escape_string($con,$medtype);
 
+    //newly added features
+    $medagam = stripslashes($_REQUEST['medagam']);
+    $medagam = mysqli_real_escape_string($con,$medagam);
+
+    $medsupp = stripslashes($_REQUEST['medsupp']);
+    $medsupp = mysqli_real_escape_string($con,$medsupp);
+
+    $medresupp = stripslashes($_REQUEST['medresupp']);
+    $medresupp = mysqli_real_escape_string($con,$medresupp);
+
+    $medprohi = stripslashes($_REQUEST['medprohi']);
+    $medprohi = mysqli_real_escape_string($con,$medprohi);
+    //ends of new features
+
     $antidot_med = $_REQUEST['antidot'];
     $antidot_med = array_map(array($con, 'real_escape_string'), $antidot_med);
 
     $addedby = $_SESSION['name'];
 
 
-    $medaddquery = "INSERT into `medicines` (name, shortform, chapter, subchapter, source, prover, type, addedby)
-            VALUES ('$medname', '$medshort', '$medchap', '$medsubchap', '$medsource', '$medprov', '$medtype','$addedby')";
+    $medaddquery = "INSERT into `medicines` (name, shortform, chapter, subchapter, source, prover, type, agam, suppliment, resuppliment, prohibition, addedby)
+            VALUES ('$medname', '$medshort', '$medchap', '$medsubchap', '$medsource', '$medprov', '$medtype', '$medagam', '$medsupp', '$medresupp', '$medprohi', '$addedby')";
     $mdaddresult = mysqli_query($con,$medaddquery);
 
     for($i=0; $i<count($antidot_med); $i++){
@@ -415,8 +476,6 @@ if(isset($_POST["addmed"])){
 
             $antidotquery = "INSERT into `antidot` (antimedicine, medicine) VALUES ('$each_single_antidot_med', '$medname')";
             $antidotresult = mysqli_query($con,$antidotquery);
-
-            
         }
     }
 
@@ -430,6 +489,7 @@ if(isset($_POST["addmed"])){
         echo '<div class="alert alert-danger" role="alert">
                  <strong>Something Wrong!</strong> Medicine is not added. <a href="" onClick="window.location.reload();">Refresh the page</a>
             </div>';
+
     }
     
 }
@@ -1584,7 +1644,7 @@ if(isset($_POST["addusernew"])){
 
 
     $adduserq = "INSERT into `users` (username, email, phone, password, role, credit, refferid)
-            VALUES ('$adduname', '$adduemail', '$adduphone', '".md5($addupass)."', '$addurole', '$adducredit', '$ferrefid') LIMIT 1";
+            VALUES ('$adduname', '$adduemail', '$adduphone', '".md5($addupass)."', '$addurole', '$adducredit', '$ferrefid')";
     $adduserr = mysqli_query($con,$adduserq);
 
     if($adduserr){
@@ -1597,6 +1657,7 @@ if(isset($_POST["addusernew"])){
         echo '<div class="alert alert-danger" role="alert">
                  <strong>Something Wrong!</strong> User is not added. <a href="" onClick="window.location.reload();">Refresh the page</a>
             </div>';
+            echo  mysqli_error($con);
     }
     
 }
@@ -2866,7 +2927,7 @@ function mysymptoms($con,$myname){
         $grades = array_map(array($con, 'real_escape_string'), $grades);
 
 
-        $medquery = "UPDATE symptoms SET name = '$medname', chapter = '$medshort', subchapter = '$medchap', shortform = '$medsubchap' pending = 'Pending' WHERE id = $id LIMIT 1";
+        $medquery = "UPDATE symptoms SET name = '$medname', chapter = '$medshort', subchapter = '$medchap', shortform = '$medsubchap', pending = 'Pending' WHERE id = $id LIMIT 1";
         $mdresult = mysqli_query($con,$medquery);
 
         $checkquery = "SELECT * FROM relatedmedicine WHERE symptom = '$medname'";
@@ -2901,6 +2962,7 @@ function mysymptoms($con,$myname){
             echo '<div class="alert alert-danger" role="alert">
                      <strong>Something Wrong!</strong> Symptom is not edited. <a href="" onClick="window.location.reload();">Refresh the page</a>
                 </div>';
+                echo  mysqli_error($con);
                 
         }
         
