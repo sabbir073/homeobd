@@ -571,6 +571,22 @@ function pendingmedicine($con){
                                     <td>'.$medrow["type"].'</td>
                                     </tr>
                                     <tr>
+                                    <th scope="row"><b>Ag/Am</b></th>
+                                    <td>'.$medrow["agam"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Supplement</b></th>
+                                    <td>'.$medrow["suppliment"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Re Supplement</b></th>
+                                    <td>'.$medrow["resuppliment"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Prohibition</b></th>
+                                    <td>'.$medrow["prohibition"].'</td>
+                                    </tr>
+                                    <tr>
                                     <th scope="row"><b>Anti DOT</b></th>
                                     <td>'; 
                                     viewantidot($con,$antimed, $limit = 100);
@@ -600,7 +616,7 @@ function pendingmedicine($con){
                           <div class="modal-dialog" role="document">
                               <div class="modal-content modal-content-demo">
                               <div class="modal-header">
-                                  <h6 class="modal-title">Edit Medicine</h6>
+                                  <h6 class="modal-title">Approve Medicine</h6>
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                   <span aria-hidden="true">&times;</span>
                                   </button>
@@ -634,6 +650,19 @@ function pendingmedicine($con){
   
                                   <div class="form-group">
                                   <input type="text" class="form-control" name="medtype'.$medid.'" placeholder="Type" value="'.$medrow["type"].'">
+                                  </div><!-- form-group -->
+
+                                  <div class="form-group">
+                                  <textarea class="form-control" name="medagam'.$medid.'" placeholder="Ag/Am" >'.$medrow["agam"].'</textarea>
+                                  </div><!-- form-group -->
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medsupp'.$medid.'" placeholder="Suppement" value="'.$medrow["suppliment"].'">
+                                  </div><!-- form-group -->
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medresupp'.$medid.'" placeholder="Re Suppliment" value="'.$medrow["resuppliment"].'">
+                                  </div><!-- form-group -->
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medprohi'.$medid.'" placeholder="Prohibition" value="'.$medrow["prohibition"].'">
                                   </div><!-- form-group --><div>';
                                   editantidot($con,$antimed);
                                   echo '</div>
@@ -664,7 +693,7 @@ function pendingmedicine($con){
                               </div>
                               <div class="mg-lg-b-30"></div>
                               <form method="post" action="">
-                                  
+                                  <input type="hidden" class="form-control" name="delpending" value="'.$antimed.'">
                                   <button value="'.$medid.'" name="unapprove" class="btn btn-az-primary pd-x-20">Delete</button>
                               </form>
                               
@@ -712,11 +741,25 @@ function pendingmedicine($con){
         $medtype = stripslashes($_REQUEST['medtype'.$id.'']);
         $medtype = mysqli_real_escape_string($con,$medtype);
 
+        //new added features
+        $medagam = stripslashes($_REQUEST['medagam'.$id.'']);
+        $medagam = mysqli_real_escape_string($con,$medagam);
+
+        $medsupp = stripslashes($_REQUEST['medsupp'.$id.'']);
+        $medsupp = mysqli_real_escape_string($con,$medsupp);
+
+        $medresupp = stripslashes($_REQUEST['medresupp'.$id.'']);
+        $medresupp = mysqli_real_escape_string($con,$medresupp);
+
+        $medprohi = stripslashes($_REQUEST['medprohi'.$id.'']);
+        $medprohi = mysqli_real_escape_string($con,$medprohi);
+        //added features end
+
         $antidot_med = $_REQUEST['antidot'];
         $antidot_med = array_map(array($con, 'real_escape_string'), $antidot_med);
 
 
-        $medquery = "UPDATE medicines SET name = '$medname', shortform = '$medshort', chapter = '$medchap', subchapter = '$medsubchap', source = '$medsource', prover = '$medprov', type = '$medtype', pending = 'Approved' WHERE id = $id LIMIT 1";
+        $medquery = "UPDATE medicines SET name = '$medname', shortform = '$medshort', chapter = '$medchap', subchapter = '$medsubchap', source = '$medsource', prover = '$medprov', type = '$medtype', agam = '$medagam', suppliment = '$medsupp', resuppliment = '$medresupp', prohibition = '$medprohi', pending = 'Approved' WHERE id = $id LIMIT 1";
         $mdresult = mysqli_query($con,$medquery);
 
         $checkquery = "SELECT * FROM antidot WHERE medicine = '$medname'";
@@ -759,7 +802,7 @@ function pendingmedicine($con){
     if(isset($_POST["unapprove"])){
         
         $delid = $_POST["unapprove"];
-        $delnameanti = $medrow["name"];
+        $delnameanti = $_post["delpending"];
 
         $mddelresult = mysqli_multi_query($con,"DELETE FROM medicines WHERE id = $delid LIMIT 1;  DELETE FROM antidot WHERE medicine = '$delnameanti';");
 
@@ -947,6 +990,22 @@ function mymedicines($con,$myname){
                                     <td>'.$medrow["type"].'</td>
                                     </tr>
                                     <tr>
+                                    <th scope="row"><b>Ag/Am</b></th>
+                                    <td>'.$medrow["agam"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Supplement</b></th>
+                                    <td>'.$medrow["suppliment"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Re Supplement</b></th>
+                                    <td>'.$medrow["resuppliment"].'</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row"><b>Prohibition</b></th>
+                                    <td>'.$medrow["prohibition"].'</td>
+                                    </tr>
+                                    <tr>
                                     <th scope="row"><b>Anti DOT</b></th>
                                     <td>'; 
                                     viewantidot($con,$antimed, $limit = 100);
@@ -1011,6 +1070,22 @@ function mymedicines($con,$myname){
   
                                   <div class="form-group">
                                   <input type="text" class="form-control" name="medtype'.$medid.'" placeholder="Type" value="'.$medrow["type"].'" required>
+                                  </div><!-- form-group -->
+                                  
+                                  <div class="form-group">
+                                  <textarea class="form-control" name="medagam'.$medid.'" placeholder="Ag/Am">'.$medrow["agam"].'</textarea>
+                                  </div><!-- form-group -->
+                                  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medsupp'.$medid.'" placeholder="Supplement" value="'.$medrow["suppliment"].'">
+                                  </div><!-- form-group -->
+                                  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medresupp'.$medid.'" placeholder="Re Supplement" value="'.$medrow["resuppliment"].'">
+                                  </div><!-- form-group -->
+                                  
+                                  <div class="form-group">
+                                  <input type="text" class="form-control" name="medprohi'.$medid.'" placeholder="Prohibition" value="'.$medrow["prohibition"].'">
                                   </div><!-- form-group --><div>';
                                   editantidot($con,$antimed);
                                   echo '</div>
@@ -1041,7 +1116,7 @@ function mymedicines($con,$myname){
                               </div>
                               <div class="mg-lg-b-30"></div>
                               <form method="post" action="">
-                                  
+                                  <input type="hidden" name="hiddeninput" value="'.$medrow["name"].'">
                                   <button value="'.$medid.'" name="mydelete" class="btn btn-az-primary pd-x-20">Delete</button>
                               </form>
                               
@@ -1110,6 +1185,26 @@ function mymedicines($con,$myname){
                                 <input type="text" class="form-control" name="medtype"
                                     placeholder="Type" required>
                             </div><!-- form-group -->
+
+                            <div class="form-group">
+                                <textarea class="form-control" name="medagam"
+                                    placeholder="Ag/Am"></textarea>
+                            </div><!-- form-group -->
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="medsupp"
+                                    placeholder="Supplement">
+                            </div><!-- form-group -->
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="medresupp"
+                                    placeholder="Re Supplement">
+                            </div><!-- form-group -->
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="medprohi"
+                                    placeholder="Prohibition">
+                            </div><!-- form-group -->
                             <div class="form-group antiadd">
                                 <select class="form-control select2" name="antidot[]">
                                 <option value="" selected>Select one</option>';
@@ -1157,14 +1252,26 @@ if(isset($_POST["myaddmed"])){
     $medtype = stripslashes($_REQUEST['medtype']);
     $medtype = mysqli_real_escape_string($con,$medtype);
 
+    $medagam = stripslashes($_REQUEST['medagam']);
+    $medagam = mysqli_real_escape_string($con,$medagam);
+
+    $medsupp = stripslashes($_REQUEST['medsupp']);
+    $medsupp = mysqli_real_escape_string($con,$medsupp);
+
+    $medresupp = stripslashes($_REQUEST['medresupp']);
+    $medresupp = mysqli_real_escape_string($con,$medresupp);
+
+    $medprohi = stripslashes($_REQUEST['medprohi']);
+    $medprohi = mysqli_real_escape_string($con,$medprohi);
+
     $antidot_med = $_REQUEST['antidot'];
     $antidot_med = array_map(array($con, 'real_escape_string'), $antidot_med);
 
     $addedby = $_SESSION['name'];
 
 
-    $medaddquery = "INSERT into `medicines` (name, shortform, chapter, subchapter, source, prover, type, addedby)
-            VALUES ('$medname', '$medshort', '$medchap', '$medsubchap', '$medsource', '$medprov', '$medtype','$addedby')";
+    $medaddquery = "INSERT into `medicines` (name, shortform, chapter, subchapter, source, prover, type, agam, suppliment, resuppliment, prohibition, addedby)
+            VALUES ('$medname', '$medshort', '$medchap', '$medsubchap', '$medsource', '$medprov', '$medtype', '$medagam', '$medsupp', '$medresupp', '$medprohi', '$addedby')";
     $mdaddresult = mysqli_query($con,$medaddquery);
 
     for($i=0; $i<count($antidot_med); $i++){
@@ -1221,11 +1328,23 @@ if(isset($_POST["myaddmed"])){
         $medtype = stripslashes($_REQUEST['medtype'.$id.'']);
         $medtype = mysqli_real_escape_string($con,$medtype);
 
+        $medagam = stripslashes($_REQUEST['medagam'.$id.'']);
+        $medagam = mysqli_real_escape_string($con,$medagam);
+
+        $medsupp = stripslashes($_REQUEST['medsupp'.$id.'']);
+        $medsupp = mysqli_real_escape_string($con,$medsupp);
+
+        $medresupp = stripslashes($_REQUEST['medresupp'.$id.'']);
+        $medresupp = mysqli_real_escape_string($con,$medresupp);
+
+        $medprohi = stripslashes($_REQUEST['medprohi'.$id.'']);
+        $medprohi = mysqli_real_escape_string($con,$medprohi);
+
         $antidot = $_REQUEST['antidot'];
         $antidot = array_map(array($con, 'real_escape_string'), $antidot);
 
 
-        $medquery = "UPDATE medicines SET name = '$medname', shortform = '$medshort', chapter = '$medchap', subchapter = '$medsubchap', source = '$medsource', prover = '$medprov', type = '$medtype', pending='Pending' WHERE id = $id LIMIT 1";
+        $medquery = "UPDATE medicines SET name = '$medname', shortform = '$medshort', chapter = '$medchap', subchapter = '$medsubchap', source = '$medsource', prover = '$medprov', type = '$medtype', agam = '$medagam', suppliment = '$medsupp', resuppliment = '$medresupp', prohibition = '$medprohi', pending='Pending' WHERE id = $id LIMIT 1";
         $mdresult = mysqli_query($con,$medquery);
 
         $checkquery = "SELECT * FROM antidot WHERE medicine = '$medname'";
@@ -1268,7 +1387,7 @@ if(isset($_POST["myaddmed"])){
     if(isset($_POST["mydelete"])){
         
         $delid = $_POST["mydelete"];
-        $delnameanti = $medrow["name"];
+        $delnameanti = $_POST["hiddeninput"];
 
         $mddelresult = mysqli_multi_query($con,"DELETE FROM medicines WHERE id = $delid LIMIT 1;  DELETE FROM antidot WHERE medicine = '$delnameanti';");
 
@@ -2207,7 +2326,7 @@ function showsymptoms($con,$role){
                               </div>
                               <div class="mg-lg-b-30"></div>
                               <form method="post" action="">
-                                  
+                              <input type="hidden" value="'.$sympname.'" name="delnamedel"/>
                                   <button value="'.$medid.'" name="subdelete" class="btn btn-az-primary pd-x-20">Delete</button>
                               </form>
                               
@@ -2321,7 +2440,7 @@ function showsymptoms($con,$role){
         
         $delid = $_POST["subdelete"];
 
-        $delnamesymp = $medrow["name"];
+        $delnamesymp = $_POST["delnamedel"];
 
         $mddelresult = mysqli_multi_query($con,"DELETE FROM symptoms WHERE id = $delid LIMIT 1;  DELETE FROM relatedmedicine WHERE name = '$delnamesymp';");
         
